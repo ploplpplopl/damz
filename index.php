@@ -1,4 +1,5 @@
 <?php
+
 // Imports
 require 'controllers/authController.php';
 require 'models/debug.php';
