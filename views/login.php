@@ -11,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-    <link rel="stylesheet" href="/dossier-rapide/public/css/main.css">
-    <link rel="icon" href="/dossier-rapide/public/img/logoicone.ico">
+    <link rel="stylesheet" href="public/css/main.css">
+    <link rel="icon" href="public/img/logoicone.ico">
     <title><?php echo $sTitre; ?></title>
 </head>
 
@@ -50,7 +50,7 @@
                         <button type="submit" name="login-btn" class="btn btn-lg btn-block">Valider</button>
                     </div>
                 </form>
-                <p>Vous n'avez pas de compte ? <a href="/dossier-rapide/index.php?action=signup">Enregistrez-vous</a></p>
+                <p>Vous n'avez pas de compte ? <a href="index.php?action=signup">Enregistrez-vous</a></p>
             </div>
         </div>
 

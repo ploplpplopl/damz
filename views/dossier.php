@@ -219,7 +219,7 @@ require('views/head.php');
         <fieldset>
             <!-- devis -->
             <p>devis</p>
-
+<!-- TODO créer des div automatiquement en fonction des variables $zone existantes -->
             <div id="zone1"></div>
             <div id="zone2"></div>
             <div id="zone3"></div>

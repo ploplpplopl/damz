@@ -134,6 +134,6 @@ if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer' || $_SESSION
 <?php
     require('views/footer.htm');
 } else {
-    header('location: /dossier-rapide/index.php?action=login'); // protège accès direct à http://localhost/dossier-rapide/views/admPrint.php (views devra etre interdit avec htaccess)
+    header('location: index.php?action=login'); // protège accès direct à http://localhost/views/admPrint.php (views devra etre interdit avec htaccess)
 }
 ?>

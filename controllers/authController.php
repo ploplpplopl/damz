@@ -60,6 +60,8 @@ if (isset($_POST['signup-btn'])) {
         // TODO : AJAX pour vérifier avant validation du form (onkeyup with throttle)
     }
 
+    // TODO : ajouter toutes les vérifications y compris checkPassword comme dans signup_controls.js
+
     // insert user into DB
     if (count($errors) === 0) {
         $result = AuthMgr::signup($firstname, $lastname, $email, $phone, $pseudo, $password, $token);
@@ -96,8 +98,12 @@ if (isset($_POST['login-btn'])) {
 
     if (count($errors) === 0) {
         if (AuthMgr::checkLogin($pseudo, $password)) {
-            // redirection sur la page où les messages ($_SESSION['message']) seront affichés
-            header('location: /dossier-rapide/index.php?action=accueil');
+            if ($pseudo == 'printer') {
+                header('location: index.php?action=admprint');
+            } else {
+                // redirection sur la page où les messages ($_SESSION['message']) seront affichés
+                header('location: index.php?action=accueil');
+            }
         } else { // if password does not match
             $errors['login_fail'] = "Wrong pseudo / password";
         }
