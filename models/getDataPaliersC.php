@@ -11,10 +11,10 @@
 
 
 require_once("dao/DbConnection.class.php");
-$sth = $dbh->prepare("SELECT palier, prix FROM paliers_couleur");
+$sth = DbConnection::getConnection('dev')->prepare("SELECT palier, prix FROM paliers_couleur");
 $sth->execute();
 
 /* Fetch all of the remaining rows in the result variable */
 $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-// echo '<script>alert("coucou")</script>';
+
 echo json_encode($result);

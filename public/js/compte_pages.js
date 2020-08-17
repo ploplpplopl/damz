@@ -55,16 +55,15 @@ $(document).ready(function () {
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
-                        (function(){calculDevis()}());
+                        calculDevis();
                     }
                 }
             });
             $("#erreur").hide();
         }
-    })
+    });
 
     function calculDevis() {
-        alert("ne rentre pas dans la suite de la fonction. \ncompte_pages.js ligne 67")
         $.getJSON(
             "models/getDataPaliersNB.php",
             function (dataNB) {
@@ -95,8 +94,6 @@ $(document).ready(function () {
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    alert("coucou");
-
     let quantity = $("#quantity").value;
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {

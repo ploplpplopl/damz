@@ -3,7 +3,7 @@
 
 require_once("dao/DbConnection.class.php");
 
-$sth = $dbh->prepare("SELECT palier, prix FROM paliers_NB");
+$sth = DbConnection::getConnection('dev')->prepare("SELECT palier, prix FROM paliers_NB");
 $sth->execute();
 
 /* Fetch all of the remaining rows in the result variable */
