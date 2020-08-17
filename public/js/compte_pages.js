@@ -55,7 +55,7 @@ $(document).ready(function () {
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
-                        (function(){calculDevis()}());
+                        calculDevis();
                     }
                 }
             });

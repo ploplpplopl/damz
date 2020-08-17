@@ -3,6 +3,7 @@
 
 require_once("dao/DbConnection.class.php");
 
+$dbh = DbConnection::getConnection('administrateur');
 $sth = $dbh->prepare("SELECT palier, prix FROM paliers_NB");
 $sth->execute();
 
