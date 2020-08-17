@@ -55,17 +55,7 @@ $(document).ready(function () {
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
-                        $.getJSON(
-                            "models/getDataPaliersNB.php",
-                            function (dataNB) {
-                                $.getJSON(
-                                    "models/getDataPaliersC.php",
-                                    function (dataC) {
-                                        calculs(dataNB, dataC);
-                                    }
-                                )
-                            }
-                        );
+                        (function(){calculDevis()}());
                     }
                 }
             });
@@ -73,11 +63,8 @@ $(document).ready(function () {
         }
     })
 
-    // TODO ajouter fonction pour modifier le package en fonction du docType
-    $("#dossier, #memoire, #these").on('change', function () {});
-
-
-    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
+    function calculDevis() {
+        alert("ne rentre pas dans la suite de la fonction. \ncompte_pages.js ligne 67")
         $.getJSON(
             "models/getDataPaliersNB.php",
             function (dataNB) {
@@ -89,14 +76,16 @@ $(document).ready(function () {
                 )
             }
         );
+    }
+
+    // TODO ajouter fonction pour modifier le package en fonction du docType
+    $("#dossier, #memoire, #these").on('change', function () {});
+
+    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
+        calculDevis();
     })
 
-    // $("#devfac").on("click", function () {
-    //     reglement();
-    // });
-    // $("#imprime").on("click", function () {
-    //     imprimer();
-    // });
+    // Prevent form validation
     $("body").keypress(function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
@@ -106,8 +95,9 @@ $(document).ready(function () {
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    console.log("coucou");
-    let quantity = $("#quantity");
+    alert("coucou");
+
+    let quantity = $("#quantity").value;
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
         rectoVerso = 1

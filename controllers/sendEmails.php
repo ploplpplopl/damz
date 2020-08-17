@@ -3,7 +3,6 @@ require_once 'vendor/autoload.php';
 
 // Create the Transport
 $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl')) 
-// $transport = (new Swift_SmtpTransport('mail.thoorens.fr', 143))  // TODO mettre dans param.ini
     ->setUsername('')  // TODO mettre dans param.ini
     ->setPassword('');    // TODO mettre dans param.ini
 
@@ -38,7 +37,7 @@ function sendVerificationEmail($userEmail, $token)
     <body>
       <div class="wrapper">
         <p>Thank you for signing up on our site. Please click on the link below to verify your account:.</p>
-        <a href="http://localhost/dossier-rapide/index.php?action=verifyUser&token=' . $token . '">Verify Email!</a>
+        <a href="http://localhost/index.php?action=verifyUser&token=' . $token . '">Verify Email!</a>
       </div>
     </body>
 

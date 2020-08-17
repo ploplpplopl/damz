@@ -71,7 +71,7 @@
                         <button type="submit" id="signup-btn" name="signup-btn" class="btn btn-lg btn-block">Valider</button>
                     </div>
                 </form>
-                <p>Vous avez déjà un compte ? <a href="/dossier-rapide/index.php?action=login">Login</a></p>
+                <p>Vous avez déjà un compte ? <a href="index.php?action=login">Login</a></p>
             </div>
         </div>
     </div>
