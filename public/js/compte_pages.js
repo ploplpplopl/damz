@@ -97,7 +97,7 @@ $(document).ready(function () {
 function calculs(dataNB, dataC) {
     alert("coucou");
 
-    let quantity = $("#quantity");
+    let quantity = $("#quantity").value;
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
         rectoVerso = 1

@@ -22,7 +22,7 @@
             <div class="col-md-4 offset-md-4 form-wrapper auth login">
                 <h3 class="text-center form-title">Connexion</h3>
                 <!-- the $errors array is displayed in this area -->
-
+<!-- TODO les erreurs de login.php ligne 82 ne s'affichent pas  -->
                 <!-- <?php // TODO : a supprimer
                 print_r($errors); ?>
                 <?php // TODO : a supprimer

@@ -232,6 +232,7 @@ require('views/head.php');
             <div id="zone10"></div>
             <div id="zone11"></div>
             <div id="zone12"></div>
+            <div id="total"></div>
         </fieldset>
 
         <!-- bouton valider -->

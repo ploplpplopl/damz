@@ -100,6 +100,8 @@ if (isset($_POST['login-btn'])) {
         if (AuthMgr::checkLogin($pseudo, $password)) {
             if ($pseudo == 'printer') {
                 header('location: index.php?action=admprint');
+            } elseif ($pseudo == 'admin') {
+                header('location: index.php?action=admin');
             } else {
                 // redirection sur la page où les messages ($_SESSION['message']) seront affichés
                 header('location: index.php?action=accueil');
@@ -114,7 +116,7 @@ if (isset($_POST['login-btn'])) {
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
     AuthMgr::disconnectUser();
-    header('location: index.php?action=accueil');
+    header('location: index.php?action=login');
 
     // exit();
 }
