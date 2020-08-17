@@ -85,12 +85,7 @@ $(document).ready(function () {
         calculDevis();
     })
 
-    // $("#devfac").on("click", function () {
-    //     reglement();
-    // });
-    // $("#imprime").on("click", function () {
-    //     imprimer();
-    // });
+    // Prevent form validation
     $("body").keypress(function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
@@ -100,7 +95,7 @@ $(document).ready(function () {
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    console.log("coucou");
+    alert("coucou");
 
     let quantity = $("#quantity");
     let rectoVerso = 0;
