@@ -123,7 +123,7 @@ fieldset {
 }
 
 .bottomDocType {
-    background-color: rgb(204, 220, 248);
+    background-color: rgb(231, 239, 252);
     border-radius: 0 0 10px 10px;
     flex-grow: 10;
     overflow: auto;
@@ -135,7 +135,6 @@ fieldset {
 }
 
 .conteneurReliure {
-    /* border: 3px solid blue; */
     margin: 0;
     padding: 0;
     padding-left: 15px;
@@ -151,7 +150,7 @@ fieldset {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    /* border: 3px solid rgb(51, 255, 0); */
+    /* border: 3px solid rgb(255, 238, 0); */
     margin: 0em;
 }
 
@@ -195,44 +194,68 @@ fieldset {
 
 }
 
-#radios{
-    position:relative;
-    width:50%;
-  }
+#radiosCouleur {
+    position: relative;
+    width: 50%;
+}
 
-  .couleurReliure input[type="radio"]{
-    position:absolute;
-    right:1000%;
-  }
-  
-  .couleurReliure label{
-    float:left;
-    width:15%;
-    padding-bottom:15%;
-    margin:0 2.5%;
-    background:rgba(26, 156, 76, 0.2);
-    border-radius:50%;
-    cursor:pointer;
-  }
-  #slider{
-    position:absolute;
-    left:0%; top:0;
-    width:10%; padding-bottom:10%;
-    margin:2.5% 0 0 5%;
-    background:rgb(143, 51, 51);
-    transition:transform 1s;
-    border-radius:50%;
+.couleurReliure input[type="radio"] {
+    position: absolute;
+    right: 1000%;
+}
+
+.couleurReliure label {
+    float: left;
+    width: 15%;
+    padding-bottom: 15%;
+    margin: 0 2.5%;
+    background: rgba(26, 156, 76, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#slider {
+    position: absolute;
+    left: 0%;
+    top: 0;
+    width: 10%;
+    padding-bottom: 10%;
+    margin: 2.5% 0 0 5%;
+    background: rgb(143, 51, 51);
+    transition: transform 1s;
+    border-radius: 50%;
     animation-timing-function: ease-in-out;
-    animation-duration:.3s;
+    animation-duration: .3s;
     animation-fill-mode: forwards;
     transition: 0.2s left .05s ease-in-out;
-  }
-  #reliureNoire:checked  ~ #slider{ animation-name: reliureNoire; left:0; }
-  #reliureBlanche:checked  ~ #slider{ animation-name: reliureBlanche; left:20%; }
+}
 
-  
-  @keyframes reliureNoire{ 30%, 70% { transform:scale(0.5); } }
-  @keyframes reliureBlanche{ 30%, 70% { transform:scale(0.5); } }
+#reliureNoire:checked~#slider {
+    animation-name: reliureNoire;
+    left: 0;
+}
+
+#reliureBlanche:checked~#slider {
+    animation-name: reliureBlanche;
+    left: 20%;
+}
+
+
+@keyframes reliureNoire {
+
+    30%,
+    70% {
+        transform: scale(0.5);
+    }
+}
+
+@keyframes reliureBlanche {
+
+    30%,
+    70% {
+        transform: scale(0.5);
+    }
+}
 
 
 
@@ -243,20 +266,22 @@ fieldset {
     /* border: 1px solid rgb(255, 0, 0); */
     margin-top: 20px;
 }
+
 /*
-.radio-couleur {
+.radioCouleur {
     display: inline-block;
     position: relative;
 
 }
 
-.radio-couleur input[type='radio'] {
+.radioCouleur input[type='radio'] {
     display: none;
     top: 0px;
 }
 
-.radio-couleur label {
-    /* color: rgb(22, 216, 54); *//*
+.radioCouleur label {
+    /* color: rgb(22, 216, 54); */
+/*
     font-weight: normal;
 
 }
@@ -287,7 +312,7 @@ fieldset {
     background-color: transparent;
 }
 
-.radio-couleur input[type=radio]:checked+label:after {
+.radioCouleur input[type=radio]:checked+label:after {
     border-radius: 11px;
     margin-left: 20px;
     width: 24px;
@@ -352,11 +377,14 @@ fieldset {
     border-radius: 4px;
 
 }
-.FCCouv{
+
+.FCCouv {
     border: 1px solid rgb(189, 20, 20);
     /* width: 50%; */
     display: flex;
-flex-direction: column;}
+    flex-direction: column;
+}
+
 .FCCouv .boutonFC {
     margin: 4px;
     background-color: #EFEFEF;
@@ -402,7 +430,7 @@ flex-direction: column;}
 
 
 /* ------ OPTIONS ------ */
-.options{
+.options {
     display: flex;
 }
 

@@ -11,6 +11,7 @@
 
 
 require_once("dao/DbConnection.class.php");
+
 $sth = DbConnection::getConnection('administrateur')->prepare("SELECT palier, prix FROM paliers_couleur");
 $sth->execute();
 
