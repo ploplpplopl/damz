@@ -99,19 +99,6 @@ class AuthMgr
             }
 			else {
                 $success = true;
-                $userId = $dbh->lastInsertId();
-                // storing the user's data in the session generates his connection
-				$_SESSION['user'] = [
-					'id_user' => $userId,
-					'first_name' => $firstname,
-					'last_name' => $lastname,
-					'email' => $email,
-					'phone' => $phone,
-					'pseudo' => $pseudo,
-					'user_type' => 'user',
-					'secure_key' => $token,
-					'subscr_confirmed' => 0,
-				];
             }
             // fermeture de la connexion
             DbConnection::disconnect();
@@ -122,15 +109,14 @@ class AuthMgr
         }
     }
 
-
     /**
      * Checks login credentials and password in DB
      * 
      * @param string $pseudo
      * @param string $password
-     * @return boolean
+     * @return array
      */
-    public static function checkLogin(string $pseudo, string $password): bool
+    public static function checkLogin(string $pseudo, string $password): array
     {
         $dbh = DbConnection::getConnection('administrateur');
         $query = "SELECT * FROM user WHERE pseudo=? OR email=? LIMIT 1";
@@ -138,14 +124,50 @@ class AuthMgr
         $stmt->bindParam(1, $pseudo, PDO::PARAM_STR);
         $stmt->bindParam(2, $pseudo, PDO::PARAM_STR);
 
-		$success = false;
+		$output = [
+			'status' => 'error',
+			'user' => NULL,
+		];
         if ($stmt->execute()) {
             $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
-            
-            if ($tUser && password_verify($password, $tUser['password'])) {
-                $success = true;
+			
+			$output['user'] = $tUser;
+			unset($output['user']['password']);
+			
+            if ('0' === $tUser['subscr_confirmed']) {
+				$output['status'] = 'not_confirmed';
             }
+			elseif ($tUser && password_verify($password, $tUser['password'])) {
+				$output['status'] = 'ok';
+            }
+        }
+		
+        DbConnection::disconnect();
+        return $output;
+    }
+	
+    /**
+     * Send an email to set a new password
+     * 
+     * @param string $email
+     * @return bool
+     */
+    public static function forgotPassword(string $email): bool
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $query = "SELECT * FROM user WHERE email=? LIMIT 1";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(1, $email, PDO::PARAM_STR);
+
+		$success = FALSE;
+        if ($stmt->execute()) {
+            $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+			
+			if (!empty($tUser)) {
+				$success = TRUE;
+			}
         }
 		
         DbConnection::disconnect();
@@ -161,51 +183,45 @@ class AuthMgr
     public static function disconnectUser()
     {
         unset($_SESSION['user']);
-        $_SESSION = array(); // Détruit toutes les variables de session
+        /*
+		$_SESSION = array(); // Détruit toutes les variables de session
         session_unset(); // obsolete
         session_destroy();
         session_write_close();
         setcookie(session_name(), '', 0, '/');
         // session_regenerate_id(true);  // redémarrer une nouvelle session
+		*/
     }
 
     /**
      * Verify the email by comparing the sent token with the one stored in DB 
      *
      * @param string $token
-     * @return boolean
+     * @return string
      */
-    public static function verifyEmail(string $token): bool
+    public static function verifyEmail(string $token): string
     {
-        // TODO mettre un try catch ?
         try {
             $dbh = DbConnection::getConnection('administrateur');
             $query = "SELECT * FROM user WHERE secure_key=:token LIMIT 1";
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':token', $token);
-            $success = false;
-
-            if ($stmt->execute()) {
-                $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
-                $stmt->closeCursor();
-                if ($tUser) {
-                    $query = "UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token";
-                    $stmt = $dbh->prepare($query);
-                    $stmt->bindParam(':token', $token);
-                    if ($stmt->execute()) {
-                        $_SESSION['id'] = $tUser['id_user'];
-                        $_SESSION['pseudo'] = $tUser['pseudo'];
-                        $_SESSION['email'] = $tUser['email'];
-                        $_SESSION['verified'] = true;
-                        $_SESSION['message'] = "Your email address has been verified successfully";
-                        $_SESSION['type'] = 'alert-success';
-
-                        $success = true;
-                    }
-                    // TODO supprimer le token de la bdd
-                }
-            }
-            // fermeture de la connexion
+			$stmt->execute();
+			$tUser = $stmt->fetch(PDO::FETCH_ASSOC);
+			$stmt->closeCursor();
+			
+            $success = 'error';
+			if ('1' === $tUser['subscr_confirmed']) {
+				$success = 'already_confirmed';
+			}
+			else {
+				$query = 'UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token';
+				$stmt = $dbh->prepare($query);
+				$stmt->bindParam(':token', $token);
+				if ($stmt->execute()) {
+					$success = 'confirmed';
+				}
+			}
             DbConnection::disconnect();
             return $success;
         } catch (Exception $e) {

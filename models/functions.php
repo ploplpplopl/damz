@@ -14,14 +14,14 @@ function debug($chaine,$bool) {
 
 function displayMessage($errors = NULL) {
 	$messageTypes = [
-		'status' => 'confirm',
+		'status' => 'alert alert-success',
 		'warning' => 'alert alert-warning',
 		'error' => 'alert alert-danger',
 	];
 	
 	if (!empty($errors)) {
 		if (!empty($_SESSION['message_error'])) {
-			$_SESSION['message_error'] = array_merge([$_SESSION['message_error']], $errors);
+			$_SESSION['message_error'] = array_merge((array) $_SESSION['message_error'], $errors);
 		}
 		else {
 			$_SESSION['message_error'] = $errors;

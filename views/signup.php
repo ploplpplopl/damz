@@ -33,8 +33,8 @@
                         <span id="span-signup-lastname"></span>
                     </div>
                     <div class="form-group">
-                        <label for="signup-email">Email</label>
-                        <input type="text" id="signup-email" name="email" class="form-control form-control-lg" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}" />
+                        <label for="signup-email">Adresse e-mail</label>
+                        <input type="email" id="signup-email" name="email" class="form-control form-control-lg" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}" />
                         <span id="span-signup-email"></span>
                     </div>
                     <div class="form-group">
@@ -61,7 +61,7 @@
                         <button type="submit" id="signup-btn" name="signup-btn" class="btn btn-lg btn-block">Inscription</button>
                     </div>
                 </form>
-                <p>Vous avez déjà un compte ? <a href="index.php?action=login">Login</a></p>
+                <p>Vous avez déjà un compte&nbsp;? <a href="index.php?action=login">Connectez-vous</a></p>
             </div>
         </div>
     </div>

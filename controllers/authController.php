@@ -69,26 +69,24 @@ if (isset($_POST['signup-btn'])) {
     // Insert user into DB
     if (empty($errors)) {
         if (!AuthMgr::signup($firstname, $lastname, $email, $phone, $pseudo, $password, $token)) {
-            //header('location: index.php?action=signup');
-			//exit;
+            $_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
         }
 		else {
             // Send confirmation email to user.
-
 			$emailSent = sendMail('signup.html', [
+				'{site_url}' => $settings['site_url'],
 				'{token}' => $token,
-			], 'Inscription sur Company.com', $email);
+			], 'Inscription sur ' . $settings['site_name'], $email);
 			
             if (!$emailSent) {
-				// TODO renvoyer l'e-mail.
                 $_SESSION['message_status'][] = 'Votre inscription est prise en compte';
-                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="#">renvoyer l\'e-mail</a>';
+                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/index.php?action=verifyUser&amp;token=' . $token . '">renvoyer l\'e-mail</a>';
 				
                 header('location: index.php?action=login');
 				exit;
             }
 			else {
-				$_SESSION['message_status'][] = 'Votre inscription est presque terminée, veuillez vérifier vos e-mails pour confirmer votre inscription';
+				$_SESSION['message_status'][] = 'Un lien de confirmation vous a été adressé à <em>' . $email . '</em> pour finaliser votre inscription';
 
                 header('location: index.php?action=login');
 				exit;
@@ -100,30 +98,83 @@ if (isset($_POST['signup-btn'])) {
 // --------------- LOGIN ---------------
 if (isset($_POST['login-btn'])) {
     if (empty($_POST['pseudo'])) {
-        $errors['pseudo'] = 'Pseudo requis';
+        $errors[] = 'Pseudo/e-mail requis';
     }
     if (empty($_POST['password'])) {
-        $errors['password'] = 'Mot de passe requis';
+        $errors[] = 'Mot de passe requis';
     }
 
     if (empty($errors)) {
-        if (AuthMgr::checkLogin($_POST['pseudo'], $_POST['password'])) {
-            if ($_POST['pseudo'] == 'printer') {
-                header('location: index.php?action=admprint');
+		$checkLogin = AuthMgr::checkLogin($_POST['pseudo'], $_POST['password']);
+		
+        switch ($checkLogin['status']) {
+			case 'error':
+				$errors[] = 'Mauvais pseudo ou mot de passe';
+				break;
+				
+			case 'not_confirmed':
+				$errors[] = 'Veuillez confirmer votre compte, si vous n\'avez pas reçu d\'e-mail de confirmation <a href="/index.php?action=resendConfirmationMail&amp;token=' . $checkLogin['user']['secure_key'] . '&amp;email=' . $checkLogin['user']['email'] . '">cliquez ici</a>';
+				break;
+				
+			case 'ok':
+				switch ($checkLogin['user']['user_type']) {
+					case 'admin':
+						$action = 'admin';
+						break;
+						
+					case 'admprinter':
+						$action = 'admprint';
+						break;
+						
+					case 'user':
+					default:
+						$action = 'accueil';
+						// TODO : mise en place de la redirection si l'inscription se fait durant le process d'achat.
+						//if (!empty($_SESSION['process_dossier'])) {
+							//$action = 'overview';
+						//}
+						break;
+				}
+				
+                // storing the user's data in the session generates his connection
+				$_SESSION['user'] = $checkLogin['user'];
+				
+				header('location: index.php?action=' . $action);
 				exit;
-            }
-			elseif ($_POST['pseudo'] == 'admin') {
-                header('location: index.php?action=admin');
+				break;
+        }
+    }
+}
+
+// --------------- FORGOT PASSWORD ---------------
+if (isset($_POST['forgot-password-btn'])) {
+    if (empty($_POST['email'])) {
+        $errors[] = 'Adresse e-mail requise';
+    }
+
+    if (empty($errors)) {
+		$checkAuth = AuthMgr::forgotPassword($_POST['email']);
+		
+        if (!$checkAuth) {
+			$_SESSION['message_error'][] = 'Adresse e-mail introuvable';
+		}
+		else {
+			$emailSent = sendMail('forgot-password.html', [
+				'{site_url}' => $settings['site_url'],
+			], 'Récupération de mot de passe sur ' . $settings['site_name'], $_POST['email']);
+			
+            if (!$emailSent) {
+                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';
+				
+                header('location: index.php?action=forgotPassword');
 				exit;
             }
 			else {
-                // redirection sur la page où les messages ($_SESSION['message']) seront affichés
-                header('location: index.php?action=accueil');
+				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé';
+
+                header('location: index.php?action=forgotPassword');
 				exit;
             }
-        }
-		else { // if password does not match
-            $errors['login_fail'] = "Wrong pseudo / password";
         }
     }
 }

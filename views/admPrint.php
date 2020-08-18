@@ -11,30 +11,8 @@ if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer' || $_SESSION
 
     <div class="row">
         <div class="col-md-4 offset-md-4 home-wrapper">
-            <!-- Display messages -->
-            <?php if (isset($_SESSION['message'])) : ?>
-                <div class="alert <?php echo $_SESSION['type'] ?>">
-                    <?php
-                    echo $_SESSION['message'];
-                    unset($_SESSION['message']);
-                    unset($_SESSION['type']);
-                    ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- <h4>Welcome, <?php echo $_SESSION['pseudo']; ?></h4> -->
-            <!-- <a href="index.php?action=logout" style="color: red">Logout</a> -->
-            <?php if (!$_SESSION['user']['subsc_confirmed']) : ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    You need to verify your email address!
-                    Sign into your email account and click
-                    on the verification link we just emailed you
-                    at
-                    <strong><?php echo $_SESSION['email']; ?></strong>
-                </div>
-            <?php endif; ?>
+			<?php echo displayMessage($errors); ?>
         </div>
-
 
         <!-- Tab links -->
         <div class="tab">

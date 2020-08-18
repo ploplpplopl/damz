@@ -5,21 +5,8 @@ require('views/head.php');
 <div class="row">
 
     <div class="col-md-4 offset-md-4 home-wrapper">
-        <!-- Display messages -->
 		<?php echo displayMessage($errors); ?>
-		
-		<?php if (empty($_SESSION['user']['subsc_confirmed'])) : ?>
-			<div class="alert alert-warning alert-dismissible fade show" role="alert">
-				You need to verify your email address!
-				Sign into your email account and click
-				on the verification link we just emailed you
-				at <strong><?php echo $_SESSION['user']['email']; ?></strong>
-			</div>
-		<?php else : ?>
-			<button class="btn btn-lg btn-primary btn-block">I'm verified!!!</button>
-		<?php endif; ?>
     </div>
-    <!-- fin à modifier -->
 
     <form method="post" action="traitement.php">
         <fieldset id="upload">
