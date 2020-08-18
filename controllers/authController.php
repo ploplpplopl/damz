@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 
 require_once 'models/AuthMgr.class.php'; // TODO verifier les chemins (relatif, absolu).
 require_once 'controllers/sendEmails.php';
@@ -76,21 +74,23 @@ if (isset($_POST['signup-btn'])) {
         }
 		else {
             // Send confirmation email to user.
-			sendMail('signup.html', [
+
+			$emailSent = sendMail('signup.html', [
 				'{token}' => $token,
 			], 'Inscription sur Company.com', $email);
 			
-			
-            if (!sendVerificationEmail($email, $token)) {
-				// TODO revoir ce bout de code.
-                //$errors[] = 'impossible d\'envoyer le mail'; // TODO supprimer le if et les log d'erreur.
-                $_SESSION['error_msg'] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="#">renvoyer l\'e-mail</a>';
-                header('location: index.php?action=accueil');
+            if (!$emailSent) {
+				// TODO renvoyer l'e-mail.
+                $_SESSION['message_status'][] = 'Votre inscription est prise en compte';
+                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="#">renvoyer l\'e-mail</a>';
+				
+                header('location: index.php?action=login');
 				exit;
             }
 			else {
-                // TODO redirection sur la page où les messages ($_SESSION['message']) seront affichés.
-                header('location: index.php?action=accueil');
+				$_SESSION['message_status'][] = 'Votre inscription est presque terminée, veuillez vérifier vos e-mails pour confirmer votre inscription';
+
+                header('location: index.php?action=login');
 				exit;
             }
         }

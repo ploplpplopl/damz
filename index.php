@@ -1,9 +1,10 @@
 <?php
 
 // Imports
+require_once 'config/config.php';
 require_once 'config/settings.php';
+require_once 'models/functions.php';
 require 'controllers/authController.php';
-require 'models/debug.php';
 
 // Initialisation des variables
 
