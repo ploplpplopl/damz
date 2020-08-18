@@ -1,6 +1,7 @@
 <?php
 require_once 'vendor/autoload.php';
 
+/*
 // Create the Transport
 $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl')) 
     ->setUsername('')  // TODO mettre dans param.ini
@@ -12,6 +13,7 @@ $mailer = new Swift_Mailer($transport);
 function sendVerificationEmail($userEmail, $token)
 {
     global $mailer;
+	// TODO modifier 'http://localhost' par $_SERVER['XXX']
     $body = '<!DOCTYPE html>
     <html lang="en">
 
@@ -36,8 +38,8 @@ function sendVerificationEmail($userEmail, $token)
 
     <body>
       <div class="wrapper">
-        <p>Thank you for signing up on our site. Please click on the link below to verify your account:.</p>
-        <a href="http://localhost/index.php?action=verifyUser&token=' . $token . '">Verify Email!</a>
+        <p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription.</p>
+        <p><a href="http://localhost/index.php?action=verifyUser&token=' . $token . '">Je confirme mon inscription</a></p>
       </div>
     </body>
 
@@ -57,4 +59,40 @@ function sendVerificationEmail($userEmail, $token)
     } else {
         return false;
     }
+}
+*/
+
+function sendMail($template, $templateVars, $subject, $to, $from = NULL, $replyTo = null) {
+	$transport = (new Swift_SmtpTransport($settings['smtp'], $settings['port'], $settings['ssl']))
+		->setUsername($settings['mail-username'])
+		->setPassword($settings['mail-password']);
+	$mailer = new Swift_Mailer($transport);
+
+	if (!isset($from)) $from = $settings['from'];
+	if (!isset($replyTo)) $replyTo = $settings['reply-to'];
+	$content = getMailContent($template, $templateVars);
+	
+    $message = (new Swift_Message())
+		->setSubject($subject)
+        ->setFrom($from)
+        ->setTo($to)
+        ->setBody($content, 'text/html');
+
+    $result = $mailer->send($message);
+	return ($result > 0);
+}
+
+function getMailContent($template, $templateVars){
+	if (!array_key_exists('{site_name}', $templateVars))
+		$templateVars['{site_name}'] = $settings['site_name'];
+	if (!array_key_exists('{site_url}', $templateVars))
+		$templateVars['{site_url}'] = $settings['site_url'];
+
+	$mailContent = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/views/mail/' . $template);
+	$mailContent = str_replace(
+		array_keys($templateVars),
+		array_values($templateVars),
+		$mailContent
+	);
+	return $mailContent;
 }

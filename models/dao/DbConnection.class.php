@@ -13,7 +13,7 @@ class DbConnection
     private static function connect(string $user_type)
     {
 
-        $tParam = parse_ini_file('../config/paramDB.ini', true); // avec sections
+        $tParam = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/config/paramDB.ini', true); // avec sections
         extract($tParam[$user_type]);
 
         $dsn = "mysql:host=" . $host . "; port=" . $port . "; dbname=" . $bdd . "; charset=utf8";
