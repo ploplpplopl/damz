@@ -13,8 +13,7 @@ $(document).ready(function () {
     $("#succes").hide();
     $("#detailPages").hide();
     $("#uploadPDF").change(function () {
-        var nomFichier = $('#uploadPDF').prop('files')[0].name;
-        var fichier = $('#uploadPDF').prop('files')[0];
+        let fichier = $('#uploadPDF').prop('files')[0];
         if (fichier != undefined) {
             var form_data = new FormData();
             form_data.append('file', fichier);
@@ -28,6 +27,7 @@ $(document).ready(function () {
                     if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
                         $("#detailPages").hide();
                         $("#succes").hide();
+						$('#loading').hide();
                         if (reponse == 'failure') {
                             alert('Le traitement du fichier à échoué');
                         } else if (reponse == 'notPDF') {
@@ -41,17 +41,18 @@ $(document).ready(function () {
                         $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
                         $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
                     } else {
+						console.log(reponse);
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
                         } else if (obj.NbPagesC == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en couleur.<br>";
                         } else {
-                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir & blanc.<br>";
+                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir et blanc.<br>";
                         }
                         $("#detailPages").show();
                         $("#succes").show().html(paragInfo);
-                        $("#nomFichier").html(nomFichier);
+                        $("#nomFichier").html(fichier.name);
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
@@ -61,7 +62,7 @@ $(document).ready(function () {
             });
             $("#erreur").hide();
         }
-    })
+    });
 
     function calculDevis() {
         $.getJSON(
@@ -78,58 +79,64 @@ $(document).ready(function () {
     }
 
     // TODO ajouter fonction pour modifier le package en fonction du docType
-    $("#dossier, #memoire, #these").on('change', function () {});
+    $("#dossier, #memoire, #these").on('change', function() {
+		
+	});
 
     $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
         calculDevis();
-    })
+    });
 
     // Prevent form validation
     $("body").keypress(function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
         }
-    })
-})
+    });
+});
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    let quantity = $("#quantity").value;
+    let quantity = $("#quantity").val();
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
-        rectoVerso = 1
+        rectoVerso = 1;
     }; // TODO verifier les valeurs de rectoVerso
     let totalNB = calculPages('NB', dataNB, quantity, rectoVerso);
     let totalC = calculPages('C', dataC, quantity, rectoVerso);
-    // let totalR = calculReliure();
-    let totalR = 0;
-    // let totalCouv = calculCouverture();
-    let totalCouv = 0;
+    let totalR = 0;//calculReliure();
+    let totalCouv = 0;//calculCouverture();
     // calculTCopies();
     let total = totalNB + totalC + totalR + totalCouv;
-    $("#total").html(total.toFixed(2));
+    $("#total").html('Total TTC&nbsp;: ' + total.toFixed(2));
     // return total;
 }
 
 // Calcule le prix des pages noir&blanc ou couleur
 function calculPages(type, data, quantity, rectoVerso) {
-    // arguments[0]
-    if (type == 'NB') {
-        var nbPages = $("#nbPagesNB").text();
-        var $zone = "#zone1";
+	let nbPages;
+	let zone;
+	let labelText;
+	
+    if (type === 'NB') {
+        nbPages = $("#nbPagesNB").text();
+        zone = "#zone1";
+        labelText = nbPages + " pages N&amp;B&nbsp;: ";
     }
-    if (type == 'C') {
-        var nbPages = $("#nbPagesC").text();
-        console.log(isNaN(nbPages));
-        var $zone = "#zone2";
+    else if (type === 'C') {
+        nbPages = $("#nbPagesC").text();
+        zone = "#zone2";
+        labelText = nbPages + " pages couleur&nbsp;: ";
     }
+	
     let total = 0;
     if (quantity < 1) {
-        quantity = 1; // TODO mettre une alerte à la place
+        quantity = 1;
+		alert('Veuillez indiquer 1 exemplaire minimum.');
     }
-    var nbTotPages = Number(nbPages) * Number(quantity);
-    console.log(Number(nbTotPages));
-    if (rectoVerso == 1) { // TODO verifier les valeurs de rectoVerso
+	
+    let nbTotPages = nbPages * quantity;
+    if (rectoVerso == 1) { // rectoVerso = 1 ou 0
         if (nbTotPages % 2 == 0) {
             nbTotPages = nbTotPages / 2;
         } else {
@@ -139,7 +146,7 @@ function calculPages(type, data, quantity, rectoVerso) {
     if (nbTotPages < 0) { // ? dans quel cas ?
         total = 0; // TODO mettre une alerte à la place
     }
-
+	
     let i = 0;
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
         i++;
@@ -147,11 +154,9 @@ function calculPages(type, data, quantity, rectoVerso) {
     // Number(parseFloat(zone1) + parseFloat(zone2)
     total = nbTotPages * data[i]["prix"];
 
-    $($zone).html(total.toFixed(2));
+    $(zone).html(labelText + total.toFixed(2));
     return total;
 }
-
-
 
 //Calcul du prix des reliures
 // function calculReliure() {
