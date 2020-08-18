@@ -18,19 +18,17 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-4 offset-md-4 form-wrapper auth">
+            <div class="col-lg-4 offset-lg-4 form-wrapper auth">
                 <h3 class="text-center form-title">Créez votre compte</h3>
-                <!-- the $errors array is displayed in this area -->
-                <?php if (count($errors) > 0) : ?>
+                <?php if (!empty($errors)) : ?>
                     <div class="alert alert-danger">
+						<ul>
                         <?php foreach ($errors as $error) : ?>
-                            <li>
-                                <?php echo $error; ?>
-                            </li>
+                            <li><?php echo $error; ?></li>
                         <?php endforeach; ?>
+						</ul>
                     </div>
                 <?php endif; ?>
-                <!-- form (with action="?php echo $_SERVER['PHP_SELF']; ?" it is very easy to inject malicious data) -->
                 <form id="signup-form" action="" method="post">
                     <div class="form-group">
                         <label for="signup-firstname">Prénom</label>
@@ -68,7 +66,7 @@
                         <span id="span-signup-passwordC"></span>
                     </div>
                     <div class="form-group">
-                        <button type="submit" id="signup-btn" name="signup-btn" class="btn btn-lg btn-block">Valider</button>
+                        <button type="submit" id="signup-btn" name="signup-btn" class="btn btn-lg btn-block">Inscription</button>
                     </div>
                 </form>
                 <p>Vous avez déjà un compte ? <a href="index.php?action=login">Login</a></p>

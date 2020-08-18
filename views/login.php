@@ -1,6 +1,6 @@
 <!-- // TODO vérifier require_once. a été mis en place car message warning: deja un start_session -->
 <!-- where the form data is being submitted to : -->
-<?php require_once 'controllers/authController.php' ?>
+<?php require_once 'controllers/authController.php'; ?>
 
 <!DOCTYPE html>
 

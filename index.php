@@ -1,6 +1,7 @@
 <?php
 
 // Imports
+require_once 'config/settings.php';
 require 'controllers/authController.php';
 require 'models/debug.php';
 
@@ -33,8 +34,6 @@ switch ($action) {
 
 	case 'login':
 		$sTitre = 'Connexion';
-		echo "SESSION: <br>";
-		print_r($_SESSION);
 		require('views/login.php');
 		break;
 		// TODO si le login foire : pas de message d'erreur : $errors
