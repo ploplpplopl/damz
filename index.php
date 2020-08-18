@@ -4,10 +4,8 @@
 require 'controllers/authController.php';
 require 'models/debug.php';
 
-
 // Initialisation des variables
-$action = 'accueil';
-//$nom = $prenom = $tel = "";
+
 $tParam = parse_ini_file("config/param.ini");
 $file = $tParam['chemin'] . $tParam['fichierClient'];
 $DEBUG = $tParam['debug'];
@@ -15,9 +13,8 @@ $DEBUG = $tParam['debug'];
 // debug($_GET, $DEBUG);
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer')) $action = 'admprint';
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'admin')) $action = 'admAccueil';  // TODO page avec lien vers admprint et admin
-if (isset($_GET['action'])) $action = $_GET['action'];
 
-
+$action = isset($_GET['action']) ? $_GET['action'] : 'accueil';
 
 // debug('action: '.$action,$DEBUG);
 // Etapes et traitements
