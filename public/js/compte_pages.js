@@ -64,7 +64,6 @@ $(document).ready(function () {
     })
 
     function calculDevis() {
-        alert("ne rentre pas dans la suite de la fonction. \ncompte_pages.js ligne 67")
         $.getJSON(
             "models/getDataPaliersNB.php",
             function (dataNB) {
@@ -95,8 +94,6 @@ $(document).ready(function () {
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    alert("coucou");
-
     let quantity = $("#quantity").value;
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
@@ -104,8 +101,10 @@ function calculs(dataNB, dataC) {
     }; // TODO verifier les valeurs de rectoVerso
     let totalNB = calculPages('NB', dataNB, quantity, rectoVerso);
     let totalC = calculPages('C', dataC, quantity, rectoVerso);
-    let totalR = calculReliure();
-    let totalCouv = calculCouverture();
+    // let totalR = calculReliure();
+    let totalR = 0;
+    // let totalCouv = calculCouverture();
+    let totalCouv = 0;
     // calculTCopies();
     let total = totalNB + totalC + totalR + totalCouv;
     $("#total").html(total.toFixed(2));
@@ -121,13 +120,15 @@ function calculPages(type, data, quantity, rectoVerso) {
     }
     if (type == 'C') {
         var nbPages = $("#nbPagesC").text();
+        console.log(isNaN(nbPages));
         var $zone = "#zone2";
     }
     let total = 0;
     if (quantity < 1) {
         quantity = 1; // TODO mettre une alerte à la place
     }
-    var nbTotPages = nbPages * quantity;
+    var nbTotPages = Number(nbPages) * Number(quantity);
+    console.log(Number(nbTotPages));
     if (rectoVerso == 1) { // TODO verifier les valeurs de rectoVerso
         if (nbTotPages % 2 == 0) {
             nbTotPages = nbTotPages / 2;
@@ -143,6 +144,7 @@ function calculPages(type, data, quantity, rectoVerso) {
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
         i++;
     }
+    // Number(parseFloat(zone1) + parseFloat(zone2)
     total = nbTotPages * data[i]["prix"];
 
     $($zone).html(total.toFixed(2));
@@ -152,104 +154,104 @@ function calculPages(type, data, quantity, rectoVerso) {
 
 
 //Calcul du prix des reliures
-function calculReliure() {
-    var ExemplaireT = window.document.getElementById("ExemplaireT").value;
-    var reliures = window.document.getElementById("reliures").value;
-    var nbcopie = window.document.getElementById("nbcopie").value;
-    var couleur1 = window.document.getElementById("couleur1").value;
-    var photocopies = window.document.getElementById("photocopies").value;
-    var totalr = 0;
+// function calculReliure() {
+//     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
+//     var reliures = window.document.getElementById("reliures").value;
+//     var nbcopie = window.document.getElementById("nbcopie").value;
+//     var couleur1 = window.document.getElementById("couleur1").value;
+//     var photocopies = window.document.getElementById("photocopies").value;
+//     var totalr = 0;
 
-    var pagesParExemplaires = parseFloat(nbcopie) + parseFloat(couleur1) + parseFloat(photocopies);
+//     var pagesParExemplaires = parseFloat(nbcopie) + parseFloat(couleur1) + parseFloat(photocopies);
 
-    //Recto verso qui divise par 2 le nombre de pages reliées
-    if (document.getElementById("rectoverso").checked == true) {
-        var pagesParExemplaires = Math.round(pagesParExemplaires / 2);
-    }
+//     //Recto verso qui divise par 2 le nombre de pages reliées
+//     if (document.getElementById("rectoverso").checked == true) {
+//         var pagesParExemplaires = Math.round(pagesParExemplaires / 2);
+//     }
 
-    //Sans reliure
-    if (reliures == 1) {
-        totalr = 0;
-    }
+//     //Sans reliure
+//     if (reliures == 1) {
+//         totalr = 0;
+//     }
 
-    //Reliures plastiques
-    else if (reliures == 2) {
-        if (ExemplaireT <= 30) {
-            if (pagesParExemplaires <= 45) {
-                totalr = ExemplaireT * 2.10;
-            } else if (pagesParExemplaires <= 95) {
-                totalr = ExemplaireT * 2.60;
-            } else if (pagesParExemplaires <= 145) {
-                totalr = ExemplaireT * 3.10;
-            } else if (pagesParExemplaires <= 240) {
-                totalr = ExemplaireT * 3.60;
-            } else if (pagesParExemplaires <= 300) {
-                totalr = ExemplaireT * 4.60;
-            } else if (pagesParExemplaires >= 301) {
-                totalr = ExemplaireT * 5.10;
-            }
-        } else if (ExemplaireT > 30) {
-            if (pagesParExemplaires <= 45) {
-                totalr = ExemplaireT * 1.90;
-            } else if (pagesParExemplaires <= 95) {
-                totalr = ExemplaireT * 2.40;
-            } else if (pagesParExemplaires <= 145) {
-                totalr = ExemplaireT * 2.90;
-            } else if (pagesParExemplaires <= 240) {
-                totalr = ExemplaireT * 3.40;
-            } else if (pagesParExemplaires <= 300) {
-                totalr = ExemplaireT * 4.40;
-            } else if (pagesParExemplaires >= 301) {
-                totalr = ExemplaireT * 4.60;
-            }
-        }
-    }
+//     //Reliures plastiques
+//     else if (reliures == 2) {
+//         if (ExemplaireT <= 30) {
+//             if (pagesParExemplaires <= 45) {
+//                 totalr = ExemplaireT * 2.10;
+//             } else if (pagesParExemplaires <= 95) {
+//                 totalr = ExemplaireT * 2.60;
+//             } else if (pagesParExemplaires <= 145) {
+//                 totalr = ExemplaireT * 3.10;
+//             } else if (pagesParExemplaires <= 240) {
+//                 totalr = ExemplaireT * 3.60;
+//             } else if (pagesParExemplaires <= 300) {
+//                 totalr = ExemplaireT * 4.60;
+//             } else if (pagesParExemplaires >= 301) {
+//                 totalr = ExemplaireT * 5.10;
+//             }
+//         } else if (ExemplaireT > 30) {
+//             if (pagesParExemplaires <= 45) {
+//                 totalr = ExemplaireT * 1.90;
+//             } else if (pagesParExemplaires <= 95) {
+//                 totalr = ExemplaireT * 2.40;
+//             } else if (pagesParExemplaires <= 145) {
+//                 totalr = ExemplaireT * 2.90;
+//             } else if (pagesParExemplaires <= 240) {
+//                 totalr = ExemplaireT * 3.40;
+//             } else if (pagesParExemplaires <= 300) {
+//                 totalr = ExemplaireT * 4.40;
+//             } else if (pagesParExemplaires >= 301) {
+//                 totalr = ExemplaireT * 4.60;
+//             }
+//         }
+//     }
 
-    //Reliures métal
-    if (reliures == 3) {
-        if (pagesParExemplaires <= 32) {
-            totalr = ExemplaireT * 3.90;
-        } else if (pagesParExemplaires <= 64) {
-            totalr = ExemplaireT * 4.40;
-        } else if (pagesParExemplaires <= 79) {
-            totalr = ExemplaireT * 4.90;
-        } else if (pagesParExemplaires <= 110) {
-            totalr = ExemplaireT * 5.40;
-        }
-    }
+//     //Reliures métal
+//     if (reliures == 3) {
+//         if (pagesParExemplaires <= 32) {
+//             totalr = ExemplaireT * 3.90;
+//         } else if (pagesParExemplaires <= 64) {
+//             totalr = ExemplaireT * 4.40;
+//         } else if (pagesParExemplaires <= 79) {
+//             totalr = ExemplaireT * 4.90;
+//         } else if (pagesParExemplaires <= 110) {
+//             totalr = ExemplaireT * 5.40;
+//         }
+//     }
 
-    //Reliures thermo
-    else if (reliures == 4) {
-        totalr = ExemplaireT * 4;
-    }
-    //Avec ou sans Rodoid
-    if (document.getElementById("rodoid").checked == true && reliures != 1 && reliures != 4) {
-        var totalr = totalr - 1.10;
-    }
-    if (document.getElementById("rodoid").checked == true && reliures == 4) {
-        var totalr = totalr - 1.00;
-    }
-    window.document.getElementById("zone4").innerHTML = totalr.toFixed(2);
-    return totalr;
-}
+//     //Reliures thermo
+//     else if (reliures == 4) {
+//         totalr = ExemplaireT * 4;
+//     }
+//     //Avec ou sans Rodoid
+//     if (document.getElementById("rodoid").checked == true && reliures != 1 && reliures != 4) {
+//         var totalr = totalr - 1.10;
+//     }
+//     if (document.getElementById("rodoid").checked == true && reliures == 4) {
+//         var totalr = totalr - 1.00;
+//     }
+//     window.document.getElementById("zone4").innerHTML = totalr.toFixed(2);
+//     return totalr;
+// }
 
 //Calcul des couvertures et quatrièmes de couverture.
-function calculCouverture() {
-    var ExemplaireT = window.document.getElementById("ExemplaireT").value;
-    var couvertures = document.getElementById("couvertures").value;
-    var prixcouv;
+// function calculCouverture() {
+//     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
+//     var couvertures = document.getElementById("couvertures").value;
+//     var prixcouv;
 
-    if (couvertures == 1) {
-        prixcouv = 0;
-    } else if (couvertures == 2) {
-        prixcouv = ExemplaireT * 0.35;
-    } else if (couvertures == 3) {
-        prixcouv = ExemplaireT * (0.35 * 2);
-    }
+//     if (couvertures == 1) {
+//         prixcouv = 0;
+//     } else if (couvertures == 2) {
+//         prixcouv = ExemplaireT * 0.35;
+//     } else if (couvertures == 3) {
+//         prixcouv = ExemplaireT * (0.35 * 2);
+//     }
 
-    window.document.getElementById("zone5").innerHTML = prixcouv.toFixed(2);
-    return prixcouv;
-}
+//     window.document.getElementById("zone5").innerHTML = prixcouv.toFixed(2);
+//     return prixcouv;
+// }
 
 /*    // Calcul autre
     function CalculAutre() {
@@ -265,12 +267,12 @@ function calculCouverture() {
 */
 
 // Calcule le prix total des copies noir&blanc, couleurs, photocopies, reliures et couvertures
-function calculTCopies() {
-    let zone1 = document.getElementById("zone1").innerHTML;
-    let zone2 = document.getElementById("zone2").innerHTML;
+// function calculTCopies() {
+//     let zone1 = document.getElementById("zone1").innerHTML;
+//     let zone2 = document.getElementById("zone2").innerHTML;
     // let zone3 = document.getElementById("zone3").innerHTML;
-    let zone4 = document.getElementById("zone4").innerHTML;
-    let zone5 = document.getElementById("zone5").innerHTML;
+    // let zone4 = document.getElementById("zone4").innerHTML;
+    // let zone5 = document.getElementById("zone5").innerHTML;
     // let zone8 = document.getElementById("zone8").innerHTML;
     // let zone9 = document.getElementById("zone9").innerHTML;
     // let zone10 = document.getElementById("zone10").innerHTML;
@@ -289,7 +291,7 @@ function calculTCopies() {
     //     }
     // }
 
-    let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
+    // let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
     // let totalY = totalZ;
 
     // window.document.getElementById("zoneTVA").innerHTML = (totalZ * TVA).toFixed(2);
@@ -306,7 +308,7 @@ function calculTCopies() {
     //     window.document.getElementById("zone6").value = (totalZ * 0.90).toFixed(2) + "€";
     //     window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ * 0.90).toFixed(2) + "€";
     // }
-}
+// }
 
 //Impression de la page
 function imprimer() {

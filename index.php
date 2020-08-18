@@ -57,14 +57,6 @@ switch ($action) {
 
 	case 'admprint':
 		$sTitre = 'À imprimer';
-		// TODO mettre ca au bon endroit (validation panier)
-		// if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
-		// 	header('location: index.php?action=login');
-		// 	// header("refresh:2;url=index.php?action=login");
-		// }
-		// echo "SESSION: <br>";
-		// print_r($_SESSION);
-		// print_r($errors);
 		if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer')) {
 			require('views/admPrint.php');
 		} else {
