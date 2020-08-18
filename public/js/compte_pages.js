@@ -13,8 +13,7 @@ $(document).ready(function () {
     $("#succes").hide();
     $("#detailPages").hide();
     $("#uploadPDF").change(function () {
-        var nomFichier = $('#uploadPDF').prop('files')[0].name;
-        var fichier = $('#uploadPDF').prop('files')[0];
+        let fichier = $('#uploadPDF').prop('files')[0];
         if (fichier != undefined) {
             var form_data = new FormData();
             form_data.append('file', fichier);
@@ -28,6 +27,7 @@ $(document).ready(function () {
                     if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
                         $("#detailPages").hide();
                         $("#succes").hide();
+						$('#loading').hide();
                         if (reponse == 'failure') {
                             alert('Le traitement du fichier à échoué');
                         } else if (reponse == 'notPDF') {
@@ -41,43 +41,30 @@ $(document).ready(function () {
                         $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
                         $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
                     } else {
+						console.log(reponse);
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
                         } else if (obj.NbPagesC == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en couleur.<br>";
                         } else {
-                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir & blanc.<br>";
+                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir et blanc.<br>";
                         }
                         $("#detailPages").show();
                         $("#succes").show().html(paragInfo);
-                        $("#nomFichier").html(nomFichier);
+                        $("#nomFichier").html(fichier.name);
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
-                        $.getJSON(
-                            "models/getDataPaliersNB.php",
-                            function (dataNB) {
-                                $.getJSON(
-                                    "models/getDataPaliersC.php",
-                                    function (dataC) {
-                                        calculs(dataNB, dataC);
-                                    }
-                                )
-                            }
-                        );
+                        calculDevis();
                     }
                 }
             });
             $("#erreur").hide();
         }
-    })
+    });
 
-    // TODO ajouter fonction pour modifier le package en fonction du docType
-    $("#dossier, #memoire, #these").on('change', function () {});
-
-
-    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
+    function calculDevis() {
         $.getJSON(
             "models/getDataPaliersNB.php",
             function (dataNB) {
@@ -89,56 +76,67 @@ $(document).ready(function () {
                 )
             }
         );
-    })
+    }
 
-    // $("#devfac").on("click", function () {
-    //     reglement();
-    // });
-    // $("#imprime").on("click", function () {
-    //     imprimer();
-    // });
+    // TODO ajouter fonction pour modifier le package en fonction du docType
+    $("#dossier, #memoire, #these").on('change', function() {
+		
+	});
+
+    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
+        calculDevis();
+    });
+
+    // Prevent form validation
     $("body").keypress(function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();
         }
-    })
-})
+    });
+});
 
 //Fonction de calcul automatique pour le calcul express
 function calculs(dataNB, dataC) {
-    console.log("coucou");
-    let quantity = $("#quantity");
+    let quantity = $("#quantity").val();
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
-        rectoVerso = 1
+        rectoVerso = 1;
     }; // TODO verifier les valeurs de rectoVerso
     let totalNB = calculPages('NB', dataNB, quantity, rectoVerso);
     let totalC = calculPages('C', dataC, quantity, rectoVerso);
-    let totalR = calculReliure();
-    let totalCouv = calculCouverture();
+    let totalR = 0;//calculReliure();
+    let totalCouv = 0;//calculCouverture();
     // calculTCopies();
     let total = totalNB + totalC + totalR + totalCouv;
-    $("#total").html(total.toFixed(2));
+    $("#total").html('Total TTC&nbsp;: ' + total.toFixed(2));
     // return total;
 }
 
 // Calcule le prix des pages noir&blanc ou couleur
 function calculPages(type, data, quantity, rectoVerso) {
-    // arguments[0]
-    if (type == 'NB') {
-        var nbPages = $("#nbPagesNB").text();
-        var $zone = "#zone1";
+	let nbPages;
+	let zone;
+	let labelText;
+	
+    if (type === 'NB') {
+        nbPages = $("#nbPagesNB").text();
+        zone = "#zone1";
+        labelText = nbPages + " pages N&amp;B&nbsp;: ";
     }
-    if (type == 'C') {
-        var nbPages = $("#nbPagesC").text();
-        var $zone = "#zone2";
+    else if (type === 'C') {
+        nbPages = $("#nbPagesC").text();
+        zone = "#zone2";
+        labelText = nbPages + " pages couleur&nbsp;: ";
     }
+	
     let total = 0;
     if (quantity < 1) {
-        quantity = 1; // TODO mettre une alerte à la place
+        quantity = 1;
+		alert('Veuillez indiquer 1 exemplaire minimum.');
     }
-    var nbTotPages = nbPages * quantity;
-    if (rectoVerso == 1) { // TODO verifier les valeurs de rectoVerso
+	
+    let nbTotPages = nbPages * quantity;
+    if (rectoVerso == 1) { // rectoVerso = 1 ou 0
         if (nbTotPages % 2 == 0) {
             nbTotPages = nbTotPages / 2;
         } else {
@@ -148,118 +146,117 @@ function calculPages(type, data, quantity, rectoVerso) {
     if (nbTotPages < 0) { // ? dans quel cas ?
         total = 0; // TODO mettre une alerte à la place
     }
-
+	
     let i = 0;
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
         i++;
     }
+    // Number(parseFloat(zone1) + parseFloat(zone2)
     total = nbTotPages * data[i]["prix"];
 
-    $($zone).html(total.toFixed(2));
+    $(zone).html(labelText + total.toFixed(2));
     return total;
 }
 
-
-
 //Calcul du prix des reliures
-function calculReliure() {
-    var ExemplaireT = window.document.getElementById("ExemplaireT").value;
-    var reliures = window.document.getElementById("reliures").value;
-    var nbcopie = window.document.getElementById("nbcopie").value;
-    var couleur1 = window.document.getElementById("couleur1").value;
-    var photocopies = window.document.getElementById("photocopies").value;
-    var totalr = 0;
+// function calculReliure() {
+//     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
+//     var reliures = window.document.getElementById("reliures").value;
+//     var nbcopie = window.document.getElementById("nbcopie").value;
+//     var couleur1 = window.document.getElementById("couleur1").value;
+//     var photocopies = window.document.getElementById("photocopies").value;
+//     var totalr = 0;
 
-    var pagesParExemplaires = parseFloat(nbcopie) + parseFloat(couleur1) + parseFloat(photocopies);
+//     var pagesParExemplaires = parseFloat(nbcopie) + parseFloat(couleur1) + parseFloat(photocopies);
 
-    //Recto verso qui divise par 2 le nombre de pages reliées
-    if (document.getElementById("rectoverso").checked == true) {
-        var pagesParExemplaires = Math.round(pagesParExemplaires / 2);
-    }
+//     //Recto verso qui divise par 2 le nombre de pages reliées
+//     if (document.getElementById("rectoverso").checked == true) {
+//         var pagesParExemplaires = Math.round(pagesParExemplaires / 2);
+//     }
 
-    //Sans reliure
-    if (reliures == 1) {
-        totalr = 0;
-    }
+//     //Sans reliure
+//     if (reliures == 1) {
+//         totalr = 0;
+//     }
 
-    //Reliures plastiques
-    else if (reliures == 2) {
-        if (ExemplaireT <= 30) {
-            if (pagesParExemplaires <= 45) {
-                totalr = ExemplaireT * 2.10;
-            } else if (pagesParExemplaires <= 95) {
-                totalr = ExemplaireT * 2.60;
-            } else if (pagesParExemplaires <= 145) {
-                totalr = ExemplaireT * 3.10;
-            } else if (pagesParExemplaires <= 240) {
-                totalr = ExemplaireT * 3.60;
-            } else if (pagesParExemplaires <= 300) {
-                totalr = ExemplaireT * 4.60;
-            } else if (pagesParExemplaires >= 301) {
-                totalr = ExemplaireT * 5.10;
-            }
-        } else if (ExemplaireT > 30) {
-            if (pagesParExemplaires <= 45) {
-                totalr = ExemplaireT * 1.90;
-            } else if (pagesParExemplaires <= 95) {
-                totalr = ExemplaireT * 2.40;
-            } else if (pagesParExemplaires <= 145) {
-                totalr = ExemplaireT * 2.90;
-            } else if (pagesParExemplaires <= 240) {
-                totalr = ExemplaireT * 3.40;
-            } else if (pagesParExemplaires <= 300) {
-                totalr = ExemplaireT * 4.40;
-            } else if (pagesParExemplaires >= 301) {
-                totalr = ExemplaireT * 4.60;
-            }
-        }
-    }
+//     //Reliures plastiques
+//     else if (reliures == 2) {
+//         if (ExemplaireT <= 30) {
+//             if (pagesParExemplaires <= 45) {
+//                 totalr = ExemplaireT * 2.10;
+//             } else if (pagesParExemplaires <= 95) {
+//                 totalr = ExemplaireT * 2.60;
+//             } else if (pagesParExemplaires <= 145) {
+//                 totalr = ExemplaireT * 3.10;
+//             } else if (pagesParExemplaires <= 240) {
+//                 totalr = ExemplaireT * 3.60;
+//             } else if (pagesParExemplaires <= 300) {
+//                 totalr = ExemplaireT * 4.60;
+//             } else if (pagesParExemplaires >= 301) {
+//                 totalr = ExemplaireT * 5.10;
+//             }
+//         } else if (ExemplaireT > 30) {
+//             if (pagesParExemplaires <= 45) {
+//                 totalr = ExemplaireT * 1.90;
+//             } else if (pagesParExemplaires <= 95) {
+//                 totalr = ExemplaireT * 2.40;
+//             } else if (pagesParExemplaires <= 145) {
+//                 totalr = ExemplaireT * 2.90;
+//             } else if (pagesParExemplaires <= 240) {
+//                 totalr = ExemplaireT * 3.40;
+//             } else if (pagesParExemplaires <= 300) {
+//                 totalr = ExemplaireT * 4.40;
+//             } else if (pagesParExemplaires >= 301) {
+//                 totalr = ExemplaireT * 4.60;
+//             }
+//         }
+//     }
 
-    //Reliures métal
-    if (reliures == 3) {
-        if (pagesParExemplaires <= 32) {
-            totalr = ExemplaireT * 3.90;
-        } else if (pagesParExemplaires <= 64) {
-            totalr = ExemplaireT * 4.40;
-        } else if (pagesParExemplaires <= 79) {
-            totalr = ExemplaireT * 4.90;
-        } else if (pagesParExemplaires <= 110) {
-            totalr = ExemplaireT * 5.40;
-        }
-    }
+//     //Reliures métal
+//     if (reliures == 3) {
+//         if (pagesParExemplaires <= 32) {
+//             totalr = ExemplaireT * 3.90;
+//         } else if (pagesParExemplaires <= 64) {
+//             totalr = ExemplaireT * 4.40;
+//         } else if (pagesParExemplaires <= 79) {
+//             totalr = ExemplaireT * 4.90;
+//         } else if (pagesParExemplaires <= 110) {
+//             totalr = ExemplaireT * 5.40;
+//         }
+//     }
 
-    //Reliures thermo
-    else if (reliures == 4) {
-        totalr = ExemplaireT * 4;
-    }
-    //Avec ou sans Rodoid
-    if (document.getElementById("rodoid").checked == true && reliures != 1 && reliures != 4) {
-        var totalr = totalr - 1.10;
-    }
-    if (document.getElementById("rodoid").checked == true && reliures == 4) {
-        var totalr = totalr - 1.00;
-    }
-    window.document.getElementById("zone4").innerHTML = totalr.toFixed(2);
-    return totalr;
-}
+//     //Reliures thermo
+//     else if (reliures == 4) {
+//         totalr = ExemplaireT * 4;
+//     }
+//     //Avec ou sans Rodoid
+//     if (document.getElementById("rodoid").checked == true && reliures != 1 && reliures != 4) {
+//         var totalr = totalr - 1.10;
+//     }
+//     if (document.getElementById("rodoid").checked == true && reliures == 4) {
+//         var totalr = totalr - 1.00;
+//     }
+//     window.document.getElementById("zone4").innerHTML = totalr.toFixed(2);
+//     return totalr;
+// }
 
 //Calcul des couvertures et quatrièmes de couverture.
-function calculCouverture() {
-    var ExemplaireT = window.document.getElementById("ExemplaireT").value;
-    var couvertures = document.getElementById("couvertures").value;
-    var prixcouv;
+// function calculCouverture() {
+//     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
+//     var couvertures = document.getElementById("couvertures").value;
+//     var prixcouv;
 
-    if (couvertures == 1) {
-        prixcouv = 0;
-    } else if (couvertures == 2) {
-        prixcouv = ExemplaireT * 0.35;
-    } else if (couvertures == 3) {
-        prixcouv = ExemplaireT * (0.35 * 2);
-    }
+//     if (couvertures == 1) {
+//         prixcouv = 0;
+//     } else if (couvertures == 2) {
+//         prixcouv = ExemplaireT * 0.35;
+//     } else if (couvertures == 3) {
+//         prixcouv = ExemplaireT * (0.35 * 2);
+//     }
 
-    window.document.getElementById("zone5").innerHTML = prixcouv.toFixed(2);
-    return prixcouv;
-}
+//     window.document.getElementById("zone5").innerHTML = prixcouv.toFixed(2);
+//     return prixcouv;
+// }
 
 /*    // Calcul autre
     function CalculAutre() {
@@ -275,12 +272,12 @@ function calculCouverture() {
 */
 
 // Calcule le prix total des copies noir&blanc, couleurs, photocopies, reliures et couvertures
-function calculTCopies() {
-    let zone1 = document.getElementById("zone1").innerHTML;
-    let zone2 = document.getElementById("zone2").innerHTML;
+// function calculTCopies() {
+//     let zone1 = document.getElementById("zone1").innerHTML;
+//     let zone2 = document.getElementById("zone2").innerHTML;
     // let zone3 = document.getElementById("zone3").innerHTML;
-    let zone4 = document.getElementById("zone4").innerHTML;
-    let zone5 = document.getElementById("zone5").innerHTML;
+    // let zone4 = document.getElementById("zone4").innerHTML;
+    // let zone5 = document.getElementById("zone5").innerHTML;
     // let zone8 = document.getElementById("zone8").innerHTML;
     // let zone9 = document.getElementById("zone9").innerHTML;
     // let zone10 = document.getElementById("zone10").innerHTML;
@@ -299,7 +296,7 @@ function calculTCopies() {
     //     }
     // }
 
-    let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
+    // let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
     // let totalY = totalZ;
 
     // window.document.getElementById("zoneTVA").innerHTML = (totalZ * TVA).toFixed(2);
@@ -316,7 +313,7 @@ function calculTCopies() {
     //     window.document.getElementById("zone6").value = (totalZ * 0.90).toFixed(2) + "€";
     //     window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ * 0.90).toFixed(2) + "€";
     // }
-}
+// }
 
 //Impression de la page
 function imprimer() {

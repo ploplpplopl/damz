@@ -121,13 +121,13 @@ require('views/head.php');
                         </label></div>
                 </div>
                 <!-- Couleur reliure -->
-                <div class="couleurReliure" id="radios">
+                <div class="couleurReliure" id="radiosCouleur">
                     <p>Couleur de la reliure :<br /></p>
-                    <!-- <div class="radio-couleur" id="btnReliureNoire"> -->
+                    <!-- <div class="radioCouleur" id="btnReliureNoire"> -->
                     <label for="reliureNoire">Noire</label>
                     <input type="radio" id="reliureNoire" name="btnCoulReliure" value="reliureNoire">
                     <!-- </div> -->
-                    <!-- <div class="radio-couleur" id="btnReliureBlanche"> -->
+                    <!-- <div class="radioCouleur" id="btnReliureBlanche"> -->
                     <label for="reliureBlanche">Blanche</label>
                     <input type="radio" id="reliureBlanche" name="btnCoulReliure" value="reliureBlanche">
                     <!-- </div> -->
@@ -219,7 +219,7 @@ require('views/head.php');
         <fieldset>
             <!-- devis -->
             <p>devis</p>
-
+<!-- TODO créer des div automatiquement en fonction des variables $zone existantes -->
             <div id="zone1"></div>
             <div id="zone2"></div>
             <div id="zone3"></div>
@@ -232,6 +232,7 @@ require('views/head.php');
             <div id="zone10"></div>
             <div id="zone11"></div>
             <div id="zone12"></div>
+            <div id="total"></div>
         </fieldset>
 
         <!-- bouton valider -->
