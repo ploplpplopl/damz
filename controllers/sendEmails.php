@@ -63,6 +63,7 @@ function sendVerificationEmail($userEmail, $token)
 */
 
 function sendMail($template, $templateVars, $subject, $to, $from = NULL, $replyTo = null) {
+	global $settings;
 	$transport = (new Swift_SmtpTransport($settings['smtp'], $settings['port'], $settings['ssl']))
 		->setUsername($settings['mail-username'])
 		->setPassword($settings['mail-password']);
@@ -83,6 +84,7 @@ function sendMail($template, $templateVars, $subject, $to, $from = NULL, $replyT
 }
 
 function getMailContent($template, $templateVars){
+	global $settings;
 	if (!array_key_exists('{site_name}', $templateVars))
 		$templateVars['{site_name}'] = $settings['site_name'];
 	if (!array_key_exists('{site_url}', $templateVars))

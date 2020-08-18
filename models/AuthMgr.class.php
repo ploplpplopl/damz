@@ -96,34 +96,22 @@ class AuthMgr
 
             if (!$result) {
 				$success = false;
-                $_SESSION['error_msg'] = 'L\'enregistrement de l\'utilisateur a échoué';
-                $_SESSION['type'] = "alert-danger";
             }
 			else {
                 $success = true;
                 $userId = $dbh->lastInsertId();
                 // storing the user's data in the session generates his connection
-                /*
-				$_SESSION['id'] = $userId;
-                $_SESSION['firstname'] = $firstname;
-                $_SESSION['lastname'] = $lastname;
-                $_SESSION['email'] = $email;
-                $_SESSION['phone'] = $phone;
-                $_SESSION['pseudo'] = $pseudo;
-				*/
 				$_SESSION['user'] = [
-					'id' => $userId,
-					'firstname' => $firstname,
-					'lastname' => $lastname,
+					'id_user' => $userId,
+					'first_name' => $firstname,
+					'last_name' => $lastname,
 					'email' => $email,
 					'phone' => $phone,
 					'pseudo' => $pseudo,
+					'user_type' => 'user',
+					'secure_key' => $token,
+					'subscr_confirmed' => 0,
 				];
-				
-                $_SESSION['usertype'] = 'user';
-                $_SESSION['verified'] = false;
-                $_SESSION['message'] = 'Votre inscription est presque effectuée, veuillez vérifier vos e-mails pour confirmer votre inscription';
-                $_SESSION['type'] = 'alert-success';
             }
             // fermeture de la connexion
             DbConnection::disconnect();
@@ -150,34 +138,16 @@ class AuthMgr
         $stmt->bindParam(1, $pseudo, PDO::PARAM_STR);
         $stmt->bindParam(2, $pseudo, PDO::PARAM_STR);
 
-        if (!$stmt->execute()) {
-            $_SESSION['message'] = "Database error. Login failed!";
-            $_SESSION['type'] = "alert-danger";
-        } else {
+		$success = false;
+        if ($stmt->execute()) {
             $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
-var_dump($tUser);
-var_dump($password);
-var_dump($tUser['password']);
-var_dump(password_verify($password, $tUser['password']));
-exit;
-
-            $success = false;
-            if ($tUser) {
-                if (password_verify($password, $tUser['password'])) { // if password matches
-                    $success = true;
-                    // storing the user's data in the session generates his connection
-                    $_SESSION['id'] = $tUser['id_user'];
-                    $_SESSION['pseudo'] = $tUser['pseudo'];
-                    $_SESSION['email'] = $tUser['email'];
-                    $_SESSION['usertype'] = $tUser['user_type'];
-                    $_SESSION['verified'] = $tUser['subscr_confirmed'];
-                    $_SESSION['message'] = 'You are logged in!';
-                    $_SESSION['type'] = 'alert-success';
-                }
+            
+            if ($tUser && password_verify($password, $tUser['password'])) {
+                $success = true;
             }
         }
-        // fermeture de la connexion
+		
         DbConnection::disconnect();
         return $success;
     }
@@ -190,12 +160,7 @@ exit;
      */
     public static function disconnectUser()
     {
-        // session_start();
-        unset($_SESSION['id']);  // variable utilisée pour verif connexion
-        unset($_SESSION['pseudo']);
-        unset($_SESSION['email']);
-        unset($_SESSION['verify']);
-        unset($_SESSION['usertype']);
+        unset($_SESSION['user']);
         $_SESSION = array(); // Détruit toutes les variables de session
         session_unset(); // obsolete
         session_destroy();

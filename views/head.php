@@ -23,9 +23,9 @@
                 </div>
             </a>
             <?php 
-            if (!empty($_SESSION['id'])){
+            if (!empty($_SESSION['user']['id_user'])){
                 echo '<a href="index.php?action=logout">--logout--</a><br>';
-                echo "pseudo : " . $_SESSION['pseudo'];
+                echo "pseudo : " . $_SESSION['user']['pseudo'];
             } else {
                 echo '<a href="index.php?action=login">--login--</a>';
             }

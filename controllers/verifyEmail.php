@@ -1,16 +1,16 @@
 <?php
-// session_start();
+
 require_once 'models/AuthMgr.class.php';
 
-if (isset($_GET['token'])) {
-    $token = $_GET['token'];
-    $result = AuthMgr::verifyEmail($token);  // TODO mettre un try catch
-
-    if ($result) {
-            header('location: index.php');
-    } else {
-        echo "User not found!";
+if (!isset($_GET['token'])) {
+    echo 'No token provided!';
+}
+else {
+    if (!AuthMgr::verifyEmail($_GET['token'])) {
+        echo 'User not found!';
     }
-} else {
-    echo "No token provided!";
+	else {
+        header('location: index.php');
+		exit;
+    }
 }
