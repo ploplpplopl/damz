@@ -4,38 +4,20 @@ require('views/head.php');
 
 <div class="row">
 
-    <!-- à modifier -->
     <div class="col-md-4 offset-md-4 home-wrapper">
         <!-- Display messages -->
-        <?php
-        if (!empty($_SESSION['id'])) {
-            if (isset($_SESSION['message'])) : ?>
-                <div class="alert <?php echo $_SESSION['type'] ?>">
-                    <?php
-                    echo $_SESSION['message'] . '<br>';
-                    unset($_SESSION['message']);
-                    unset($_SESSION['type']);
-                    // echo "SESSION: <br>";
-                    // print_r($_SESSION);
-                    ?>
-                </div>
-            <?php endif; ?>
-
-            <h4>pseudo : <?php echo $_SESSION['pseudo']; ?></h4>
-            <a href="index.php?action=logout" style="color: red">Logout</a>
-
-            <?php if (!$_SESSION['verified']) : ?>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    You need to verify your email address!
-                    Sign into your email account and click
-                    on the verification link we just emailed you
-                    at
-                    <strong><?php echo $_SESSION['email']; ?></strong>
-                </div>
-            <?php else : ?>
-                <button class="btn btn-lg btn-primary btn-block">I'm verified!!!</button>
-        <?php endif;
-        } ?>
+		<?php echo displayMessage($errors); ?>
+		
+		<?php if (empty($_SESSION['user']['subsc_confirmed'])) : ?>
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				You need to verify your email address!
+				Sign into your email account and click
+				on the verification link we just emailed you
+				at <strong><?php echo $_SESSION['user']['email']; ?></strong>
+			</div>
+		<?php else : ?>
+			<button class="btn btn-lg btn-primary btn-block">I'm verified!!!</button>
+		<?php endif; ?>
     </div>
     <!-- fin à modifier -->
 
@@ -53,7 +35,7 @@ require('views/head.php');
             <p id="succes"></p>
             <ul id="detailPages">
                 <li>Nom du fichier : <b><span id="nomFichier"></span></b></li>
-                <li>Pages en Noir & Blanc : <b><span id="nbPagesNB"></span></b></li>
+                <li>Pages en Noir &amp; Blanc : <b><span id="nbPagesNB"></span></b></li>
                 <li>Pages en Couleur : <b><span id="nbPagesC"></span></b></li>
                 <li>Total des pages : <b><span id="nbPages"></span></b></li>
             </ul>

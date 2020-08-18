@@ -1,14 +1,26 @@
-<!DOCTYPE html>
 <html lang="fr">
 <body>
-	<div style="padding:20px; color:#444; font-size:1.3em;">
-		<div style="background:#444; color:#fff;">
-			<a href="{site_url}">{site_name}</a>
+	<div style="padding:20px; color:#444;">
+		<div id="header" style="background:#444; color:#fff; margin:0 0 20px; padding:20px; font-size:1.3em;">
+			<a href="{site_url}" style="color:#fff; text-decoration:none;">{site_name}</a>
 		</div>
 		
-		<p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription.</p>
-		<p><a href="http://localhost/index.php?action=verifyUser&amp;token={token}">Je confirme mon inscription</a></p>
-
+		
+		
+		
+		
+		<div id="content" style="font-size:16px;">
+			<p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription.</p>
+			<p><a href="http://localhost/index.php?action=verifyUser&amp;token={token}">Je confirme mon inscription</a></p>
+		</div>
+		
+		
+		
+		
+		
+		<div id="footer" style="font-size:0.875em;">
+			<p><a href="{site_url}" style="text-decoration:none;">{site_name}</a></p>
+		</div>
 	</div>
 </body>
 </html>

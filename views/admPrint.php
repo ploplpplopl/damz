@@ -1,5 +1,5 @@
 <?php
-// session_start(); 
+
 if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
     header('location: index.php?action=login');
     // header("refresh:2;url=index.php?action=login");
@@ -24,7 +24,7 @@ if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer' || $_SESSION
 
             <!-- <h4>Welcome, <?php echo $_SESSION['pseudo']; ?></h4> -->
             <!-- <a href="index.php?action=logout" style="color: red">Logout</a> -->
-            <?php if (!$_SESSION['verified']) : ?>
+            <?php if (!$_SESSION['user']['subsc_confirmed']) : ?>
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     You need to verify your email address!
                     Sign into your email account and click
