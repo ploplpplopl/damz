@@ -151,9 +151,9 @@ class AuthMgr
      * Send an email to set a new password
      * 
      * @param string $email
-     * @return bool
+     * @return array|FALSE
      */
-    public static function forgotPassword(string $email): bool
+    public static function forgotPassword(string $email)
     {
         $dbh = DbConnection::getConnection('administrateur');
         $query = "SELECT * FROM user WHERE email=? LIMIT 1";
@@ -166,12 +166,54 @@ class AuthMgr
             $stmt->closeCursor();
 			
 			if (!empty($tUser)) {
-				$success = TRUE;
+				$success = $tUser;
 			}
         }
 		
         DbConnection::disconnect();
         return $success;
+    }
+	
+    /**
+     * Reset a new password
+     * 
+     * @param string $password
+     * @return string
+     */
+    public static function resetPassword(string $password, string $token, string $email): string
+    {
+		// Récupération de l'utilisateur.
+        $dbh = DbConnection::getConnection('administrateur');
+        $query = "SELECT * FROM user WHERE email=? AND secure_key=? LIMIT 1";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(1, $email, PDO::PARAM_STR);
+        $stmt->bindParam(2, $token, PDO::PARAM_STR);
+
+		$output = 'db_connection_failed';
+        if ($stmt->execute()) {
+            $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+			
+			if (empty($tUser)) {
+				$output = 'user_not_found';
+			}
+			else {
+				// Modification du mot de passe.
+				$dbh = DbConnection::getConnection('administrateur');
+				$query = "UPDATE user SET password = :password WHERE email = :email AND secure_key = :token";
+				$stmt = $dbh->prepare($query);
+				$password = password_hash($password, PASSWORD_DEFAULT);
+				$stmt->bindParam(':password', $password, PDO::PARAM_STR);
+				$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+				$stmt->bindParam(':token', $token, PDO::PARAM_STR);
+				if ($stmt->execute()) {
+					$stmt->closeCursor();
+					$output = 'password_updated';
+				}
+			}
+        }
+        DbConnection::disconnect();
+        return $output;
     }
 
     /**

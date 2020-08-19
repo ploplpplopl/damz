@@ -38,12 +38,12 @@ switch ($action) {
 
 	case 'forgotPassword':
 		$sTitre = 'Mot de passe oublié';
-		require('views/forgot-password.php');
+		require('views/forgotPassword.php');
 		break;
 
 	case 'resetPassword':
 		$sTitre = 'Réinitialisation de mon mot de passe';
-		require('views/reset-password.php');
+		require('views/resetPassword.php');
 		break;
 
 	case 'logout':

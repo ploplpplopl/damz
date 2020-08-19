@@ -21,23 +21,24 @@ require_once 'controllers/authController.php';
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 form-wrapper auth login">
-                <h3 class="text-center form-title">Connexion</h3>
+                <h3 class="text-center form-title">Réinitialisation de mot de passe</h3>
                 <?php echo displayMessage($errors); ?>
 				<form action="" method="post">
                     <div class="form-group">
-                        <label>Pseudo ou adresse e-mail</label>
-                        <input type="text" name="pseudo" class="form-control form-control-lg" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required>
+                        <label for="signup-password">Mot de passe</label>
+                        <input type="password" id="signup-password" name="password" class="form-control form-control-lg" required="required" />
+                        <span id="span-signup-password"></span>
                     </div>
                     <div class="form-group">
-                        <label>Mot de passe</label>
-                        <input type="password" name="password" class="form-control form-control-lg" required>
-						<p class="text-right"><a href="/index.php?action=forgotPassword">Mot de passe oublié&nbsp;?</a></p>
+                        <label for="signup-passwordC">Confirmation du mot de passe</label>
+                        <input type="password" id="signup-passwordC" name="passwordConf" class="form-control form-control-lg" required="required" />
+                        <span id="span-signup-passwordC"></span>
                     </div>
                     <div class="form-group">
-                        <button type="submit" name="login-btn" class="btn btn-lg btn-block">Connexion</button>
+                        <button type="submit" name="reset-password-btn" class="btn btn-lg btn-block">Réinitialiser</button>
                     </div>
                 </form>
-                <p>Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
+                <p><a href="index.php?action=login">Connexion</a>&nbsp;- <a href="/index.php?action=signup">Inscription</a></p>
             </div>
         </div>
 

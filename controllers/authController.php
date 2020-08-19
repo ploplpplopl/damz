@@ -161,21 +161,64 @@ if (isset($_POST['forgot-password-btn'])) {
 		else {
 			$emailSent = sendMail('forgot-password.html', [
 				'{site_url}' => $settings['site_url'],
+				'{token}' => $checkAuth['secure_key'],
+				'{email}' => $_POST['email'],
 			], 'Récupération de mot de passe sur ' . $settings['site_name'], $_POST['email']);
 			
             if (!$emailSent) {
                 $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';
-				
-                header('location: index.php?action=forgotPassword');
-				exit;
             }
 			else {
-				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé';
-
-                header('location: index.php?action=forgotPassword');
-				exit;
+				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé. Cliquez dessus pour réinitialiser votre mot de passe.';
             }
+			header('location: index.php?action=forgotPassword');
+			exit;
         }
+    }
+}
+
+// --------------- RESET PASSWORD ---------------
+if (isset($_POST['reset-password-btn'])) {
+	$password = trim($_POST['password']);
+	$passwordConf = trim($_POST['passwordConf']);
+	
+	$pwLength = mb_strlen($password) >= 8;
+	$pwLowercase = preg_match('/[a-z]/', $password);
+	$pwUppercase = preg_match('/[A-Z]/', $password);
+	$pwNumber = preg_match('/[0-9]/', $password);
+	$pwSpecialchar = preg_match('/[' . preg_quote('-_"%\'*;<>?^`{|}~/\\#=&', '/') . ']/', $password);
+	
+    if (empty($password)) {
+        $errors[] = 'Mot de passe requis';
+    }
+    elseif (!$pwLength || !$pwLowercase || !$pwUppercase || !$pwNumber || !$pwSpecialchar) {
+        $errors[] = 'Le mot de passe ne satisfait pas les conditions (8 caractères et AU MOINS 1 minuscule, 1 majuscule, 1 chiffre, 1 caractère spécial)';
+    }
+    elseif (empty($passwordConf)) {
+        $errors[] = 'Confirmation du mot de passe requise';
+    }
+    elseif (strcmp($password, $passwordConf) !== 0) {
+        $errors[] = 'Les mots de passe ne correspondent pas';
+    }
+
+    if (empty($errors)) {
+		$checkAuth = AuthMgr::resetPassword($password, $_GET['token'], $_GET['email']);
+		
+		switch ($checkAuth) {
+			case 'db_connection_failed':
+				$errors[] = 'La connexion a échoué, veuillez réessayer ultérieurement';
+				break;
+				
+			case 'user_not_found':
+				$errors[] = 'L\'utilisateur est introuvable, veuillez vérifier le lien contenu dans l\'e-mail de récupération de mot de passe';
+				break;
+				
+			case 'password_updated':
+				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
+				header('location: index.php?action=login');
+				exit;
+				break;
+		}
     }
 }
 
