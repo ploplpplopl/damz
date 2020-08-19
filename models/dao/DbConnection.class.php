@@ -8,7 +8,6 @@ class DbConnection
 
     // Pas de constructeur explicite
 
-
     // fonction de connexion à la BDD
     private static function connect(string $user_type)
     {
@@ -38,7 +37,6 @@ class DbConnection
         self::$connection = null;
     }
 
-
     // Pattern singleton
     public static function getConnection(string $user_type)
     {
@@ -48,4 +46,5 @@ class DbConnection
             return self::connect($user_type);
         }
     }
+	
 }

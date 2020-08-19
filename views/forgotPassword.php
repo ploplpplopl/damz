@@ -21,23 +21,18 @@ require_once 'controllers/authController.php';
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 form-wrapper auth login">
-                <h3 class="text-center form-title">Connexion</h3>
+                <h3 class="text-center form-title">Récupération de mot de passe</h3>
                 <?php echo displayMessage($errors); ?>
 				<form action="" method="post">
                     <div class="form-group">
-                        <label>Pseudo ou adresse e-mail</label>
-                        <input type="text" name="pseudo" class="form-control form-control-lg" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required>
+                        <label>Adresse e-mail</label>
+                        <input type="email" name="email" class="form-control form-control-lg" value="<?php echo htmlentities($email, ENT_QUOTES); ?>"  required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
                     </div>
                     <div class="form-group">
-                        <label>Mot de passe</label>
-                        <input type="password" name="password" class="form-control form-control-lg" required>
-						<p class="text-right"><a href="/index.php?action=forgotPassword">Mot de passe oublié&nbsp;?</a></p>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="login-btn" class="btn btn-lg btn-block">Connexion</button>
+                        <button type="submit" name="forgot-password-btn" class="btn btn-lg btn-block">Valider</button>
                     </div>
                 </form>
-                <p>Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
+                <p><a href="index.php?action=login">Connexion</a>&nbsp;- <a href="/index.php?action=signup">Inscription</a></p>
             </div>
         </div>
     </div>
