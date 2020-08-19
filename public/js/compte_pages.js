@@ -1,16 +1,8 @@
-$(document).ajaxStart(function () {
-    $('#loading').show();
-    $('#succes').hide();
-});
-
-$(document).ajaxStop(function () {
-    $('#loading').hide();
-});
 
 // Observateurs d'evenements jQuery pour la calculette : les $.getJSON() vont chercher les pages getDataPaliers, et récupère les données de paliers pour les transmettre aux fonctions de calcul
-$(document).ready(function () {
+$(function () {
     $('#loading').hide();
-    $("#succes").hide();
+    $("#file_description").hide();
     $("#detailPages").hide();
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
@@ -26,7 +18,7 @@ $(document).ready(function () {
                 success: function (reponse) {
                     if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
                         $("#detailPages").hide();
-                        $("#succes").hide();
+                        $("#file_description").hide();
 						$('#loading').hide();
                         if (reponse == 'failure') {
                             alert('Le traitement du fichier à échoué');
@@ -41,7 +33,7 @@ $(document).ready(function () {
                         $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
                         $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
                     } else {
-						console.log(reponse);
+						//console.log(reponse);
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
@@ -51,16 +43,23 @@ $(document).ready(function () {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir et blanc.<br>";
                         }
                         $("#detailPages").show();
-                        $("#succes").show().html(paragInfo);
+                        $("#file_description").show().html(paragInfo);
                         $("#nomFichier").html(fichier.name);
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         calculDevis();
                     }
-                }
+                },
+                beforeSend: function() {
+					$('#loading').show();
+					$('#file_description').hide();
+				},
+                complete: function() {
+					$('#loading').hide();
+				}
             });
-            $("#erreur").hide();
+            //$("#erreur").hide();
         }
     });
 
@@ -78,9 +77,20 @@ $(document).ready(function () {
         );
     }
 
-    // TODO ajouter fonction pour modifier le package en fonction du docType
-    $("#dossier, #memoire, #these").on('change', function() {
-		
+    $("#dossier, #memoire").on('click', function() {
+		$('#btnFTCouv').prop('checked', true).prop('disabled', true);
+		$('#btnFTDos').prop('checked', true).prop('disabled', true);
+		$('#btnFCCouv').prop('checked', false).prop('disabled', false);
+		$('#btnFCDos').prop('checked', false).prop('disabled', false);
+		$('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+	});
+    $("#these").on('click', function() {
+		$('#btnFTCouv').prop('checked', false).prop('disabled', false);
+		$('#btnFTDos').prop('checked', false).prop('disabled', false);
+		$('#btnFCCouv').prop('checked', true).prop('disabled', true);
+		$('#btnFCDos').prop('checked', true).prop('disabled', true);
+		$('#thermo').prop('checked', true).prop('disabled', true);
+		$('#spiplast, #spimetal').prop('checked', false).prop('disabled', true);
 	});
 
     $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {

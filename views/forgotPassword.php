@@ -35,7 +35,6 @@ require_once 'controllers/authController.php';
                 <p><a href="index.php?action=login">Connexion</a>&nbsp;- <a href="/index.php?action=signup">Inscription</a></p>
             </div>
         </div>
-
     </div>
 </body>
 

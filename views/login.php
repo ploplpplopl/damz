@@ -40,7 +40,6 @@ require_once 'controllers/authController.php';
                 <p>Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
             </div>
         </div>
-
     </div>
 </body>
 

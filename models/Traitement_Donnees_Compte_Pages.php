@@ -1,5 +1,6 @@
 <?php
 
+sleep(1);
 print_r(json_encode([
 	'NbPages' => 34,
 	'NbPagesC' => 3,

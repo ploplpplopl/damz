@@ -1,6 +1,6 @@
 <?php
 
-function debug($chaine,$bool) {
+function debug($chaine, $bool) {
 	if ($bool) {
 		if (is_array($chaine)) {
 			echo "\n<pre>"; 
@@ -12,6 +12,21 @@ function debug($chaine,$bool) {
 	}
 }
 
+// Raccourci de var_dump() + ajout de tags <pre>
+function vd() {
+	echo '<pre>'; 
+	foreach (func_get_args() as $arg) {
+		var_dump($arg);
+	}
+	echo '</pre>';
+}
+
+/**
+ * Affichage des messages utilisateur.
+ *
+ * @param array $errors Tableau d'erreurs ajoutées aux erreurs en session.
+ * @return string Le markup des messages.
+ */
 function displayMessage($errors = NULL) {
 	$messageTypes = [
 		'status' => 'alert alert-success',

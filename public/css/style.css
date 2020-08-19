@@ -32,18 +32,8 @@ header .bandeau {
     text-align: center;
 }
 
-/* .row::after {
-    content: "";
-    clear: both;
-    display: table;
-} */
 
-.row {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.content {
+.wrapper {
     display: flex;
     flex-direction: column;
     max-width: 900px;
@@ -53,392 +43,41 @@ header .bandeau {
     overflow-wrap: break-word;
 }
 
-/* .row {
-    flex-basis: 50px;
-} */
-
 fieldset {
+    margin: 20px 0;
     padding: 20px;
     border: 1px solid blue;
-    margin-top: 20px;
-    margin-bottom: 20px;
     border-radius: 10px;
 }
+legend {
+	display: inline;
+	width: auto;
+	padding: 0 10px;
+}
+.legend{
+	font-weight: bold;
+	font-size: 1.125em;
+}
+label{cursor: pointer;}
+
+.smaller {font-size: .875em;}
+.mt-20 {margin-top: 20px;}
+.custom-file-input:lang(fr)~.custom-file-label::after{content:"Parcourir"}
+
+
 
 #uploadPDF {
     cursor: pointer;
 }
 
-.conteneurDocType {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    /* justify-content: space-between; */
-    /* justify-content: space-evenly; */
-    /* border: 3px solid blue; */
-    margin: 0em;
-}
-
-/* type de doc (btn radio) : dossier, mémoire, thèse */
-/* *[class^="docType"] { */
-.docType {
-    display: flex;
-    flex-direction: column;
-    /* flex: 1 1 0; */
-    border: 1px solid blue;
-    border-radius: 10px;
-    margin: 10px;
-    text-align: justify;
-    max-height: 17em;
-    min-height: 17em;
-    min-width: 17em;
-    max-width: 17em;
-}
-
-.topBarDocType {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    margin: 0em;
-    padding: 0em;
-    padding-left: 1em;
-    background-color: white;
-    border-radius: 10px 10px 0 0;
-}
-
-.docType input {
-    margin: 0em;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    cursor: pointer;
-}
-
-.docType label {
-    position: sticky;
-    top: 0;
-    padding: 14px;
-    cursor: pointer;
-    flex-grow: 10;
-}
-
-.bottomDocType {
-    background-color: rgb(231, 239, 252);
-    border-radius: 0 0 10px 10px;
-    flex-grow: 10;
-    overflow: auto;
-}
-
-.bottomDocType p {
-    padding-right: .3em;
-    padding-left: .3em;
-}
-
-.conteneurReliure {
-    margin: 0;
-    padding: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    border: 3px solid rgb(51, 255, 0);
-}
-
-.conteneurReliure p {
-    margin: 0px;
-}
-
-.boutonsReliure {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    /* border: 3px solid rgb(255, 238, 0); */
-    margin: 0em;
-}
-
-.boutonReliure {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid #D0D0D0;
-}
-
-.boutonReliure input[type="radio"] {
-    /* display: none; */
-    /* transform: scale(0, 0); */
-    width: 0px;
-}
-
-.boutonReliure:hover {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid rgb(0, 140, 255);
-    color: rgb(0, 140, 255);
-}
-
-.boutonReliure label {
-    cursor: pointer;
-    float: left;
-    width: 13em;
-}
-
-.boutonReliure label span {
-    text-align: center;
-    padding: 3px 0px;
-    display: block;
-}
-
-.boutonReliure input:checked+span {
-    background-color: rgb(110, 110, 110);
-    color: #fff;
-    border-radius: 4px;
-
-}
-
-#radiosCouleur {
-    position: relative;
-    width: 50%;
-}
-
-.couleurReliure input[type="radio"] {
-    position: absolute;
-    right: 1000%;
-}
-
-.couleurReliure label {
-    float: left;
-    width: 15%;
-    padding-bottom: 15%;
-    margin: 0 2.5%;
-    background: rgba(26, 156, 76, 0.2);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-#slider {
-    position: absolute;
-    left: 0%;
-    top: 0;
-    width: 10%;
-    padding-bottom: 10%;
-    margin: 2.5% 0 0 5%;
-    background: rgb(143, 51, 51);
-    transition: transform 1s;
-    border-radius: 50%;
-    animation-timing-function: ease-in-out;
-    animation-duration: .3s;
-    animation-fill-mode: forwards;
-    transition: 0.2s left .05s ease-in-out;
-}
-
-#reliureNoire:checked~#slider {
-    animation-name: reliureNoire;
-    left: 0;
-}
-
-#reliureBlanche:checked~#slider {
-    animation-name: reliureBlanche;
-    left: 20%;
-}
-
-
-@keyframes reliureNoire {
-
-    30%,
-    70% {
-        transform: scale(0.5);
-    }
-}
-
-@keyframes reliureBlanche {
-
-    30%,
-    70% {
-        transform: scale(0.5);
-    }
-}
 
 
 
-.couleurReliure {
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; */
-    /* border: 1px solid rgb(255, 0, 0); */
-    margin-top: 20px;
-}
-
-/*
-.radioCouleur {
-    display: inline-block;
-    position: relative;
-
-}
-
-.radioCouleur input[type='radio'] {
-    display: none;
-    top: 0px;
-}
-
-.radioCouleur label {
-    /* color: rgb(22, 216, 54); */
-/*
-    font-weight: normal;
-
-}
-
-#btnReliureBlanche label:before {
-    content: " ";
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    margin: 0 5px 0 20px;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 5px double rgb(0, 0, 0);
-    background-color: transparent;
-}
-
-#btnReliureNoire label:before {
-    content: " ";
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    margin: 0 5px 0 20px;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 5px solid rgb(0, 0, 0);
-    background-color: transparent;
-}
-
-.radioCouleur input[type=radio]:checked+label:after {
-    border-radius: 11px;
-    margin-left: 20px;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    top: 5px;
-    left: 0px;
-    content: " ";
-    display: block;
-    background: #00000000;
-    box-shadow: 0px 0px 10px 1px  rgb(53, 53, 53);
-}
- */
-
-/* ----- COUVERTURE ----- */
-.conteneurCouverture {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    /* justify-content: space-between; */
-    /* justify-content: space-evenly; */
-    border: 3px solid blue;
-    margin: 0em;
-}
-
-.boutonFT {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid #D0D0D0;
-}
-
-.boutonFT input[type="checkbox"] {
-    display: none;
-    /* transform: scale(0, 0); */
-    width: 0px;
-}
-
-.boutonFT:hover {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid rgb(0, 140, 255);
-    color: rgb(0, 140, 255);
-}
-
-.boutonFT label {
-    cursor: pointer;
-    float: left;
-    width: 13em;
-}
-
-.boutonFT label span {
-    text-align: center;
-    padding: 3px 0px;
-    display: block;
-}
-
-.boutonFT input:checked+span {
-    background-color: rgb(110, 110, 110);
-    color: #fff;
-    border-radius: 4px;
-
-}
-
-.FCCouv {
-    border: 1px solid rgb(189, 20, 20);
-    /* width: 50%; */
-    display: flex;
-    flex-direction: column;
-}
-
-.FCCouv .boutonFC {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid #D0D0D0;
-}
-
-.FCCouv .boutonFC label input[type="checkbox"] {
-    display: none;
-    /* transform: scale(0, 0); */
-    width: 0px;
-}
-
-.FCCouv .boutonFC label:hover {
-    margin: 4px;
-    background-color: #EFEFEF;
-    border-radius: 4px;
-    border: 1px solid rgb(0, 140, 255);
-    color: rgb(0, 140, 255);
-}
-
-.FCCouv .boutonFC label {
-    cursor: pointer;
-    float: left;
-    width: 200px;
-    height: 30px;
-}
-
-.FCCouv .boutonFC label span {
-    text-align: center;
-    padding: 3px 0px;
-    display: block;
-}
-
-.FCCouv .boutonFC label input:checked+span {
-    background-color: rgb(110, 110, 110);
-    color: #fff;
-    border-radius: 4px;
-
-}
-
-/* ------ DOS ------ */
-
-
-/* ------ OPTIONS ------ */
-.options {
-    display: flex;
-}
-
-/* ------ DEVIS ------ */
 
 
 /* ------ FOOTER ------ */
 footer {
+    margin: 50px 0 0;
     padding: 20px;
     background-color: rgb(8, 113, 145);
     color: white;
@@ -541,7 +180,6 @@ footer>p {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
