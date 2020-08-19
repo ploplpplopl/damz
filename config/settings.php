@@ -1,16 +1,16 @@
 <?php
 
-$settings = [];
+global $settings;
 
 // Environement : 'dev' ou 'prod'.
 $settings['environment'] = 'dev';
 
 // Nom du site.
-$settings['site_name'] = 'Copifac';
+$settings['site_name'] = 'dossier-rapide.fr';
 
 // URL du site.
 $settings['site_url'] = 'dev' == $settings['environment'] ?
-	$_SERVER['DOCUMENT_ROOT'] : 'https://dossier-rapide.fr';
+	$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] : 'https://dossier-rapide.fr';
 
 // E-mail : from.
 $settings['from'] = 'contact@dossier-rapide.fr';
