@@ -217,5 +217,10 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 </div>
 
 <?php
-require('views/footer.htm');
-?>
+
+$javascript = <<<PHP_JS
+<script src="/public/js/compte_pages.js"></script>
+
+PHP_JS;
+
+require_once 'views/footer.php';

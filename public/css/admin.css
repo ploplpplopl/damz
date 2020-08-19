@@ -1,0 +1,63 @@
+h1{
+	margin: 20px 0;
+}
+
+input, textarea, select{
+	width:100%;
+}
+input[type=submit],
+button[type=submit]{
+	width:auto;
+}
+input[type=submit].full-width,
+button[type=submit].full-width{
+	width:100%;
+}
+
+.add a{
+	background:url(/public/img/icon-add.png) 0 50% no-repeat;
+	padding:0 0 0 20px;
+}
+.back a{
+	background:url(/public/img/icon-back.png) 0 50% no-repeat;
+	padding:0 0 0 20px;
+}
+
+.drag{
+	position:relative;
+}
+.drag #info{
+	position:absolute;
+	top:-40px;
+	right:0;
+	background:#e6e866;
+	z-index:10;
+}
+.drag #info p{
+	margin:0;
+	padding:2px 5px;
+}
+.drag ul{
+	margin:0;
+	padding:5px 0;
+	list-style:none;
+}
+.drag li{
+	position:relative;
+	margin:5px 0;
+	padding:5px;
+	background:#eee;
+}
+.drag li .section{
+	display:inline-block;
+	width:30%;
+}
+.drag li .actions{
+	float:right;
+}
+
+.drag li .handle{
+	cursor:ns-resize;
+	margin:0 10px 0 0;
+}
+
