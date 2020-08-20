@@ -34,8 +34,8 @@ $menuItems = [
 ];
 
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<div class="collapse navbar-collapse" id="navbarNavDropdown">
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+	<div id="navbarNavDropdown">
 		<ul class="navbar-nav">
 <?php foreach ($menuItems as $menuItem): ?>
 	<?php if (empty($menuItem['items'])): ?>
