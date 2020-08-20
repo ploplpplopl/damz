@@ -297,18 +297,6 @@ function calculPages(type, data, quantity, rectoVerso) {
 //     return prixcouv;
 // }
 
-/*    // Calcul autre
-    function CalculAutre() {
-        var autre = window.document.getElementById("autre").value;
-        var totala;
-
-        if (autre >= 0) {
-            totala = autre * 0.01;
-        }
-
-        window.document.getElementById("zone5").innerHTML = totala.toFixed(2);
-    }
-*/
 
 // Calcule le prix total des copies noir&blanc, couleurs, photocopies, reliures et couvertures
 // function calculTCopies() {

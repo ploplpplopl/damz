@@ -243,8 +243,16 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 						<td id="devisReliure"></td>
 					</tr>
 					<tr>
-						<th>Total</th>
-						<td id="prixTotal"></td>
+						<th>Total HT</th>
+						<td id="devisTotalHT"></td>
+					</tr>
+					<tr>
+						<th>TVA</th>
+						<td id="devisTVA"></td>
+					</tr>
+					<tr>
+						<th>Total TTC</th>
+						<td id="devisTotalTTC"></td>
 					</tr>
 				</table>
 			</fieldset>
