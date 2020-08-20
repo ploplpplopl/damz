@@ -29,8 +29,8 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 			</fieldset>
 			
 			<fieldset>
-				<!-- Type de document à imprimer -->
-				<legend>Type de document à imprimer</legend>
+								<!-- Type de document à imprimer -->
+								<legend>Type de document à imprimer</legend>
 				<div class="row">
 					<!-- Dossier -->
 					<div class="col-md-4" id="docTypeDossier">
@@ -39,13 +39,12 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 							<label for="dossier"><strong>Dossier</strong></label>
 						</div>
 						<div class="bottomDocType_old">
-							<p>Couverture&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: obligatoire<br>
-							Feuille cartonnée&nbsp;: optionnelle</span></p>
-							<p>Dos&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: obligatoire<br>
-							Feuille cartonnée&nbsp;: aucune</span></p>
-							<p>3 reliure différentes</p>
+							<p>Couverture et dos&nbsp;:<br>
+								<span class="smaller">Feuillet plastique de protection avant.<br>
+									Feuille cartonnée colorée à l'arrière (non imprimable).</span></p>
+							<p>Reliure&nbsp;:<br>
+								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée,<br>
+								couleur blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 					<!-- Mémoire -->
@@ -55,13 +54,14 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 							<label for="memoire"><strong>Mémoire</strong></label>
 						</div>
 						<div class="bottomDocType_old">
-							<p>Couverture&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: obligatoire<br>
-							Feuille cartonnée&nbsp;: optionnelle</span></p>
-							<p>Dos&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: obligatoire<br>
-							Feuille cartonnée&nbsp;: aucune</span></p>
-							<p>3 reliure différentes</p>
+							<p>Couverture et dos&nbsp;:<br>
+								<span class="smaller">Feuillet plastique de protection avant.<br>
+									Feuille cartonnée colorée et imprimable en 1ère de couverture
+									(première page du document).<br>
+									Feuille cartonnée colorée non imprimable en 4ème de couverture
+									(dernière page du document).</span></p>
+							<p>Reliure&nbsp;:<br>
+								<span class="smaller">spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 					<!-- Thèse -->
@@ -71,13 +71,12 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 							<label for="these"><strong>Thèse</strong></label>
 						</div>
 						<div class="bottomDocType_old">
-							<p>Couverture&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: optionnel<br>
-							Feuille cartonnée&nbsp;: obligatoire</span></p>
-							<p>Dos&nbsp;:<br>
-							<span class="smaller">Feuillet transparent&nbsp;: optionnel<br>
-							Feuille cartonnée&nbsp;: obligatoire</span></p>
-							<p>Reliure thermocollée</p>
+							<p>Couverture et dos&nbsp;:<br>
+								<span class="smaller">Feuillet plastique de protection avant et arrière au choix. <br>
+									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture
+									(première page du document et résumé de la thèse).</span></p>
+							<p>Reliure&nbsp;:<br>
+								<span class="smaller">thermocollée blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 				</div>
