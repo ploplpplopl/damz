@@ -84,15 +84,17 @@ footer {
     text-align: center;
 }
 
-footer>h1 {
-    text-decoration: underline;
-    font-size: 1.5em;
-    margin: 0em;
-}
-
-footer>p {
+footer p {
     margin: 0.5em;
 }
+footer .title {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+
+
+
 
 #tableToPrint,
 #tableHisto {

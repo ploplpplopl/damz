@@ -1,8 +1,8 @@
 <?php
 
 // Imports
-require_once 'config/config.php';
 require_once 'config/settings.php';
+require_once 'config/config.php';
 require_once 'models/functions.php';
 require 'controllers/authController.php';
 
@@ -59,34 +59,30 @@ switch ($action) {
 		require('controllers/resendConfirmationMail.php');
 		break;
 
+	// ADMPRINT
 	case 'admprint':
 		$sTitre = 'À imprimer';
-		if (isset($_SESSION['user']['user_type']) && ($_SESSION['user']['user_type'] == 'printer')) {
-			require('views/admPrint.php');
-		} else {
-			$errors[] = 'Vous n\'avez pas les droits pour accéder à cette page';
-			// TODO erreur ne s'affiche pas car "$errors=[]" dans authController.php
-			// require('views/dossier.php');
-			header("location: index.php?action=login");
-		}
+		require('views/admprint.php');
 		break;
 
+	// ADMIN
 	case 'admin':
 		$sTitre = 'Administration';
-		if (isset($_SESSION['user']['user_type']) && ($_SESSION['user']['user_type'] == 'admin')) {
-			require('views/admin.php');
-		} else {
-			$errors[] = 'Vous n\'avez pas les droits pour accéder cette page';
-			// TODO erreur ne s'affiche pas car "$errors=[]" dans authController.php
-			// require('views/dossier.php');
-			header("location: index.php?action=login");
-		}
+		require('views/admin.php');
+		break;
+	case 'adminPaliersNB':
+		$sTitre = 'Administration';
+		require('views/adminPaliersNB.php');
+		break;
+	case 'adminPaliersC':
+		$sTitre = 'Administration';
+		require('views/adminPaliersC.php');
 		break;
 
 
 		// default:
 		// 	require('views/head.php');
 		// 	require('views/dossier.php');
-		// 	require('views/footer.htm');
+		// 	require('views/footer.php');
 		// 	break;
 }
