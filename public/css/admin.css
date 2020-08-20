@@ -52,12 +52,27 @@ button[type=submit].full-width{
 	display:inline-block;
 	width:30%;
 }
+.drag li .section-medium{
+	display:inline-block;
+	width:20%;
+}
+.drag li .section-small{
+	display:inline-block;
+	width:15%;
+}
 .drag li .actions{
 	float:right;
 }
-
 .drag li .handle{
 	cursor:ns-resize;
 	margin:0 10px 0 0;
+}
+
+.picked-color{
+	display:inline-block;
+	width:16px;
+	height:16px;
+	vertical-align:middle;
+	border:1px solid #000;
 }
 

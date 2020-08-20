@@ -78,6 +78,10 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminPaliersC.php');
 		break;
+	case 'adminCouleurs':
+		$sTitre = 'Administration';
+		require('views/adminCouleurs.php');
+		break;
 
 
 		// default:
