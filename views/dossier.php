@@ -212,12 +212,23 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 
 				<table>
 					<tr>
+						<th id="devisColonneDescr">Description</th>
+						<th id="devisColonneQuant">Quantité</th>
+						<th id="devisColonnePrixU">Prix unitaire</th>
+						<th id="devisColonneTotal">Total</th>
+					</tr>
+					<tr>
+					<tr>
 						<th>Page(s) N&amp;B</th>
-						<td id="devisPagesNB"></td>
+						<td id="devisPagesNBQuant"></td>
+						<td id="devisPagesNBPrixU"></td>
+						<td id="devisPagesNBTotal"></td>
 					</tr>
 					<tr>
 						<th>Page(s) couleur</th>
-						<td id="devisPagesC"></td>
+						<td id="devisPagesCQuant"></td>
+						<td id="devisPagesCPrixU"></td>
+						<td id="devisPagesCTotal"></td>
 					</tr>
 					<tr>
 						<th>Feuillet(s) transparent(s)</th>
@@ -230,14 +241,6 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 					<tr>
 						<th>Reliure(s)</th>
 						<td id="devisReliure"></td>
-					</tr>
-					<tr>
-						<th>Nombre d'exemplaires</th>
-						<td id="devisnbExemplaires"></td>
-					</tr>
-					<tr>
-						<th>Recto verso</th>
-						<td id="recVer"></td>
 					</tr>
 					<tr>
 						<th>Total</th>

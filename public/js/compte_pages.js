@@ -153,6 +153,7 @@ function calculPages(type, data, quantity, rectoVerso) {
     let nbPages;
     let zone;
     let labelText;
+    console.table(data);
 
     if (type === 'NB') {
         nbPages = $("#nbPagesNB").text();
@@ -171,16 +172,10 @@ function calculPages(type, data, quantity, rectoVerso) {
     }
 
     let nbTotPages = nbPages * quantity;
-    if (rectoVerso == 1) { // rectoVerso = 1 ou 0
-        if (nbTotPages % 2 == 0) {
-            nbTotPages = nbTotPages / 2;
-        } else {
-            nbTotPages = Math.floor(nbTotPages / 2) + 1;
-        }
-    }
-    if (nbTotPages < 0) { // ? dans quel cas ?
-        total = 0; // TODO mettre une alerte à la place
-    }
+    $(zone + "Quant").html(nbTotPages);
+    // if (nbTotPages < 0) { // ? dans quel cas ?
+    //     total = 0; // TODO mettre une alerte à la place
+    // }
 
     let i = 0;
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
@@ -188,10 +183,20 @@ function calculPages(type, data, quantity, rectoVerso) {
     }
     total = nbTotPages * data[i]["prix"];
 
-    $(zone).html(labelText + total.toFixed(2));
+    $(zone + "PrixU").html(data[i]["prix"]);
+    $(zone + "Total").html(total.toFixed(2));
     return total;
 }
 
+// TODO a mettre dans la fonction de calcul des reliures
+// let nbTotPages = nbPages * quantity;
+// if (rectoVerso == 1) { // rectoVerso = 1 ou 0
+//     if (nbTotPages % 2 == 0) {
+//         nbTotPages = nbTotPages / 2;
+//     } else {
+//         nbTotPages = Math.floor(nbTotPages / 2) + 1;
+//     }
+// }
 //Calcul du prix des reliures
 // function calculReliure() {
 //     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
