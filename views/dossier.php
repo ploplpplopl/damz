@@ -7,10 +7,10 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 ?>
 
 <div class="row">
-    <div class="col-12 home-wrapper">
+	<div class="col-12 home-wrapper">
 		<?php echo displayMessage($errors); ?>
 
-		<form method="post" action="traitement.php">
+		<form id="formDossier" method="post" action="traitement.php">
 			<fieldset>
 				<!-- upload du document et détection du nombre de pages couleurs/N&B via le script compte_pages.js-->
 				<legend>Téléchargez le fichier PDF à imprimer</legend>
@@ -27,56 +27,68 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 					<li>Total des pages&nbsp;: <strong><span id="nbPages"></span></strong></li>
 				</ul>
 			</fieldset>
-			
+
 			<fieldset>
-								<!-- Type de document à imprimer -->
-								<legend>Type de document à imprimer</legend>
+				<!-- Type de document à imprimer -->
+				<legend>Type de document à imprimer</legend>
 				<div class="row">
 					<!-- Dossier -->
-					<div class="col-md-4" id="docTypeDossier">
+					<div class="col-md-3" id="docTypeDossier">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="dossier" id="dossier" />
 							<label for="dossier"><strong>Dossier</strong></label>
 						</div>
 						<div class="bottomDocType_old">
 							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet plastique de protection avant.<br>
+								<span class="smaller">Feuillet transparent de protection avant.<br>
 									Feuille cartonnée colorée à l'arrière (non imprimable).</span></p>
 							<p>Reliure&nbsp;:<br>
-								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée,<br>
-								couleur blanche ou noire au choix.</span></p>
+								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 					<!-- Mémoire -->
-					<div class="col-md-4" id="docTypeMemoire">
+					<div class="col-md-3" id="docTypeMemoire">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="memoire" id="memoire" />
 							<label for="memoire"><strong>Mémoire</strong></label>
 						</div>
 						<div class="bottomDocType_old">
 							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet plastique de protection avant.<br>
+								<span class="smaller">Feuillet transparent de protection avant.<br>
 									Feuille cartonnée colorée et imprimable en 1ère de couverture
 									(première page du document).<br>
 									Feuille cartonnée colorée non imprimable en 4ème de couverture
 									(dernière page du document).</span></p>
 							<p>Reliure&nbsp;:<br>
-								<span class="smaller">spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
+								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 					<!-- Thèse -->
-					<div class="col-md-4" id="docTypeThese">
+					<div class="col-md-3" id="docTypeThese">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="these" id="these" />
 							<label for="these"><strong>Thèse</strong></label>
 						</div>
 						<div class="bottomDocType_old">
 							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet plastique de protection avant et arrière au choix. <br>
+								<span class="smaller">Feuillet transparent de protection avant et arrière au choix. <br>
 									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture
 									(première page du document et résumé de la thèse).</span></p>
 							<p>Reliure&nbsp;:<br>
-								<span class="smaller">thermocollée blanche ou noire au choix.</span></p>
+								<span class="smaller">Thermocollée blanche ou noire au choix.</span></p>
+						</div>
+					</div>
+					<!-- Personnalisé -->
+					<div class="col-md-3" id="docTypePerso">
+						<div class="topBarDocType_old">
+							<input type="radio" name="docType" value="perso" id="perso" />
+							<label for="perso"><strong>Personnalisé</strong></label>
+						</div>
+						<div class="bottomDocType_old">
+							<p>Couverture et dos&nbsp;:<br>
+								<span class="smaller">Personnalisez toutes vos options selon vos besoins&nbsp;!</span></p>
+							<p>Reliure&nbsp;:<br>
+								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
 						</div>
 					</div>
 				</div>
@@ -91,27 +103,29 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 							<input type="checkbox" name="btnFCCouv" id="btnFCCouv">
 							<label for="btnFCCouv">Feuille cartonnée</label><br>
 						</p>
-						<p><strong>Couleur de la feuille cartonnée</strong></p>
-						<div class="row">
-							<div class="col-6">
-								<input type="radio" id="FCCouvBlanche" name="btnCoulFCCouv" value="FCCouvBlanche">
-								<label for="FCCouvBlanche">Blanche</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCCouvNoire" name="btnCoulFCCouv" value="FCCouvNoire">
-								<label for="FCCouvNoire">Noire</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCCouvVerte" name="btnCoulFCCouv" value="FCCouvVerte">
-								<label for="FCCouvVerte">Verte</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCCouvJaune" name="btnCoulFCCouv" value="FCCouvJaune">
-								<label for="FCCouvJaune">Jaune</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCCouvRouge" name="btnCoulFCCouv" value="FCCouvRouge">
-								<label for="FCCouvRouge">Rouge</label>
+						<div id="couvCouleurFC">
+							<p><strong>Couleur de la feuille cartonnée</strong></p>
+							<div class="row">
+								<div class="col-6">
+									<input type="radio" id="FCCouvBlanche" name="btnCoulFCCouv" value="FCCouvBlanche">
+									<label for="FCCouvBlanche">Blanche</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCCouvNoire" name="btnCoulFCCouv" value="FCCouvNoire">
+									<label for="FCCouvNoire">Noire</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCCouvVerte" name="btnCoulFCCouv" value="FCCouvVerte">
+									<label for="FCCouvVerte">Verte</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCCouvJaune" name="btnCoulFCCouv" value="FCCouvJaune">
+									<label for="FCCouvJaune">Jaune</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCCouvRouge" name="btnCoulFCCouv" value="FCCouvRouge">
+									<label for="FCCouvRouge">Rouge</label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -124,27 +138,29 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 							<input type="checkbox" name="btnFCDos" id="btnFCDos">
 							<label for="btnFCDos">Feuille cartonnée</label><br>
 						</p>
-						<p><strong>Couleur de la feuille cartonnée</strong></p>
-						<div class="row">
-							<div class="col-6">
-								<input type="radio" id="FCDosBlanche" name="btnCoulFCDos" value="FCDosBlanche">
-								<label for="FCDosBlanche">Blanche</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCDosNoire" name="btnCoulFCDos" value="FCDosNoire">
-								<label for="FCDosNoire">Noire</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCDosVerte" name="btnCoulFCDos" value="FCDosVerte">
-								<label for="FCDosVerte">Verte</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCDosJaune" name="btnCoulFCDos" value="FCDosJaune">
-								<label for="FCDosJaune">Jaune</label>
-							</div>
-							<div class="col-6">
-								<input type="radio" id="FCDosRouge" name="btnCoulFCDos" value="FCDosRouge">
-								<label for="FCDosRouge">Rouge</label>
+						<div id="dosCouleurFC">
+							<p><strong>Couleur de la feuille cartonnée</strong></p>
+							<div class="row">
+								<div class="col-6">
+									<input type="radio" id="FCDosBlanche" name="btnCoulFCDos" value="FCDosBlanche">
+									<label for="FCDosBlanche">Blanche</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCDosNoire" name="btnCoulFCDos" value="FCDosNoire">
+									<label for="FCDosNoire">Noire</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCDosVerte" name="btnCoulFCDos" value="FCDosVerte">
+									<label for="FCDosVerte">Verte</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCDosJaune" name="btnCoulFCDos" value="FCDosJaune">
+									<label for="FCDosJaune">Jaune</label>
+								</div>
+								<div class="col-6">
+									<input type="radio" id="FCDosRouge" name="btnCoulFCDos" value="FCDosRouge">
+									<label for="FCDosRouge">Rouge</label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -192,27 +208,48 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 
 			<fieldset>
 				<!-- devis -->
-				<p>devis</p>
-	<!-- TODO créer des div automatiquement en fonction des variables $zone existantes -->
-				<div id="zone1"></div>
-				<div id="zone2"></div>
-				<div id="zone3"></div>
-				<div id="zone4"></div>
-				<div id="zone5"></div>
-				<div id="zone6"></div>
-				<div id="zone7"></div>
-				<div id="zone8"></div>
-				<div id="zone9"></div>
-				<div id="zone10"></div>
-				<div id="zone11"></div>
-				<div id="zone12"></div>
-				<div id="total"></div>
+				<h2>Devis</h2>
+
+				<table>
+					<tr>
+						<th>Page(s) N&amp;B</th>
+						<td id="devisPagesNB"></td>
+					</tr>
+					<tr>
+						<th>Page(s) couleur</th>
+						<td id="devisPagesC"></td>
+					</tr>
+					<tr>
+						<th>Feuillet(s) transparent(s)</th>
+						<td id="devisFT"></td>
+					</tr>
+					<tr>
+						<th>Feuille(s) cartonnée(s)</th>
+						<td id="devisFC"></td>
+					</tr>
+					<tr>
+						<th>Reliure(s)</th>
+						<td id="devisReliure"></td>
+					</tr>
+					<tr>
+						<th>Nombre d'exemplaires</th>
+						<td id="devisnbExemplaires"></td>
+					</tr>
+					<tr>
+						<th>Recto verso</th>
+						<td id="recVer"></td>
+					</tr>
+					<tr>
+						<th>Total</th>
+						<td id="prixTotal"></td>
+					</tr>
+				</table>
 			</fieldset>
 
 			<!-- bouton valider -->
 			<input type="submit" id="submit" value="Valider">
 		</form>
-    </div>
+	</div>
 </div>
 
 <?php

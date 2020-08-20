@@ -12,7 +12,7 @@
 
 require_once("dao/DbConnection.class.php");
 
-$sth = DbConnection::getConnection('administrateur')->prepare("SELECT palier, prix FROM paliers_couleur");
+$sth = DbConnection::getConnection('administrateur')->query("SELECT palier, prix FROM paliers_couleur");
 $sth->execute();
 
 /* Fetch all of the remaining rows in the result variable */
