@@ -70,7 +70,12 @@ $(function () {
                 $.getJSON(
                     "models/getDataPaliersC.php",
                     function (dataC) {
-                        calculs(dataNB, dataC);
+                        $.getJSON(
+                            "models/getDataFC.php",
+                            function (dataFC) {
+                                calculs(dataNB, dataC, dataFC);
+                            }
+                        )
                     }
                 )
             }
@@ -119,7 +124,7 @@ $(function () {
     });
 
 
-    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
+    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso").on('click', function () {
         calculDevis();
     });
 
@@ -132,59 +137,83 @@ $(function () {
 });
 
 //Fonction de calcul automatique pour le calcul express
-function calculs(dataNB, dataC) {
+function calculs(dataNB, dataC, dataFC) {
     let quantity = $("#quantity").val();
     let rectoVerso = 0;
     if ($("#rectoverso").checked) {
         rectoVerso = 1;
     }; // TODO verifier les valeurs de rectoVerso
-    let totalNB = calculPages('NB', dataNB, quantity, rectoVerso);
-    let totalC = calculPages('C', dataC, quantity, rectoVerso);
-    let totalR = 0; //calculReliure();
-    let totalCouv = 0; //calculCouverture();
+    let totalNB = calculPages('NB', dataNB, quantity);
+    let totalC = calculPages('C', dataC, quantity);
+    let totalR = 0; //calculReliure(rectoVerso);
+    let totalCouv = calculCouverture(dataFC);
     // calculTCopies();
     let total = totalNB + totalC + totalR + totalCouv;
-    $("#total").html('Total TTC&nbsp;: ' + total.toFixed(2));
+    // total = Number(total).toFixed(2);
+    $("#devisTotal").html(total);
     // return total;
 }
 
 // Calcule le prix des pages noir&blanc ou couleur
-function calculPages(type, data, quantity, rectoVerso) {
-    let nbPages;
-    let zone;
-    let labelText;
-    console.table(data);
+function calculPages(type, data, quantity) {
+    let nbPages = 0;
+    let zone = '';
+    let total = 0;
+    let nbTotPages = 0;
+    let prixU = 0;
+    let i = 0;
 
     if (type === 'NB') {
         nbPages = $("#nbPagesNB").text();
         zone = "#devisPagesNB";
-        labelText = nbPages + " pages N&amp;B&nbsp;: ";
     } else if (type === 'C') {
         nbPages = $("#nbPagesC").text();
         zone = "#devisPagesC";
-        labelText = nbPages + " pages couleur&nbsp;: ";
     }
 
-    let total = 0;
     if (quantity < 1) {
         quantity = 1;
         alert('Veuillez indiquer 1 exemplaire minimum.');
     }
 
-    let nbTotPages = nbPages * quantity;
-    $(zone + "Quant").html(nbTotPages);
-    // if (nbTotPages < 0) { // ? dans quel cas ?
-    //     total = 0; // TODO mettre une alerte à la place
-    // }
+    nbTotPages = nbPages * quantity;
 
-    let i = 0;
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
         i++;
     }
-    total = nbTotPages * data[i]["prix"];
+    prixU = Number(data[i]["prix"]).toFixed(2);
+    total = Number(nbTotPages * prixU).toFixed(2);
 
-    $(zone + "PrixU").html(data[i]["prix"]);
-    $(zone + "Total").html(total.toFixed(2));
+    $(zone + "Quant").html(nbTotPages);
+    $(zone + "PrixU").html(prixU);
+    $(zone + "Total").html(total);
+    return total;
+}
+
+//Calcul des couvertures et quatrièmes de couverture.
+function calculCouverture(dataFC) {
+    let quantity = $("#quantity").val();
+    let nbCouv = 0;
+    let total = 0;
+    let zone = "#devisFC";
+    let prixU = Number(dataFC[0]["sValue"]).toFixed(2);
+    
+    if ($('#btnFCCouv').prop('checked')) {
+        nbCouv++;
+    }
+    if ($('#btnFCDos').prop('checked')) {
+        nbCouv++;
+    }
+    if (quantity > 1) {
+        nbCouv *= quantity;
+    }
+
+    total = Number(prixU * nbCouv).toFixed(2);
+
+    $(zone + "Quant").html(nbCouv);
+    $(zone + "PrixU").html(prixU);
+    $(zone + "Total").html(total);
+
     return total;
 }
 
@@ -198,7 +227,7 @@ function calculPages(type, data, quantity, rectoVerso) {
 //     }
 // }
 //Calcul du prix des reliures
-// function calculReliure() {
+// function calculReliure(rectoVerso) {
 //     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
 //     var reliures = window.document.getElementById("reliures").value;
 //     var nbcopie = window.document.getElementById("nbcopie").value;
@@ -277,24 +306,6 @@ function calculPages(type, data, quantity, rectoVerso) {
 //     }
 //     window.document.getElementById("zone4").innerHTML = totalr.toFixed(2);
 //     return totalr;
-// }
-
-//Calcul des couvertures et quatrièmes de couverture.
-// function calculCouverture() {
-//     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
-//     var couvertures = document.getElementById("couvertures").value;
-//     var prixcouv;
-
-//     if (couvertures == 1) {
-//         prixcouv = 0;
-//     } else if (couvertures == 2) {
-//         prixcouv = ExemplaireT * 0.35;
-//     } else if (couvertures == 3) {
-//         prixcouv = ExemplaireT * (0.35 * 2);
-//     }
-
-//     window.document.getElementById("zone5").innerHTML = prixcouv.toFixed(2);
-//     return prixcouv;
 // }
 
 
