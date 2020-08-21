@@ -1,18 +1,14 @@
 <?php
 
-$action = $_GET['action'];
+$action = !empty($_GET['action']) ? $_GET['action'] : '';
 $menuItems = [
 	[
-		'url' => 'admprint',
+		'url' => 'admin',
 		'name' => 'Accueil',
 	],
 	[
-		'url' => 'admprintUsers',
-		'name' => 'À imprimer',
-	],
-	[
-		'url' => 'admprintOrders',
-		'name' => 'Historique',
+		'url' => 'adminOrders',
+		'name' => 'Commandes',
 	],
 	/*[
 		'name' => 'Gestion',

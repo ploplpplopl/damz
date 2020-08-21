@@ -1,6 +1,6 @@
 <?php
 
-$action = $_GET['action'];
+$action = !empty($_GET['action']) ? $_GET['action'] : '';
 $menuItems = [
 	[
 		'url' => 'admin',

@@ -1,13 +1,13 @@
 <?php
 
-require('views/head.php');
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 
-//vd(getDossierColors('Thèse'));
+require_once 'views/head.php';
 ?>
 
 <div class="row">
 	<div class="col-12 home-wrapper">
+		<h1>Imprimez votre document</h1>
 		<?php echo displayMessage($errors); ?>
 
 		<form id="formDossier" method="post" action="traitement.php">

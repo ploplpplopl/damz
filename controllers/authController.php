@@ -119,11 +119,8 @@ if (isset($_POST['login-btn'])) {
 			case 'ok':
 				switch ($checkLogin['user']['user_type']) {
 					case 'admin':
-						$action = 'admin';
-						break;
-						
 					case 'admprinter':
-						$action = 'admprint';
+						$action = 'admin';
 						break;
 						
 					case 'user':
