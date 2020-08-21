@@ -1,6 +1,6 @@
-
 // Observateurs d'evenements jQuery pour la calculette : les $.getJSON() vont chercher les pages getDataPaliers, et récupère les données de paliers pour les transmettre aux fonctions de calcul
 $(function () {
+    // TODO $('#formDossier').reset();
     $('#loading').hide();
     $("#file_description").hide();
     $("#detailPages").hide();
@@ -19,7 +19,7 @@ $(function () {
                     if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
                         $("#detailPages").hide();
                         $("#file_description").hide();
-						$('#loading').hide();
+                        $('#loading').hide();
                         if (reponse == 'failure') {
                             alert('Le traitement du fichier à échoué');
                         } else if (reponse == 'notPDF') {
@@ -33,7 +33,7 @@ $(function () {
                         $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
                         $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
                     } else {
-						//console.log(reponse);
+                        //console.log(reponse);
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
@@ -51,13 +51,13 @@ $(function () {
                         calculDevis();
                     }
                 },
-                beforeSend: function() {
-					$('#loading').show();
-					$('#file_description').hide();
-				},
-                complete: function() {
-					$('#loading').hide();
-				}
+                beforeSend: function () {
+                    $('#loading').show();
+                    $('#file_description').hide();
+                },
+                complete: function () {
+                    $('#loading').hide();
+                }
             });
             //$("#erreur").hide();
         }
@@ -77,21 +77,47 @@ $(function () {
         );
     }
 
-    $("#dossier, #memoire").on('click', function() {
-		$('#btnFTCouv').prop('checked', true).prop('disabled', true);
-		$('#btnFTDos').prop('checked', true).prop('disabled', true);
-		$('#btnFCCouv').prop('checked', false).prop('disabled', false);
-		$('#btnFCDos').prop('checked', false).prop('disabled', false);
-		$('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
-	});
-    $("#these").on('click', function() {
-		$('#btnFTCouv').prop('checked', false).prop('disabled', false);
-		$('#btnFTDos').prop('checked', false).prop('disabled', false);
-		$('#btnFCCouv').prop('checked', true).prop('disabled', true);
-		$('#btnFCDos').prop('checked', true).prop('disabled', true);
-		$('#thermo').prop('checked', true).prop('disabled', true);
-		$('#spiplast, #spimetal').prop('checked', false).prop('disabled', true);
-	});
+    // // Couleurs non selectionnables si pas de FC selectionnée
+    $('#couvCouleurFC :radio, #dosCouleurFC :radio').prop('checked', false).prop('disabled', true);
+
+    $("#dossier").on('click', function () {
+        $('#btnFTCouv').prop('checked', true).prop('disabled', true);
+        $('#btnFTDos').prop('checked', false).prop('disabled', true);
+        $('#btnFCCouv').prop('checked', false).prop('disabled', true);
+        $('#btnFCDos').prop('checked', true).prop('disabled', true);
+        $('#couvCouleurFC :radio').prop('checked', false).prop('disabled', true);
+        $('#dosCouleurFC :radio').prop('disabled', false);
+        $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+    });
+    $("#memoire").on('click', function () {
+        $('#btnFTCouv').prop('checked', true).prop('disabled', true);
+        $('#btnFTDos').prop('checked', false).prop('disabled', true);
+        $('#btnFCCouv').prop('checked', true).prop('disabled', true);
+        $('#btnFCDos').prop('checked', true).prop('disabled', true);
+        $('#couvCouleurFC :radio').prop('disabled', false);
+        $('#dosCouleurFC :radio').prop('disabled', false);
+        $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+    });
+    $("#these").on('click', function () {
+        $('#btnFTCouv').prop('checked', true).prop('disabled', false);
+        $('#btnFTDos').prop('checked', true).prop('disabled', false);
+        $('#btnFCCouv').prop('checked', true).prop('disabled', true);
+        $('#btnFCDos').prop('checked', true).prop('disabled', true);
+        $('#couvCouleurFC :radio').prop('disabled', false);
+        $('#dosCouleurFC :radio').prop('disabled', false);
+        $('#thermo').prop('checked', true).prop('disabled', true);
+        $('#spiplast, #spimetal').prop('checked', false).prop('disabled', true);
+    });
+    $("#perso").on('click', function () {
+        $('#btnFTCouv').prop('checked', false).prop('disabled', false);
+        $('#btnFTDos').prop('checked', false).prop('disabled', false);
+        $('#btnFCCouv').prop('checked', false).prop('disabled', false);
+        $('#btnFCDos').prop('checked', false).prop('disabled', false);
+        $('#couvCouleurFC :radio').prop('disabled', false);
+        $('#dosCouleurFC :radio').prop('disabled', false);
+        $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+    });
+
 
     $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFCCouv, #btnFTDos, #quantity, #rectoverso").on('click', function () {
         calculDevis();
@@ -114,8 +140,8 @@ function calculs(dataNB, dataC) {
     }; // TODO verifier les valeurs de rectoVerso
     let totalNB = calculPages('NB', dataNB, quantity, rectoVerso);
     let totalC = calculPages('C', dataC, quantity, rectoVerso);
-    let totalR = 0;//calculReliure();
-    let totalCouv = 0;//calculCouverture();
+    let totalR = 0; //calculReliure();
+    let totalCouv = 0; //calculCouverture();
     // calculTCopies();
     let total = totalNB + totalC + totalR + totalCouv;
     $("#total").html('Total TTC&nbsp;: ' + total.toFixed(2));
@@ -124,50 +150,53 @@ function calculs(dataNB, dataC) {
 
 // Calcule le prix des pages noir&blanc ou couleur
 function calculPages(type, data, quantity, rectoVerso) {
-	let nbPages;
-	let zone;
-	let labelText;
-	
+    let nbPages;
+    let zone;
+    let labelText;
+    console.table(data);
+
     if (type === 'NB') {
         nbPages = $("#nbPagesNB").text();
-        zone = "#zone1";
+        zone = "#devisPagesNB";
         labelText = nbPages + " pages N&amp;B&nbsp;: ";
-    }
-    else if (type === 'C') {
+    } else if (type === 'C') {
         nbPages = $("#nbPagesC").text();
-        zone = "#zone2";
+        zone = "#devisPagesC";
         labelText = nbPages + " pages couleur&nbsp;: ";
     }
-	
+
     let total = 0;
     if (quantity < 1) {
         quantity = 1;
-		alert('Veuillez indiquer 1 exemplaire minimum.');
+        alert('Veuillez indiquer 1 exemplaire minimum.');
     }
-	
+
     let nbTotPages = nbPages * quantity;
-    if (rectoVerso == 1) { // rectoVerso = 1 ou 0
-        if (nbTotPages % 2 == 0) {
-            nbTotPages = nbTotPages / 2;
-        } else {
-            nbTotPages = Math.floor(nbTotPages / 2) + 1;
-        }
-    }
-    if (nbTotPages < 0) { // ? dans quel cas ?
-        total = 0; // TODO mettre une alerte à la place
-    }
-	
+    $(zone + "Quant").html(nbTotPages);
+    // if (nbTotPages < 0) { // ? dans quel cas ?
+    //     total = 0; // TODO mettre une alerte à la place
+    // }
+
     let i = 0;
     while (data[i + 1] && (nbTotPages > data[i]['palier'])) {
         i++;
     }
-    // Number(parseFloat(zone1) + parseFloat(zone2)
     total = nbTotPages * data[i]["prix"];
 
-    $(zone).html(labelText + total.toFixed(2));
+    $(zone + "PrixU").html(data[i]["prix"]);
+    $(zone + "Total").html(total.toFixed(2));
     return total;
 }
 
+// TODO a mettre dans la fonction de calcul des reliures
+// let nbTotPages = nbPages * quantity;
+// if (rectoVerso == 1) { // rectoVerso = 1 ou 0
+//     if (nbTotPages % 2 == 0) {
+//         nbTotPages = nbTotPages / 2;
+//     } else {
+//         nbTotPages = Math.floor(nbTotPages / 2) + 1;
+//     }
+// }
 //Calcul du prix des reliures
 // function calculReliure() {
 //     var ExemplaireT = window.document.getElementById("ExemplaireT").value;
@@ -268,61 +297,49 @@ function calculPages(type, data, quantity, rectoVerso) {
 //     return prixcouv;
 // }
 
-/*    // Calcul autre
-    function CalculAutre() {
-        var autre = window.document.getElementById("autre").value;
-        var totala;
-
-        if (autre >= 0) {
-            totala = autre * 0.01;
-        }
-
-        window.document.getElementById("zone5").innerHTML = totala.toFixed(2);
-    }
-*/
 
 // Calcule le prix total des copies noir&blanc, couleurs, photocopies, reliures et couvertures
 // function calculTCopies() {
 //     let zone1 = document.getElementById("zone1").innerHTML;
 //     let zone2 = document.getElementById("zone2").innerHTML;
-    // let zone3 = document.getElementById("zone3").innerHTML;
-    // let zone4 = document.getElementById("zone4").innerHTML;
-    // let zone5 = document.getElementById("zone5").innerHTML;
-    // let zone8 = document.getElementById("zone8").innerHTML;
-    // let zone9 = document.getElementById("zone9").innerHTML;
-    // let zone10 = document.getElementById("zone10").innerHTML;
-    // let zone11 = document.getElementById("zone11").innerHTML;
-    // let zone12 = document.getElementById("zone12").innerHTML;
+// let zone3 = document.getElementById("zone3").innerHTML;
+// let zone4 = document.getElementById("zone4").innerHTML;
+// let zone5 = document.getElementById("zone5").innerHTML;
+// let zone8 = document.getElementById("zone8").innerHTML;
+// let zone9 = document.getElementById("zone9").innerHTML;
+// let zone10 = document.getElementById("zone10").innerHTML;
+// let zone11 = document.getElementById("zone11").innerHTML;
+// let zone12 = document.getElementById("zone12").innerHTML;
 
-    // // Calcul de la TVA
-    // let TVA = 0;
-    // if (document.getElementById("TVA").value != 1) {
-    //     if (document.getElementById("TVA").value == 2) {
-    //         TVA = 0.055;
-    //     } else if (document.getElementById("TVA").value == 3) {
-    //         TVA = 0.1;
-    //     } else if (document.getElementById("TVA").value == 4) {
-    //         TVA = 0.2;
-    //     }
-    // }
+// // Calcul de la TVA
+// let TVA = 0;
+// if (document.getElementById("TVA").value != 1) {
+//     if (document.getElementById("TVA").value == 2) {
+//         TVA = 0.055;
+//     } else if (document.getElementById("TVA").value == 3) {
+//         TVA = 0.1;
+//     } else if (document.getElementById("TVA").value == 4) {
+//         TVA = 0.2;
+//     }
+// }
 
-    // let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
-    // let totalY = totalZ;
+// let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
+// let totalY = totalZ;
 
-    // window.document.getElementById("zoneTVA").innerHTML = (totalZ * TVA).toFixed(2);
+// window.document.getElementById("zoneTVA").innerHTML = (totalZ * TVA).toFixed(2);
 
-    // if (totalZ) {
-    //     window.document.getElementById("zone6").value = totalZ.toFixed(2) + "€";
-    // } else {
-    //     window.document.getElementById("zone6").value = "0.00€";
-    // }
-    // window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ).toFixed(2) + "€";
+// if (totalZ) {
+//     window.document.getElementById("zone6").value = totalZ.toFixed(2) + "€";
+// } else {
+//     window.document.getElementById("zone6").value = "0.00€";
+// }
+// window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ).toFixed(2) + "€";
 
-    // //Remise étudiante 10%
-    // if (document.getElementById("remiseEtudiant").checked == true) {
-    //     window.document.getElementById("zone6").value = (totalZ * 0.90).toFixed(2) + "€";
-    //     window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ * 0.90).toFixed(2) + "€";
-    // }
+// //Remise étudiante 10%
+// if (document.getElementById("remiseEtudiant").checked == true) {
+//     window.document.getElementById("zone6").value = (totalZ * 0.90).toFixed(2) + "€";
+//     window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ * 0.90).toFixed(2) + "€";
+// }
 // }
 
 //Impression de la page

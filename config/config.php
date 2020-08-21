@@ -18,7 +18,7 @@ header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NA
 
 
 // Constantes.
-define ('_ROOT_DIR_', __dir__ . '/..');
+define ('_ROOT_DIR_', __DIR__ . '/..');
 
 
 // Ajout de CSS / JS à la volée.

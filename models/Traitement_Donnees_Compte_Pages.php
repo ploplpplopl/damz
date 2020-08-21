@@ -15,7 +15,7 @@ exit;
 if ($_FILES['file']['type'] != 'application/pdf') {
 	echo "notPDF";
 	return;
-} else if ($_FILES['file']['size'] > 7000000) {
+} else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
 	echo "tooHeavy";
 	return;
 }

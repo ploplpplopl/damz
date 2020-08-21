@@ -18,7 +18,6 @@ $errors = [];
 $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
-	$query = 'SELECT * FROM paliers_nb WHERE id = :id ORDER BY position DESC';
 	$stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM paliers_nb WHERE id = :id');
 	$stmt->bindParam(':id', $_GET['edit']);
 	$stmt->execute();

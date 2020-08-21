@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
 
      $("#enregistrer_paliers_NB").click(function (e) {
           e.preventDefault();

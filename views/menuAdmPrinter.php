@@ -42,7 +42,7 @@ $menuItems = [
 			<li class="nav-item<?php echo ($menuItem['url'] == $action ? ' active' : ''); ?>">
 				<a class="nav-link" href="/index.php?action=<?php echo $menuItem['url']; ?>"><?php echo $menuItem['name']; ?></a>
 			</li>
-	<?php else: ?>
+	<?php /*else: ?>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle<?php echo (in_array($action, array_column($menuItem['items'], 'url')) ? ' active' : ''); ?>" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $menuItem['name']; ?></a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -51,7 +51,7 @@ $menuItems = [
 		<?php endforeach; ?>
 				</div>
 			</li>
-	<?php endif; ?>
+		<?php */endif; ?>
 <?php endforeach; ?>
 		</ul>
 	</div>
