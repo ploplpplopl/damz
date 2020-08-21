@@ -9,26 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
 	<?php echo $css; ?>
-    <link rel="icon" href="public/img/logoicone.ico">
+    <link rel="icon" href="/public/img/logoicone.ico">
 </head>
 
 <body>
     <div class="wrapper">
         <header>
-            <a href="index.php?action=accueil">
-                <div class="bandeau">
-                    <img src="public/img/copifac.png" id="imgcopifac" width="30%" />
-                </div>
-            </a>
-            <?php 
-            if (!empty($_SESSION['user']['id_user'])){
-                echo '<a href="index.php?action=logout">--logout--</a><br>';
-                echo "pseudo : " . $_SESSION['user']['pseudo'];
-            } else {
-                echo '<a href="index.php?action=login">--login--</a>';
-            }
-            ?>
+			<div class="bandeau">
+				<a href="/index.php?action=accueil">
+                    <img src="public/img/logo.png" alt="Copifac" id="imgcopifac">
+				</a>
+			</div>
         </header>
-		
+<?php 
+require_once 'views/menu.php';
+?>
+
+		<div class="content">

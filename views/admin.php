@@ -6,15 +6,19 @@ if (empty($_SESSION['user']['id_user'])) {
 }
 
 // protège accès direct à http://localhost/views/admin.php (views devra etre interdit avec htaccess)
-if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
+if (
+	!empty($_SESSION['user']['user_type']) &&
+	!in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])
+) {
     header('location: /index.php?action=logout');
 	exit;
 }
+$menu = 'admprinter' == $_SESSION['user']['user_type'] ? 'menuAdmPrinter' : 'menuAdmin';
 
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
 require_once 'views/head.php';
-require_once 'views/menuAdmin.php';
+require_once 'views/' . $menu . '.php';
 ?>
 
 <div class="row">

@@ -21,9 +21,19 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'accueil';
 // debug('action: '.$action,$DEBUG);
 // Etapes et traitements
 switch ($action) {
+	case 'home':
+		$sTitre = 'Impression de documents à Caen';
+		require('views/home.php');
+		break;
+
 	case 'accueil':
-		$sTitre = 'dossier-rapide';
+		$sTitre = 'Imprimez votre document';
 		require('views/dossier.php');
+		break;
+
+	case 'contact':
+		$sTitre = 'Contactez-nous';
+		require('views/contact.php');
 		break;
 
 	case 'login':
@@ -59,16 +69,27 @@ switch ($action) {
 		require('controllers/resendConfirmationMail.php');
 		break;
 
-	// ADMPRINT
-	case 'admprint':
-		$sTitre = 'À imprimer';
-		require('views/admprint.php');
+	case 'account':
+		$sTitre = 'Mon compte';
+		require('views/account.php');
 		break;
 
 	// ADMIN
 	case 'admin':
 		$sTitre = 'Administration';
 		require('views/admin.php');
+		break;
+	case 'adminUsers':
+		$sTitre = 'Administration';
+		require('views/adminUsers.php');
+		break;
+	case 'adminOrders':
+		$sTitre = 'Administration';
+		require('views/adminOrders.php');
+		break;
+	case 'adminOrdersPast':
+		$sTitre = 'Administration';
+		require('views/adminOrdersPast.php');
 		break;
 	case 'adminPaliersNB':
 		$sTitre = 'Administration';
