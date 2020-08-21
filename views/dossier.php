@@ -236,23 +236,23 @@ require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 					</tr>
 					<tr>
 						<th>Feuille(s) cartonnée(s)</th>
-						<td id="devisFC"></td>
+						<td id="devisFCQuant"></td>
+						<td id="devisFCPrixU"></td>
+						<td id="devisFCTotal"></td>
 					</tr>
 					<tr>
 						<th>Reliure(s)</th>
 						<td id="devisReliure"></td>
 					</tr>
 					<tr>
-						<th>Total HT</th>
-						<td id="devisTotalHT"></td>
-					</tr>
-					<tr>
 						<th>TVA</th>
 						<td id="devisTVA"></td>
 					</tr>
 					<tr>
-						<th>Total TTC</th>
-						<td id="devisTotalTTC"></td>
+						<th>Total</th>
+						<td></td>
+						<td></td>
+						<td id="devisTotal"></td>
 					</tr>
 				</table>
 			</fieldset>
