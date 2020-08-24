@@ -2,8 +2,8 @@
 
 sleep(1);
 print_r(json_encode([
-	'NbPages' => 34,
-	'NbPagesC' => 3,
+	'NbPages' => 334,
+	'NbPagesC' => 303,
 	'NbPagesNB' => 31,
 	'TabPages' => [1,15,34],
 ]));
@@ -15,7 +15,8 @@ exit;
 if ($_FILES['file']['type'] != 'application/pdf') {
 	echo "notPDF";
 	return;
-} else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
+// } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
+} else if ($_FILES['file']['size'] > 70000000) {
 	echo "tooHeavy";
 	return;
 }
