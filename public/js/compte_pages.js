@@ -33,7 +33,6 @@ $(function () {
                         $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
                         $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
                     } else {
-                        //console.log(reponse);
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
                             var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
@@ -210,7 +209,6 @@ function calculReliure(maxSpiplast, maxSpimetal, maxThermo, paliersSpiplast, pal
     let total = 0;
     let prixU = 0;
     let i = 0;
-console.log(maxFeuillesMetal);
 
     if ($("#rectoverso").prop('checked')) {
         nbFeuilles = Math.round(nbFeuilles / 2); // pas besoin de modulo % car .5 est arrondi au-dessus
