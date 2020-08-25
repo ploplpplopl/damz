@@ -19,11 +19,9 @@ require_once 'views/head.php';
 				<input type="password" name="password" class="form-control form-control-lg" required>
 				<p class="text-right"><a href="/index.php?action=forgotPassword">Mot de passe oublié&nbsp;?</a></p>
 			</div>
-			<div class="form-group">
-				<button type="submit" name="login-btn" class="btn">Connexion</button>
-			</div>
+			<button type="submit" name="login-btn" class="btn btn-primary">Connexion</button>
 		</form>
-		<p>Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
+		<p class="mt-5">Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
 	</div>
 </div>
 

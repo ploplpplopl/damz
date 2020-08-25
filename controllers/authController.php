@@ -1,12 +1,12 @@
 <?php
 
-require_once 'models/AuthMgr.class.php'; // TODO verifier les chemins (relatif, absolu).
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
+
+require_once 'models/AuthMgr.class.php';
 require_once 'controllers/sendEmails.php';
 
-$firstname = '';
-$lastname = '';
 $email = '';
-$phone = '';
 $pseudo = '';
 $password = '';
 $passwordConf = '';
@@ -14,40 +14,34 @@ $errors = [];
 
 // --------------- SIGN UP USER ---------------
 if (isset($_POST['signup-btn'])) {
-	$firstname = trim($_POST['firstname']);
-	$lastname = trim($_POST['lastname']);
 	$email = trim($_POST['email']);
-	$phone = trim($_POST['phone']);
 	$pseudo = trim($_POST['pseudo']);
 	$password = trim($_POST['password']);
 	$passwordConf = trim($_POST['passwordConf']);
     $token = bin2hex(random_bytes(50));
 	
+	$validator = new EmailValidator();
+
 	$pwLength = mb_strlen($password) >= 8;
 	$pwLowercase = preg_match('/[a-z]/', $password);
 	$pwUppercase = preg_match('/[A-Z]/', $password);
 	$pwNumber = preg_match('/[0-9]/', $password);
 	$pwSpecialchar = preg_match('/[' . preg_quote('-_"%\'*;<>?^`{|}~/\\#=&', '/') . ']/', $password);
 	
-    // TODO : ajouter des tests de validité sur les champs (email, tel, complexité mdp...) en JS
-    // TODO : ajouter toutes ces vérifications y compris checkPassword comme dans signup_controls.js
-    if (empty($firstname)) {
-        $errors[] = 'Prénom requis';
-    }
-    if (empty($lastname)) {
-        $errors[] = 'Nom requis';
-    }
     if (empty($email)) {
         $errors[] = 'E-mail requis';
     }
+	elseif (!$validator->isValid($email, new RFCValidation())) {
+		$errors[] = 'E-mail invalide';
+	}
 	elseif (AuthMgr::emailExists($email)) {
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
-    if (empty($phone)) {
-        $errors[] = 'Téléphone requis';
-    }
     if (empty($pseudo)) {
         $errors[] = 'Pseudo requis';
+    }
+	elseif (!preg_match('/^[a-z0-9!#$%&\'*+\/=?_-]{1,50}$/i', $pseudo)) {
+        $errors[] = 'Votre pseudo contient des caractères invalides';
     }
 	elseif (AuthMgr::pseudoExists($pseudo)) {
 		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
@@ -68,7 +62,7 @@ if (isset($_POST['signup-btn'])) {
 
     // Insert user into DB
     if (empty($errors)) {
-        if (!AuthMgr::signup($firstname, $lastname, $email, $phone, $pseudo, $password, $token)) {
+        if (!AuthMgr::signup($email, $pseudo, $password, $token)) {
             $_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
         }
 		else {
@@ -145,12 +139,19 @@ if (isset($_POST['login-btn'])) {
 
 // --------------- FORGOT PASSWORD ---------------
 if (isset($_POST['forgot-password-btn'])) {
-    if (empty($_POST['email'])) {
-        $errors[] = 'Adresse e-mail requise';
+	$email = trim($_POST['email']);
+	
+	$validator = new EmailValidator();
+	
+    if (empty($email)) {
+        $errors[] = 'E-mail requis';
     }
+	elseif (!$validator->isValid($email, new RFCValidation())) {
+		$errors[] = 'E-mail invalide';
+	}
 
     if (empty($errors)) {
-		$checkAuth = AuthMgr::forgotPassword($_POST['email']);
+		$checkAuth = AuthMgr::forgotPassword($email);
 		
         if (!$checkAuth) {
 			$_SESSION['message_error'][] = 'Adresse e-mail introuvable';
@@ -159,8 +160,8 @@ if (isset($_POST['forgot-password-btn'])) {
 			$emailSent = sendMail('forgot-password.html', [
 				'{site_url}' => $settings['site_url'],
 				'{token}' => $checkAuth['secure_key'],
-				'{email}' => $_POST['email'],
-			], 'Récupération de mot de passe sur ' . $settings['site_name'], $_POST['email']);
+				'{email}' => $email,
+			], 'Récupération de mot de passe sur ' . $settings['site_name'], $email);
 			
             if (!$emailSent) {
                 $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';

@@ -73,6 +73,10 @@ switch ($action) {
 		$sTitre = 'Mon compte';
 		require('views/account.php');
 		break;
+	case 'accountAddresses':
+		$sTitre = 'Mes adresses';
+		require('views/accountAddresses.php');
+		break;
 
 	// ADMIN
 	case 'admin':
