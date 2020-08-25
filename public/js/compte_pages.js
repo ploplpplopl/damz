@@ -4,6 +4,7 @@ $(function () {
     $('#loading').hide();
     $("#file_description").hide();
     $("#detailPages").hide();
+    // First step : upload PDF
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
         if (fichier != undefined) {
@@ -48,7 +49,7 @@ $(function () {
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         calculDevis(jsonData);
-                        // make type of document available to choose
+                        // Make type of document available to choose when pdf is loaded
                         $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', false);
                     }
                 },
@@ -199,6 +200,7 @@ function calculDevis(jsonData) {
     let totalCouvFT = Number(calculCouvFT(jsonData['paliersFT']));
     let totalR = Number(calculReliure(jsonData['maxSpiplast'], jsonData['maxSpimetal'], jsonData['maxThermo'], jsonData['paliersSpiplast'], jsonData['paliersSpimetal'], jsonData['paliersThermo']));
     let total = Number(totalNB + totalC + totalR + totalCouvFC + totalCouvFT).toFixed(2);
+    calculTVA(total);
     $("#devisTotal").html(total);
 }
 
@@ -349,33 +351,19 @@ function calculCouvFT(dataFT) {
     return total;
 }
 
-// // Calcul de la TVA
-// let TVA = 0;
-// if (document.getElementById("TVA").value != 1) {
-//     if (document.getElementById("TVA").value == 2) {
-//         TVA = 0.055;
-//     } else if (document.getElementById("TVA").value == 3) {
-//         TVA = 0.1;
-//     } else if (document.getElementById("TVA").value == 4) {
-//         TVA = 0.2;
-//     }
-// }
+// Calcul de la TVA
+function calculTVA(totalTTC) {
+    let TVA = 0;
+    let tauxTVA = 0;
 
-// let totalZ = Number(parseFloat(zone1) + parseFloat(zone2) + parseFloat(zone3) + parseFloat(zone4) + parseFloat(zone5) + parseFloat(zone8) + parseFloat(zone9) + parseFloat(zone10) + parseFloat(zone11) + parseFloat(zone12));
-// let totalY = totalZ;
+    if ($('#dossier').prop('checked') || $('#perso').prop('checked')) {
+        tauxTVA = 0.2;
+    }
+    if ($('#memoire').prop('checked') || $('#these').prop('checked')) {
+        tauxTVA = 0.1;
+    }
 
-// window.document.getElementById("zoneTVA").innerHTML = (totalZ * TVA).toFixed(2);
+    TVA = tauxTVA * totalTTC;
 
-// if (totalZ) {
-//     window.document.getElementById("zone6").value = totalZ.toFixed(2) + "€";
-// } else {
-//     window.document.getElementById("zone6").value = "0.00€";
-// }
-// window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ).toFixed(2) + "€";
-
-// //Remise étudiante 10%
-// if (document.getElementById("remiseEtudiant").checked == true) {
-//     window.document.getElementById("zone6").value = (totalZ * 0.90).toFixed(2) + "€";
-//     window.document.getElementById("zoneRe").innerHTML = "Remise étudiante: - " + (totalY - totalZ * 0.90).toFixed(2) + "€";
-// }
-// }
+    $("#devisTVA").html(TVA.toFixed(2));
+}

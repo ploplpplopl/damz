@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ .'/settings.php';
+
 session_start();
 
 // Gestion d'affichage des erreurs PHP.

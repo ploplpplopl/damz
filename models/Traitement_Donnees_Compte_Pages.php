@@ -1,13 +1,13 @@
 <?php
 
-sleep(1);
-print_r(json_encode([
-	'NbPages' => 334,
-	'NbPagesC' => 303,
-	'NbPagesNB' => 31,
-	'TabPages' => [1,15,34],
-]));
-exit;
+// sleep(1);
+// print_r(json_encode([
+// 	'NbPages' => 334,
+// 	'NbPagesC' => 303,
+// 	'NbPagesNB' => 31,
+// 	'TabPages' => [1,15,34],
+// ]));
+// exit;
 
 //Adapter l'application pour le site pro; rechercher solution pour plugin WordPress
 
@@ -30,7 +30,7 @@ try {
 	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $_FILES['file']['name']);
 
 	//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où 0 est bien, et tout autre chiffre indique problème
-	exec("{$_SERVER['DOCUMENT_ROOT']}/vendor/Ghostscript/gs-950 -o -sDEVICE=inkcov {$_SERVER['DOCUMENT_ROOT']}/uploads/{$_FILES['file']['name']} 2>&1", $outputs, $retour);
+	exec("../vendor/Ghostscript/gs-950 -o - -sDEVICE=inkcov ../uploads/" . $_FILES['file']['name'] . " 2>&1", $outputs, $retour);
 
 	//Nettoyage du tableau
 	$ProfilsColosPagesTemp = [];
