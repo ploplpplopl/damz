@@ -1,8 +1,8 @@
 <?php
 
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
-
 require_once 'views/head.php';
+
 ?>
 
 <div class="row">
@@ -232,7 +232,9 @@ require_once 'views/head.php';
 					</tr>
 					<tr>
 						<th>Feuillet(s) transparent(s)</th>
-						<td id="devisFT"></td>
+						<td id="devisFTQuant"></td>
+						<td id="devisFTPrixU"></td>
+						<td id="devisFTTotal"></td>
 					</tr>
 					<tr>
 						<th>Feuille(s) cartonnée(s)</th>
@@ -242,7 +244,9 @@ require_once 'views/head.php';
 					</tr>
 					<tr>
 						<th>Reliure(s)</th>
-						<td id="devisReliure"></td>
+						<td id="devisReliureQuant"></td>
+						<td id="devisReliurePrixU"></td>
+						<td id="devisReliureTotal"></td>
 					</tr>
 					<tr>
 						<th>TVA</th>
