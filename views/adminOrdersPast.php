@@ -13,12 +13,10 @@ if (
     header('location: /index.php?action=logout');
 	exit;
 }
-$menu = 'admprinter' == $_SESSION['user']['user_type'] ? 'menuAdmPrinter' : 'menuAdmin';
 
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
 require_once 'views/head.php';
-require_once 'views/' . $menu . '.php';
 ?>
 
 <div class="row">

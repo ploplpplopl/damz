@@ -14,7 +14,6 @@ if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
 require_once 'views/head.php';
-require_once 'views/menuAdmin.php';
 ?>
 
 <div class="row">

@@ -23,8 +23,16 @@
 				</a>
 			</div>
         </header>
-<?php 
+<?php
 require_once 'views/menu.php';
+if (!empty($_SESSION['user']['user_type'])) {
+	if ('admin' == $_SESSION['user']['user_type']) {
+		require_once 'views/menuAdmin.php';
+	}
+	elseif ('admprinter' == $_SESSION['user']['user_type']) {
+		require_once 'views/menuAdmPrinter.php';
+	}
+}
 ?>
 
 		<div class="content">

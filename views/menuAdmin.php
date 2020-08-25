@@ -4,7 +4,7 @@ $action = !empty($_GET['action']) ? $_GET['action'] : '';
 $menuItems = [
 	[
 		'url' => 'admin',
-		'name' => 'Accueil',
+		'name' => '<img src="/public/img/icon-home.png" alt="Accueil" title="Page d\'accueil de l\'administration">',
 	],
 	[
 		'url' => 'adminUsers',
