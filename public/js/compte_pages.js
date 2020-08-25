@@ -1,6 +1,6 @@
-// Observateurs d'evenements jQuery pour la calculette : les $.getJSON() vont chercher les pages getDataPaliers, et récupère les données de paliers pour les transmettre aux fonctions de calcul
 $(function () {
-    // TODO $('#formDossier').reset();
+    // AJAX call to calculate the number of black and white or colored pages
+    $("#formDossier")[0].reset(); // reset the form for firefox
     $('#loading').hide();
     $("#file_description").hide();
     $("#detailPages").hide();
@@ -48,6 +48,8 @@ $(function () {
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         calculDevis(jsonData);
+                        // make type of document available to choose
+                        $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', false);
                     }
                 },
                 beforeSend: function () {
@@ -62,6 +64,7 @@ $(function () {
         }
     });
 
+    // Single call to the database and storage of values in the jsonData variable
     var jsonData = null;
     $.getJSON("models/getDataPaliersNB.php", function (paliersNB) {
         $.getJSON("models/getDataPaliersC.php", function (paliersC) {
@@ -96,49 +99,85 @@ $(function () {
         })
     });
 
-
-    // Couleurs non selectionnables si pas de FC selectionnée
-    $('#couvCouleurFC :radio, #dosCouleurFC :radio').prop('checked', false).prop('disabled', true);
-
+    // hide buttons that are not meant to be selectable
+    $('#dossier, #memoire, #these, #perso, #couvCouleurFC :radio, #dosCouleurFC :radio, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
+    //  and force the selection of options according to the type of document
     $("#dossier").on('click', function () {
+        $('#couvCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
         $('#btnFTCouv').prop('checked', true).prop('disabled', true);
-        $('#btnFTDos').prop('checked', false).prop('disabled', true);
-        $('#btnFCCouv').prop('checked', false).prop('disabled', true);
         $('#btnFCDos').prop('checked', true).prop('disabled', true);
-        $('#couvCouleurFC :radio').prop('checked', false).prop('disabled', true);
-        $('#dosCouleurFC :radio').prop('disabled', false);
-        $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+        $('#dosCouleurFC :radio').prop('checked', false).prop('disabled', false);
+        $('#dosCouleurFC :radio').on('click', function () {
+            $('#thermo, #spiplast, #spimetal').prop('disabled', false);
+        });
+        $('#thermo, #spiplast, #spimetal').on('click', function () {
+            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+        });
+        $('#reliureNoire, #reliureBlanche').on('click', function () {
+            $('#quantity, #rectoverso').prop('disabled', false);
+        });
     });
     $("#memoire").on('click', function () {
+        $('#dosCouleurFC :radio, #btnFTDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
         $('#btnFTCouv').prop('checked', true).prop('disabled', true);
-        $('#btnFTDos').prop('checked', false).prop('disabled', true);
         $('#btnFCCouv').prop('checked', true).prop('disabled', true);
         $('#btnFCDos').prop('checked', true).prop('disabled', true);
-        $('#couvCouleurFC :radio').prop('disabled', false);
-        $('#dosCouleurFC :radio').prop('disabled', false);
-        $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+        $('#couvCouleurFC :radio').prop('checked', false).prop('disabled', false);
+        $('#couvCouleurFC :radio').on('click', function () {
+            $('#dosCouleurFC :radio').prop('disabled', false);
+        });
+        $('#dosCouleurFC :radio').on('click', function () {
+            $('#thermo, #spiplast, #spimetal').prop('disabled', false);
+        });
+        $('#thermo, #spiplast, #spimetal').on('click', function () {
+            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+        });
+        $('#reliureNoire, #reliureBlanche').on('click', function () {
+            $('#quantity, #rectoverso').prop('disabled', false);
+        });
     });
     $("#these").on('click', function () {
+        $('#dosCouleurFC :radio, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
         $('#btnFTCouv').prop('checked', true).prop('disabled', false);
         $('#btnFTDos').prop('checked', true).prop('disabled', false);
         $('#btnFCCouv').prop('checked', true).prop('disabled', true);
         $('#btnFCDos').prop('checked', true).prop('disabled', true);
-        $('#couvCouleurFC :radio').prop('disabled', false);
-        $('#dosCouleurFC :radio').prop('disabled', false);
         $('#thermo').prop('checked', true).prop('disabled', true);
-        $('#spiplast, #spimetal').prop('checked', false).prop('disabled', true);
+        $('#couvCouleurFC :radio').prop('checked', false).prop('disabled', false);
+        $('#couvCouleurFC :radio').on('click', function () {
+            $('#dosCouleurFC :radio').prop('disabled', false);
+        });
+        $('#dosCouleurFC :radio').on('click', function () {
+            $('#thermo').prop('checked', true).prop('disabled', true);
+            $('#spiplast, #spimetal').prop('disabled', true);
+            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+        });
+        $('#reliureNoire, #reliureBlanche').on('click', function () {
+            $('#quantity, #rectoverso').prop('disabled', false);
+        });
     });
     $("#perso").on('click', function () {
+        $('#couvCouleurFC :radio, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
         $('#btnFTCouv').prop('checked', false).prop('disabled', false);
         $('#btnFTDos').prop('checked', false).prop('disabled', false);
         $('#btnFCCouv').prop('checked', false).prop('disabled', false);
         $('#btnFCDos').prop('checked', false).prop('disabled', false);
-        $('#couvCouleurFC :radio').prop('disabled', false);
-        $('#dosCouleurFC :radio').prop('disabled', false);
+        $('#btnFCCouv').on('click', function () {
+            $('#couvCouleurFC :radio').prop('disabled', false);
+        });
+        $('#btnFCDos').on('click', function () {
+            $('#dosCouleurFC :radio').prop('disabled', false);
+        });
         $('#thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
+        $('#thermo, #spiplast, #spimetal').on('click', function () {
+            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+        });
+        $('#reliureNoire, #reliureBlanche').on('click', function () {
+            $('#quantity, #rectoverso').prop('disabled', false);
+        });
     });
 
-    // Relance le calcul du devis 
+    // Reload the quote calculation on click
     $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso, #perso, #these, #memoire, #dossier").on('click', function () {
         calculDevis(jsonData);
     });
@@ -151,6 +190,7 @@ $(function () {
     });
 });
 
+// Quote calculation
 function calculDevis(jsonData) {
     let quantity = $("#quantity").val();
     let totalNB = Number(calculPages('NB', jsonData['paliersNB'], quantity));
@@ -162,7 +202,7 @@ function calculDevis(jsonData) {
     $("#devisTotal").html(total);
 }
 
-// Calcule le prix des pages noir&blanc ou couleur
+// Calculate the price of black and white or colored pages
 function calculPages(type, paliers, quantity) {
     let nbPages = 0;
     let zone = '';
