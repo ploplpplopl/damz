@@ -2,6 +2,8 @@
 
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 require_once 'views/head.php';
+$printableColors = getPrintableColors();
+$unprintableColors = getUnprintableColors();
 
 ?>
 
@@ -106,6 +108,19 @@ require_once 'views/head.php';
 						<div id="couvCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<div class="row">
+
+
+<!-- boutons radio printable ou non -->
+								<?php foreach ($printableColors as $color) : ?>
+									<div class="col-6">
+										<input type="radio" id="color_<?php echo $data['id_dossier_color']; ?>" name="color_<?php echo $data['id_dossier_color']; ?>" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+										<label for="color_<?php echo $data['id_dossier_color']; ?>"><?php echo htmlentities($data['text'], ENT_QUOTES); ?></label>
+									</div>
+								<?php endforeach; ?>
+
+
+
+
 								<div class="col-6">
 									<input type="radio" id="FCCouvBlanche" name="btnCoulFCCouv" value="FCCouvBlanche">
 									<label for="FCCouvBlanche">Blanche</label>
@@ -250,6 +265,8 @@ require_once 'views/head.php';
 					</tr>
 					<tr>
 						<th>TVA</th>
+						<td></td>
+						<td></td>
 						<td id="devisTVA"></td>
 					</tr>
 					<tr>

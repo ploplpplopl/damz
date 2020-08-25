@@ -1,6 +1,5 @@
 <?php
 
-require_once '../config/settings.php';
 require_once '../config/config.php';
 require_once '../models/dao/DbConnection.class.php';
 
