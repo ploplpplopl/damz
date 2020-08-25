@@ -8,47 +8,11 @@ body {
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
-h1 {
-    font-size: 2.5em;
-}
-
-h2 {
-    font-size: 1.875em;
-}
-
-p {
-    font-size: 1em;
-}
-
-img {
-	max-width:100%;
-}
-
-
-p,ul,ol,table,fieldset,blockquote,pre,dl,address{
-line-height:2;
-margin:2em 0 0;
-}
-ul.nav,
-ul.navbar-nav{
-	margin:0;
-}
-
-
-
-.titre1 {
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0px;
-}
-
 header .bandeau {
     background: #333;
     text-align: center;
 	padding:20px;
 }
-
 
 .wrapper {
     display: flex;
@@ -65,8 +29,6 @@ header .bandeau {
 	padding:0 30px 250px;
 }
 
-
-/* ------ FOOTER ------ */
 footer {
 	position: absolute;
 	bottom:0;
@@ -89,12 +51,12 @@ footer .title {
 
 
 
-
+/* Bootstrap override */
 
 fieldset {
     margin: 20px 0;
     padding: 20px;
-    border: 1px solid blue;
+    border: 1px solid #ccc;
     border-radius: 10px;
 }
 legend {
@@ -106,13 +68,10 @@ legend {
 	font-weight: bold;
 	font-size: 1.125em;
 }
+
 label{cursor: pointer;}
 
-.smaller {font-size: .875em;}
-.mt-20 {margin-top: 20px;}
 .custom-file-input:lang(fr)~.custom-file-label::after{content:"Parcourir"}
-
-
 
 #uploadPDF {
     cursor: pointer;

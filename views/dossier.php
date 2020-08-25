@@ -19,7 +19,7 @@ require_once 'views/head.php';
 					<label class="custom-file-label" for="uploadPDF">Sélectionner un PDF</label>
 				</div>
 				<img src="public/img/spinner.gif" alt="Chargement…" id="loading">
-				<p class="mt-20" id="file_description"></p>
+				<p class="mt-5" id="file_description"></p>
 				<ul id="detailPages">
 					<li>Nom du fichier&nbsp;: <strong><span id="nomFichier"></span></strong></li>
 					<li>Pages en noir &amp; blanc&nbsp;: <strong><span id="nbPagesNB"></span></strong></li>
@@ -208,7 +208,7 @@ require_once 'views/head.php';
 
 			<fieldset>
 				<!-- devis -->
-				<h2>Devis</h2>
+				<legend>Devis</legend>
 
 				<table>
 					<tr>

@@ -12,12 +12,19 @@ class AuthMgr
      * @param string $email
      * @return boolean
      */
-    public static function emailExists(string $email): bool
+    public static function emailExists(string $email, int $id_user = NULL): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = 'SELECT * FROM user WHERE email=:email LIMIT 1';
+        $query = 'SELECT * FROM user WHERE email = :email';
+        if (!empty($id_user)) {
+			$query .= ' AND id_user != :id_user';
+		}
+        $query .= ' LIMIT 1';
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':email', $email);
+        if (!empty($id_user)) {
+			$stmt->bindParam(':id_user', $id_user);
+		}
         if ($stmt->execute()) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
@@ -37,12 +44,19 @@ class AuthMgr
      * @param string $pseudo
      * @return boolean
      */
-    public static function pseudoExists(string $pseudo): bool
+    public static function pseudoExists(string $pseudo, int $id_user = NULL): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = 'SELECT * FROM user WHERE pseudo=:pseudo LIMIT 1';
+        $query = 'SELECT * FROM user WHERE pseudo = :pseudo';
+        if (!empty($id_user)) {
+			$query .= ' AND id_user != :id_user';
+		}
+        $query .= ' LIMIT 1';
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':pseudo', $pseudo);
+        if (!empty($id_user)) {
+			$stmt->bindParam(':id_user', $id_user);
+		}
         if ($stmt->execute()) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
