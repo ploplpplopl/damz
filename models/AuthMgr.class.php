@@ -83,22 +83,16 @@ class AuthMgr
      * @return boolean
      */
     public static function signup(
-        string $firstname,
-        string $lastname,
         string $email,
-        string $phone,
         string $pseudo,
         string $password,
         string $token
     ) {
         try {
             $dbh = DbConnection::getConnection('administrateur');
-            $query = 'INSERT INTO user (first_name, last_name , email, phone, pseudo, password, secure_key, date_add) VALUES (:first_name, :last_name, :email, :phone, :pseudo, :password, :secure_key, :date_add)';
+            $query = 'INSERT INTO user (email, pseudo, password, secure_key, date_add) VALUES (:email, :pseudo, :password, :secure_key, :date_add)';
             $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':first_name', $firstname, PDO::PARAM_STR);
-            $stmt->bindParam(':last_name', $lastname, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
             $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
 			$password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
