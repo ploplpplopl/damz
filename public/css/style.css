@@ -13,7 +13,6 @@ header .bandeau {
     text-align: center;
 	padding:20px;
 }
-
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -28,7 +27,6 @@ header .bandeau {
 .content {
 	padding:0 30px 250px;
 }
-
 footer {
 	position: absolute;
 	bottom:0;
@@ -40,7 +38,6 @@ footer {
     color: white;
     text-align: center;
 }
-
 footer p {
     margin: 0.5em;
 }

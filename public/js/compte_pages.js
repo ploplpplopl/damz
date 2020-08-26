@@ -1,7 +1,9 @@
 $(function () {
+    // hide buttons that are not meant to be selectable
+    $('#dossier, #memoire, #these, #perso, #couvCouleurFC :radio, #dosCouleurFC :radio, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
+
     // AJAX call to calculate the number of black and white or colored pages
     $("#formDossier")[0].reset(); // reset the form for firefox
-    $('#loading').hide();
     $("#file_description").hide();
     $("#detailPages").hide();
     // First step : upload PDF
@@ -20,7 +22,6 @@ $(function () {
                     if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
                         $("#detailPages").hide();
                         $("#file_description").hide();
-                        $('#loading').hide();
                         if (reponse == 'failure') {
                             alert('Le traitement du fichier à échoué');
                         } else if (reponse == 'notPDF') {
@@ -48,24 +49,25 @@ $(function () {
                         $("#nbPages").html(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
-                        calculDevis(jsonData);
-                        // Make type of document available to choose when pdf is loaded
+						$('#loading').empty();
+                        // Make type of document available to choose when pdf is loaded.
                         $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', false);
+                        calculDevis(jsonData);
                     }
                 },
                 beforeSend: function () {
-                    $('#loading').show();
+					$('#loading').html('<img src="/public/img/spinner.gif" alt="Chargement…">');
                     $('#file_description').hide();
                 },
                 complete: function () {
-                    $('#loading').hide();
+                    $('#loading').empty();
                 }
             });
             //$("#erreur").hide();
         }
     });
 
-    // Single call to the database and storage of values in the jsonData variable
+    // Single call to the database and storage of values in the jsonData variable.
     var jsonData = null;
     $.getJSON("models/getDataPaliersNB.php", function (paliersNB) {
         $.getJSON("models/getDataPaliersC.php", function (paliersC) {
@@ -100,8 +102,6 @@ $(function () {
         })
     });
 
-    // hide buttons that are not meant to be selectable
-    $('#dossier, #memoire, #these, #perso, #couvCouleurFC :radio, #dosCouleurFC :radio, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);
     //  and force the selection of options according to the type of document
     $("#dossier").on('click', function () {
         $('#couvCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso').prop('checked', false).prop('disabled', true);

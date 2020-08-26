@@ -1,13 +1,13 @@
 <?php
 
-// sleep(1);
-// print_r(json_encode([
-// 	'NbPages' => 334,
-// 	'NbPagesC' => 303,
-// 	'NbPagesNB' => 31,
-// 	'TabPages' => [1,15,34],
-// ]));
-// exit;
+sleep(1);
+print_r(json_encode([
+	'NbPages' => 334,
+	'NbPagesC' => 303,
+	'NbPagesNB' => 31,
+	'TabPages' => [1,15,34],
+]));
+exit;
 
 //Adapter l'application pour le site pro; rechercher solution pour plugin WordPress
 
