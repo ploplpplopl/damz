@@ -3,8 +3,6 @@
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
 require_once 'views/head.php';
 $allColors = getAllColors();
-$printableColors = getPrintableColors();
-$unprintableColors = getUnprintableColors();
 
 ?>
 
@@ -43,10 +41,10 @@ $unprintableColors = getUnprintableColors();
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-							Feuillet transparent de protection avant.<br>
-							Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
+									Feuillet transparent de protection avant.<br>
+									Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Mémoire -->
@@ -57,11 +55,11 @@ $unprintableColors = getUnprintableColors();
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-							Feuillet transparent de protection avant.<br>
-							Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
-							Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
+									Feuillet transparent de protection avant.<br>
+									Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
+									Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
@@ -74,10 +72,10 @@ $unprintableColors = getUnprintableColors();
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-							Feuillet transparent de protection avant et arrière au choix. <br>
-							Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
+									Feuillet transparent de protection avant et arrière au choix. <br>
+									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-							Thermocollée blanche ou noire au choix.</small></p>
+									Thermocollée blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Personnalisé -->
@@ -88,9 +86,9 @@ $unprintableColors = getUnprintableColors();
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-							Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
+									Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
@@ -108,41 +106,19 @@ $unprintableColors = getUnprintableColors();
 						<div id="couvCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
-								<input type="radio" name="couv-impr" id="couv-printable" value="printable">
-								<label for="">Feuille imprimable</label><br>
-								<input type="radio" name="couv-impr" id="couv-unprintable" value="unprintable">
-								<label for="">Feuille non imprimable</label><br>
+								<input type="radio" name="couv-impr" id="couv_printable" value="printable">
+								<label for="couv_printable">Feuille imprimable</label><br>
+								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable">
+								<label for="couv_unprintable">Feuille non imprimable</label><br>
 							</p>
-							<div style="height:300px;overflow-y:auto;">
+							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;">
 <?php foreach ($allColors as $data) : ?>
-								<div class="couv-color-<?php echo ($data['printable'] ? 'printable' : 'unprintable'); ?>">
-									<input type="radio" id="color_<?php echo $data['id_dossier_color']; ?>" name="color_<?php echo $data['id_dossier_color']; ?>" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
-									<label for="color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
+								<div class="couv-color couv-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> couv-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<input type="radio" id="couv_color_<?php echo $data['id_dossier_color']; ?>" name="couv_color" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<label id="label_couv_color_<?php echo $data['id_dossier_color']; ?>" for="couv_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 								</div>
 <?php endforeach; ?>
 							</div>
-<!--
-								<div class="col-6">
-									<input type="radio" id="FCCouvBlanche" name="btnCoulFCCouv" value="FCCouvBlanche">
-									<label for="FCCouvBlanche">Blanche</label>
-								</div>
-								<div class="col-6">
-									<input type="radio" id="FCCouvNoire" name="btnCoulFCCouv" value="FCCouvNoire">
-									<label for="FCCouvNoire">Noire</label>
-								</div>
-								<div class="col-6">
-									<input type="radio" id="FCCouvVerte" name="btnCoulFCCouv" value="FCCouvVerte">
-									<label for="FCCouvVerte">Verte</label>
-								</div>
-								<div class="col-6">
-									<input type="radio" id="FCCouvJaune" name="btnCoulFCCouv" value="FCCouvJaune">
-									<label for="FCCouvJaune">Jaune</label>
-								</div>
-								<div class="col-6">
-									<input type="radio" id="FCCouvRouge" name="btnCoulFCCouv" value="FCCouvRouge">
-									<label for="FCCouvRouge">Rouge</label>
-								</div>
--->
 						</div>
 					</div>
 					<div class="col-lg-4">
@@ -157,16 +133,16 @@ $unprintableColors = getUnprintableColors();
 						<div id="dosCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
-								<input type="radio" name="couv-impr" id="couv-printable" value="printable">
-								<label for="">Feuille imprimable</label><br>
-								<input type="radio" name="couv-impr" id="couv-unprintable" value="unprintable">
-								<label for="">Feuille non imprimable</label><br>
+								<input type="radio" name="dos-impr" id="dos_printable" value="printable">
+								<label for="dos_printable">Feuille imprimable</label><br>
+								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable">
+								<label for="dos_unprintable">Feuille non imprimable</label><br>
 							</p>
-							<div style="height:300px;overflow-y:auto;">
+							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;">
 <?php foreach ($allColors as $data) : ?>
-								<div class="couv-color-<?php echo ($data['printable'] ? 'printable' : 'unprintable'); ?>">
-									<input type="radio" id="color_<?php echo $data['id_dossier_color']; ?>" name="color_<?php echo $data['id_dossier_color']; ?>" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
-									<label for="color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
+								<div class="dos-color dos-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> dos-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<input type="radio" id="dos_color_<?php echo $data['id_dossier_color']; ?>" name="dos_color" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<label id="label_dos_color_<?php echo $data['id_dossier_color']; ?>" for="dos_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 								</div>
 <?php endforeach; ?>
 							</div>
@@ -271,7 +247,7 @@ $unprintableColors = getUnprintableColors();
 			</fieldset>
 
 			<!-- bouton valider -->
-			<input type="submit" id="submit" value="Valider">
+			<button type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2">Valider</button>
 		</form>
 	</div>
 </div>
