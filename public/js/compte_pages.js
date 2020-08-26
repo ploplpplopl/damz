@@ -74,7 +74,7 @@ $(function () {
             jsonData = json;
         }
     });
- 
+
     function resetOptions() {
         $('#couvCouleurFC :radio, #dosCouleurFC :radio, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso, #couv_printable, #couv_unprintable, #dos_printable, #dos_unprintable, div.dos-color, div.couv-color').prop('checked', false).prop('disabled', true);
         $('div.dos-color, div.couv-color').show();
@@ -201,12 +201,6 @@ $(function () {
             e.preventDefault();
         }
     });
-
-
-    // // Display colors
-    // function displayColors(param){
-
-    // }
 
     // Quote calculation
     function calculDevis(jsonData) {
