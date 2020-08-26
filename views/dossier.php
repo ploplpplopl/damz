@@ -41,12 +41,12 @@ $unprintableColors = getUnprintableColors();
 							<input type="radio" name="docType" value="dossier" id="dossier" />
 							<label for="dossier"><strong>Dossier</strong></label>
 						</div>
-						<div class="bottomDocType_old" style="height:240px;overflow-y:auto;">
-							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée à l'arrière (non imprimable).</span></p>
-							<p>Reliure&nbsp;:<br>
-								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
+						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+							Feuillet transparent de protection avant.<br>
+							Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
+							<p><small><strong>Reliure</strong>&nbsp;:<br>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Mémoire -->
@@ -55,15 +55,13 @@ $unprintableColors = getUnprintableColors();
 							<input type="radio" name="docType" value="memoire" id="memoire" />
 							<label for="memoire"><strong>Mémoire</strong></label>
 						</div>
-						<div class="bottomDocType_old" style="height:240px;overflow-y:auto;">
-							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée et imprimable en 1ère de couverture
-									(première page du document).<br>
-									Feuille cartonnée colorée non imprimable en 4ème de couverture
-									(dernière page du document).</span></p>
-							<p>Reliure&nbsp;:<br>
-								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
+						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+							Feuillet transparent de protection avant.<br>
+							Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
+							Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
+							<p><small><strong>Reliure</strong>&nbsp;:<br>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
@@ -74,13 +72,12 @@ $unprintableColors = getUnprintableColors();
 							<input type="radio" name="docType" value="these" id="these" />
 							<label for="these"><strong>Thèse</strong></label>
 						</div>
-						<div class="bottomDocType_old" style="height:240px;overflow-y:auto;">
-							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Feuillet transparent de protection avant et arrière au choix. <br>
-									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture
-									(première page du document et résumé de la thèse).</span></p>
-							<p>Reliure&nbsp;:<br>
-								<span class="smaller">Thermocollée blanche ou noire au choix.</span></p>
+						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+							Feuillet transparent de protection avant et arrière au choix. <br>
+							Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
+							<p><small><strong>Reliure</strong>&nbsp;:<br>
+							Thermocollée blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Personnalisé -->
@@ -89,11 +86,11 @@ $unprintableColors = getUnprintableColors();
 							<input type="radio" name="docType" value="perso" id="perso" />
 							<label for="perso"><strong>Personnalisé</strong></label>
 						</div>
-						<div class="bottomDocType_old" style="height:240px;overflow-y:auto;">
-							<p>Couverture et dos&nbsp;:<br>
-								<span class="smaller">Personnalisez toutes vos options selon vos besoins&nbsp;!</span></p>
-							<p>Reliure&nbsp;:<br>
-								<span class="smaller">Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</span></p>
+						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+							Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
+							<p><small><strong>Reliure</strong>&nbsp;:<br>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
