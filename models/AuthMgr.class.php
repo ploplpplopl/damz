@@ -23,7 +23,7 @@ class AuthMgr
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':email', $email);
         if (!empty($id_user)) {
-			$stmt->bindParam(':id_user', $id_user);
+			$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
 		}
         if ($stmt->execute()) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -55,7 +55,7 @@ class AuthMgr
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':pseudo', $pseudo);
         if (!empty($id_user)) {
-			$stmt->bindParam(':id_user', $id_user);
+			$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
 		}
         if ($stmt->execute()) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);

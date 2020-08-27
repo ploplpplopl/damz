@@ -120,10 +120,10 @@ if (isset($_POST['login-btn'])) {
 					case 'user':
 					default:
 						$action = 'accueil';
-						// TODO : mise en place de la redirection si l'inscription se fait durant le process d'achat.
-						//if (!empty($_SESSION['process_dossier'])) {
-							//$action = 'overview';
-						//}
+						// Redirection si la connexion se fait durant le tunnel de paiement.
+						if (!empty($_SESSION['tunnel'])) {
+							$action = $_SESSION['tunnel'];
+						}
 						break;
 				}
 				

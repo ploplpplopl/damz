@@ -33,6 +33,9 @@ require_once 'views/head.php';
 		<p class="mt-0"><small><a href="?action=accountAddresses&amp;edit=<?php echo $addr['id_address']; ?>">Modifier</a>&nbsp;- <a href="?action=accountAddresses&amp;del=<?php echo $addr['id_address']; ?>" class="del-address">Supprimer</a></small></p>
 	<?php endforeach; ?>
 <?php endif; ?>
+<?php if (!empty($_SESSION['tunnel'])): ?>
+		<p class="mt-5"><a class="btn btn-primary" href="/index.php?action=<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
+<?php endif; ?>
 	</div>
 	<div class="col-sm-6">
 		<h2><?php echo ('upd' == $addUpd ? 'Modifier une adresse' : 'Ajouter une adresse'); ?></h2>

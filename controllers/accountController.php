@@ -81,10 +81,7 @@ if (isset($_POST['user-info-btn'])) {
 	elseif (!preg_match('/^(\w+[\' -]?)+\w+$/i', $lastname)) {
         $errors[] = 'Votre nom contient des caractères invalides';
     }
-    if (empty($phone)) {
-        $errors[] = 'Téléphone requis';
-    }
-	elseif (!preg_match('/^[+0-9. ()-]*$/i', $phone)) {
+    if (!empty($phone) && !preg_match('/^[+0-9. ()-]*$/i', $phone)) {
         $errors[] = 'Votre numéro de téléphone n\'est pas valide';
     }
 	
