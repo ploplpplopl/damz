@@ -2,10 +2,10 @@
 
 require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
 
-$paliersSpiplast = [];
+$paliersSpimetal = [];
 
-// Récupération des paliers des spirales plastiques.
-$paliersSpiplast = AdminGestionMgr::getPaliersSpiplast();
+// Récupération des paliers des spirales metalliques.
+$paliersSpimetal = AdminGestionMgr::getPaliersSpimetal();
 
 
 $id = '';
@@ -16,7 +16,7 @@ $errors = [];
 $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
-	$result = AdminGestionMgr::getPalierSpiplastById($_GET['edit']);
+	$result = AdminGestionMgr::getPalierSpimetalById($_GET['edit']);
 	$id = $result['id'];
 	$palier = $result['palier'];
 	$prix = $result['prix'];
@@ -42,23 +42,23 @@ if (isset($_POST['edit-btn'])) {
 	if (empty($errors)) {
 		$dbh = DbConnection::getConnection('administrateur');
 		if ('add' == $addUpd) {
-			$max = AdminGestionMgr::getPalierSpiplastPositionMax();
-            $result = AdminGestionMgr::setNewPalierSpiplast($palier, $prix, $max['pos']);
+			$max = AdminGestionMgr::getPalierSpimetalPositionMax();
+            $result = AdminGestionMgr::setNewPalierSpimetal($palier, $prix, $max['pos']);
 		}
 		else {  // update : $addUpd = 'upd'
-            $result = AdminGestionMgr::updatePalierSpiplast($palier, $prix, $id);
+            $result = AdminGestionMgr::updatePalierSpimetal($palier, $prix, $id);
 		}
 		if ($result) {
 			$_SESSION['message_status'][] = 'add' == $addUpd ? 'Palier ajouté' : 'Palier modifié';
 		}
-		header('location: index.php?action=adminSpiplast');
+		header('location: index.php?action=adminSpimetal');
 		exit;
 	}
 }
 
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-    AdminGestionMgr::delPalierSpiplast($_GET['del']);
+    AdminGestionMgr::delPalierSpimetal($_GET['del']);
 	$_SESSION['message_status'][] = 'Palier supprimé';
-	header('location: index.php?action=adminSpiplast');
+	header('location: index.php?action=adminSpimetal');
 	exit;
 }
