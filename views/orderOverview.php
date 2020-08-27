@@ -46,60 +46,13 @@ require_once 'views/head.php';
 				<th scope="row">Description</th>
 				<td>
 					<strong>Couverture</strong>&nbsp;:<br>
-					Feuillet transparent&nbsp;: <?php
-if ($settings['document'][$docType]['couv_ft'] === TRUE || !empty($fileToPrint['couv_ft'])) {
-	echo 'oui';
-} else {
-	echo 'non';
-}
-?><br>
-					Feuille cartonnée&nbsp;: <?php
-if ($settings['document'][$docType]['couv_fc'] === TRUE || !empty($fileToPrint['couv_fc'])) {
-	// Imprimable / non imprimable.
-	if (!empty($fileToPrint['couv_fc_type'])) {
-		echo $settings['mapping'][$fileToPrint['couv_fc_type']];
-	} else {
-		echo $settings['mapping'][$settings['document'][$docType]['couv_fc_type']];
-	}
-	// Couleur.
-	echo ', couleur&nbsp;: ';
-	echo mb_strtolower($mappingColors[$fileToPrint['couv_fc_color']]);
-} else {
-	echo 'non';
-}
-?><br>
+					Feuillet transparent&nbsp;: <?php echo (!empty($fileToPrint['couv_ft']) ? 'oui' : 'non'); ?><br>
+					Feuille cartonnée&nbsp;: <?php echo (empty($fileToPrint['couv_fc']) ? 'non' : $settings['mapping'][$fileToPrint['couv_fc_type']] . ', couleur&nbsp;: ' . mb_strtolower($mappingColors[$fileToPrint['couv_fc_color']])); ?><br>
 					<strong>Dos</strong>&nbsp;:<br>
-					Feuillet transparent&nbsp;: <?php
-if ($settings['document'][$docType]['dos_ft'] === TRUE || !empty($fileToPrint['dos_ft'])) {
-	echo 'oui';
-} else {
-	echo 'non';
-}
-?><br>
-					Feuille cartonnée&nbsp;: <?php
-if ($settings['document'][$docType]['dos_fc'] === TRUE || !empty($fileToPrint['dos_fc'])) {
-	// Imprimable / non imprimable.
-	if (!empty($fileToPrint['dos_fc_type'])) {
-		echo $settings['mapping'][$fileToPrint['dos_fc_type']];
-	} else {
-		echo $settings['mapping'][$settings['document'][$docType]['dos_fc_type']];
-	}
-	// Couleur.
-	echo ', couleur&nbsp;: ';
-	echo mb_strtolower($mappingColors[$fileToPrint['dos_fc_color']]);
-} else {
-	echo 'non';
-}
-?><br>
+					Feuillet transparent&nbsp;: <?php echo (!empty($fileToPrint['dos_ft']) ? 'oui' : 'non'); ?><br>
+					Feuille cartonnée&nbsp;: <?php echo (empty($fileToPrint['dos_fc']) ? 'non' : $settings['mapping'][$fileToPrint['dos_fc_type']] . ', couleur&nbsp;: ' . mb_strtolower($mappingColors[$fileToPrint['dos_fc_color']])); ?><br>
 					<strong>Reliure</strong>&nbsp;:<br>
-					<?php
-if (empty($fileToPrint['reliure_type'])) {
-	$fileToPrint['reliure_type'] = current($settings['document'][$docType]['reliure_type']);
-}
-echo $settings['mapping'][$fileToPrint['reliure_type']];
-echo ', couleur&nbsp;: ';
-echo mb_strtolower($fileToPrint['reliure_color']);
-?><br>
+					<?php echo $settings['mapping'][$fileToPrint['reliure_type']] . ', couleur&nbsp;: ' . mb_strtolower($fileToPrint['reliure_color']); ?><br>
 				</td>
 			</tr>
 			<tr>
@@ -111,11 +64,11 @@ echo mb_strtolower($fileToPrint['reliure_color']);
 			</tr>
 			<!--tr>
 				<th scope="row"><abbr title="Taxe sur la valeur ajoutée">TVA</abbr></th>
-				<td><?php echo number_format($fileToPrint['tva'], 2, ',', ' '); ?>&nbsp;€</td>
+				<td><?php echo str_replace(' ', '&nbsp;', number_format($fileToPrint['tva'], 2, ',', ' ')); ?>&nbsp;€</td>
 			</tr-->
 			<tr>
 				<th scope="row">Prix total <abbr title="Toutes taxes comprises">TTC</abbr></th>
-				<td><?php echo number_format($fileToPrint['total'], 2, ',', ' '); ?>&nbsp;€ (dont <abbr title="Taxe sur la valeur ajoutée">TVA</abbr> incluse&nbsp;: <?php echo number_format($fileToPrint['tva'], 2, ',', ' '); ?>&nbsp;€)</td>
+				<td><?php echo str_replace(' ', '&nbsp;', number_format($fileToPrint['total'], 2, ',', ' ')); ?>&nbsp;€ (dont <abbr title="Taxe sur la valeur ajoutée">TVA</abbr> incluse&nbsp;: <?php echo str_replace(' ', '&nbsp;', number_format($fileToPrint['tva'], 2, ',', ' ')); ?>&nbsp;€)</td>
 			</tr>
 		</table>
 	</div>

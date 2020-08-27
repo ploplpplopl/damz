@@ -14,6 +14,9 @@ if (
 	exit;
 }
 
+require_once 'controllers/adminOrders.php';
+$orders = getOrders();
+
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
 require_once 'views/head.php';
@@ -33,42 +36,53 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<table class="table table-striped table-bordered table-hover table-sm table-responsive">
+		<table class="table table-striped table-bordered table-hover table-sm table-responsive mt-3">
 			<thead class="thead-light">
 				<tr>
-					<th>Date</th>
-					<th>Nom</th>
-					<th>Prénom</th>
-					<th>Coordonnées</th>
-					<th>Commande</th>
-					<th>Actions</th>
+					<th class="align-top">Date</th>
+					<th class="align-top">Prénom&nbsp;/ nom</th>
+					<th class="align-top">Adresse e-mail&nbsp;/ Téléphone</th>
+					<th class="align-top">Adresse</th>
+					<th class="align-top">Commande</th>
+					<th class="align-top">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
+<?php if (empty($orders)): ?>
+				<tr><td colspan="6">Aucune commande</td></tr>
+<?php else: ?>
+	<?php foreach ($orders as $order): ?>
 				<tr>
-					<td>26/07/2020</td>
-					<td>Weiner</td>
-					<td>Anthony</td>
-					<td>13 rue Laptop - Caen<br> anthony@weiner.com<br> 06 12 34 57 89</td>
-					<td>Dossier 16 pages</td>
-					<td class="center">Facture PDF Étiquette Suppr</td>
+					<td><?php echo date('d-m-Y H:i', strtotime($order['date_add'])); ?></td>
+					<td>
+						<?php echo $order['first_name']; ?><br>
+						<?php echo $order['last_name']; ?><br>
+					</td>
+					<td>
+						<?php echo $order['email']; ?><br>
+						<?php echo $order['phone']; ?><br>
+					</td>
+					<td>
+						<?php echo $order['address']; ?><br>
+						<?php echo (!empty($order['address2']) ? $order['address2'] . '<br>' : ''); ?>
+						<?php echo $order['zip_code'] . ' ' . $order['city']; ?><br>
+						<?php echo $order['country_name']; ?><br>
+					</td>
+					<td>
+						<?php echo $settings['mapping'][$order['doc_type']]; ?><br>
+						<?php echo $order['nb_page']; ?> pages<br>
+						<?php echo $order['quantity'], ' ', ($order['quantity'] > 1 ? 'exemplaires' : 'exemplaire'); ?><br>
+						<?php echo ($order['rectoverso'] ? 'recto-verso' : 'recto'); ?><br>
+					</td>
+					<td>
+						<a href="#" title="Facture">▢</a>
+						<a href="#" title="PDF">▢</a>
+						<a href="#" title="Étiquette">▢</a>
+						<a href="#" title="Archiver">▢</a>
+					</td>
 				</tr>
-				<tr>
-					<td>26/04/2020</td>
-					<td>Dupuis</td>
-					<td>Léonard</td>
-					<td>24 rue des buissons - Caen<br> leonard@dupuis.com<br> 06 12 34 57 89</td>
-					<td>Thèse 16 pages</td>
-					<td class="center">Facture PDF Étiquette Suppr</td>
-				</tr>
-				<tr>
-					<td>26/12/2019</td>
-					<td>Rosenberg</td>
-					<td>Marshall</td>
-					<td>1 rue de la CNV - Caen<br> marshall@rosenberg.com<br> 06 12 34 57 89</td>
-					<td>Mémoire 53 pages</td>
-					<td class="center">Facture PDF Étiquette Suppr</td>
-				</tr>
+	<?php endforeach; ?>
+<?php endif; ?>
 			</tbody>
 		</table>
 	</div>
