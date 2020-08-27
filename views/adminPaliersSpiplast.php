@@ -4,7 +4,7 @@ if (empty($_SESSION['user']['id_user'])) {
     header('location: index.php?action=login');
 	exit;
 }
-// protège accès direct à http://localhost/views/admin.php (views devra etre interdit avec htaccess)
+// protège accès direct à http://localhost/views/xxx.php (views devra etre interdit avec htaccess)
 if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
     header('location: /index.php?action=logout');
 	exit;
