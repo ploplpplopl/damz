@@ -19,16 +19,29 @@ $menuItems = [
 		'items' => [
 			[
 				'url' => 'adminPaliersNB',
-				'name' => 'Paliers N&amp;B',
+				'name' => 'Paliers pages N&amp;B',
 			],
 			[
 				'url' => 'adminPaliersC',
-				'name' => 'Paliers couleur',
+				'name' => 'Paliers pages couleur',
 			],
 			[
 				'url' => 'adminCouleurs',
-				'name' => 'Couleurs',
+				'name' => 'Couleurs feuilles cartonnées',
 			],
+			[
+				'url' => 'adminSpiplast',
+				'name' => 'Paliers reliures plastiques',
+			],
+			[
+				'url' => 'adminSpimetal',
+				'name' => 'Paliers reliures métalliques',
+			],
+			[
+				'url' => 'adminThermo',
+				'name' => 'Paliers reliures thermocollées',
+			],
+
 		],
 	],
 ];

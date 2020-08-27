@@ -4,7 +4,6 @@ require_once("dao/DbConnection.class.php");
 
 class AuthMgr
 {
-    // TODO : check si pseudo deja utilisé (pareil que emailExists)
     /**
      * Checks if email exists in database
      * returns true if exists

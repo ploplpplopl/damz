@@ -38,7 +38,7 @@ try {
 	//Nettoyage du tableau
 	$ProfilsColosPagesTemp = [];
 	foreach ($outputs as $output) {
-		if (substr($output, -1) == "K") { //Ne prend que les éléments se terminant par "K" (donc tout ceux avec les profils colorimétriques de la page) => Tout les éléments du tableau inutiles sont laissés de coté
+		if (substr($output, -1) == "K") { //Ne prend que les éléments se terminant par "K" (donc tout ceux avec les profils colorimétriques de la page)
 			array_push($ProfilsColosPagesTemp, $output);
 		}
 	}

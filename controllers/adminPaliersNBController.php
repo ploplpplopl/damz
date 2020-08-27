@@ -58,7 +58,7 @@ if (isset($_POST['edit-btn'])) {
 			$stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
 			$stmt->bindParam(':position', $max['pos'], PDO::PARAM_INT);
 		}
-		else {
+		else {  // update : $addUpd = 'upd'
 			$stmt = $dbh->prepare('UPDATE paliers_nb SET palier = :palier, prix = :prix WHERE id = :id');
 			$stmt->bindParam(':palier', $palier, PDO::PARAM_INT);
 			$stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
