@@ -2,6 +2,7 @@
 
 sleep(1);
 print_r(json_encode([
+	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
 	'NbPages' => 334,
 	'NbPagesC' => 303,
 	'NbPagesNB' => 31,
@@ -13,12 +14,12 @@ exit;
 
 //Vérification du type et de la taille du fichier envoyé
 if ($_FILES['file']['type'] != 'application/pdf') {
-	echo "notPDF";
-	return;
+	echo 'notPDF';
+	exit;
 // } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
 } else if ($_FILES['file']['size'] > 70000000) {
-	echo "tooHeavy";
-	return;
+	echo 'tooHeavy';
+	exit;
 }
 
 try {
@@ -26,11 +27,13 @@ try {
 	if (!file_exists('../uploads')) {
 		mkdir('../uploads', 0777);
 	}
-	$_FILES['file']['name'] = str_replace(' ', '_', $_FILES['file']['name']);
-	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $_FILES['file']['name']);
+	$parts = explode('.', $_FILES['file']['name']);
+	$extension = end($parts);
+	$filename = md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.' . $extension;
+	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $filename);
 
 	//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où 0 est bien, et tout autre chiffre indique problème
-	exec("../vendor/Ghostscript/gs-950 -o - -sDEVICE=inkcov ../uploads/" . $_FILES['file']['name'] . " 2>&1", $outputs, $retour);
+	exec("../vendor/Ghostscript/gs-950 -o - -sDEVICE=inkcov ../uploads/$filename 2>&1", $outputs, $retour);
 
 	//Nettoyage du tableau
 	$ProfilsColosPagesTemp = [];
@@ -70,6 +73,7 @@ try {
 
 	//Création d'un tableau avec clés, puis transformation en JSON renvoyé à la page formulairePDF.ph pour affichage
 	$tabFinal = [
+		'filename' => $filename,
 		'NbPages' => $nbPages,
 		'NbPagesC' => count($tabPagesCouleurs),
 		'NbPagesNB' => $nbPagesNB,
@@ -78,5 +82,6 @@ try {
 	$tabFinal = json_encode($tabFinal);
 	print_r($tabFinal);
 } catch (Exception $e) {
-	echo "failure : " . $e;
+	echo 'failure';
+	exit;
 }

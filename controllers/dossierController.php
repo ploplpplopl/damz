@@ -146,7 +146,7 @@ if (isset($_POST['dossier-btn'])) {
 			
 	}
 	if (empty($errors)) {
-		// Mise en seession des caractéristiques du PDF à imprimer.
+		// Mise en session des caractéristiques du PDF à imprimer.
 		$_SESSION['file_to_print'] = [
 			'nom_fichier' => $nomFichier,
 			'nb_page' => $nbPages,
@@ -168,6 +168,30 @@ if (isset($_POST['dossier-btn'])) {
 			'tva' => $tva,
 			'total' => $total,
 		];
+		// Mise à jour des valeurs des champs disabled, non passés par POST.
+		switch ($docType) {
+			case 'dossier':
+				$_SESSION['file_to_print']['couv_ft'] = '1';
+				$_SESSION['file_to_print']['dos_fc'] = '1';
+				$_SESSION['file_to_print']['dos_fc_type'] = 'unprintable';
+				break;
+				
+			case 'memoire':
+				$_SESSION['file_to_print']['couv_ft'] = '1';
+				$_SESSION['file_to_print']['couv_fc'] = '1';
+				$_SESSION['file_to_print']['couv_fc_type'] = 'printable';
+				$_SESSION['file_to_print']['dos_fc'] = '1';
+				$_SESSION['file_to_print']['dos_fc_type'] = 'unprintable';
+				break;
+				
+			case 'these':
+				$_SESSION['file_to_print']['couv_fc'] = '1';
+				$_SESSION['file_to_print']['couv_fc_type'] = 'printable';
+				$_SESSION['file_to_print']['dos_fc'] = '1';
+				$_SESSION['file_to_print']['dos_fc_type'] = 'printable';
+				$_SESSION['file_to_print']['reliure_type'] = 'thermo';
+				break;
+		}
 		
 		/*
 il veut une phrase qui reprend toutes les options choisies et le prix total. c'est tout.

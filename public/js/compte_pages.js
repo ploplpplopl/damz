@@ -42,8 +42,8 @@ $(function () {
                         }
                         $("#detailPages").show();
                         $("#file_description").show().html(paragInfo);
-                        $("#nomFichier").html(fichier.name);
-                        $("input[name='nomFichier']").val(fichier.name);
+                        $("#nomFichier").html(obj.filename);
+                        $("input[name='nomFichier']").val(obj.filename);
                         $("#nbPages").html(obj.NbPages);
                         $("input[name='nbPages']").val(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
@@ -97,21 +97,21 @@ $(function () {
         $('div.dos-color :radio').prop('disabled', false);
         $('div.dos-unprintable-0').hide();
         // solution 1 : tout est clicable et alerte si clic sur autre chose que couleur, puis si clic sur autre chose que reliure, puis....
-        $('#thermo, #spiplast, #spimetal').prop('disabled', false);
+        /*$('#thermo, #spiplast, #spimetal').prop('disabled', false);
         $('#thermo, #spiplast, #spimetal').click(function (event) {
             event.preventDefault(); // empeche la selection du radio btn
             if ($('div.dos-color :radio').not(':checked')) {
                 alert('Veuillez sélectionner une couleur pour le dos cartonné');
             }
             $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-        });
+        });*/
         // solution 2 : suivant selectionnable si précédent checked
-        // $('div.dos-color :radio').on('click', function () {
-        //     $('#thermo, #spiplast, #spimetal').prop('disabled', false);
-        // });
-        // $('#thermo, #spiplast, #spimetal').on('click', function () {
-        //     $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-        // });
+        $('div.dos-color :radio').on('click', function () {
+            $('#thermo, #spiplast, #spimetal').prop('disabled', false);
+        });
+        $('#thermo, #spiplast, #spimetal').on('click', function () {
+            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+        });
         $('#reliureNoire, #reliureBlanche').on('click', function () {
             $('#quantity, #rectoverso').prop('disabled', false);
         });
