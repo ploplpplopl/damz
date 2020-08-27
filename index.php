@@ -102,6 +102,18 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminCouleurs.php');
 		break;
+	case 'adminSpiplast':
+		$sTitre = 'Administration';
+		require('views/adminPaliersSpiplast.php');
+		break;
+	case 'adminSpimetal':
+			$sTitre = 'Administration';
+			require('views/adminPaliersSpimetal.php');
+			break;
+	case 'adminThermo':
+			$sTitre = 'Administration';
+			require('views/adminPaliersThermo.php');
+			break;
 
 		// default:
 		// 	require('views/head.php');
