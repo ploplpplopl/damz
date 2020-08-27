@@ -28,5 +28,68 @@ $settings['mail-username'] = 'copifac.test@gmail.com';
 $settings['mail-password'] = 'AzE-46KmL7_PtG';
 
 
+$settings['mapping'] = [
+	'dossier' => 'Dossier',
+	'memoire' => 'Mémoire',
+	'these' => 'Thèse',
+	'perso' => 'Personnalisé',
+	'printable' => 'imprimable',
+	'unprintable' => 'non imprimable',
+	'thermo' => 'thermocollée',
+	'spiplast' => 'spirales plastique',
+	'spimetal' => 'spirales métalliques',
+];
 
+$settings['document'] = [
+	'dossier' => [
+		'couv_ft' => TRUE,
+		'couv_fc' => FALSE,
+		'couv_fc_type' => FALSE,
+		'dos_ft' => FALSE,
+		'dos_fc' => TRUE,
+		'dos_fc_type' => 'unprintable',
+		'reliure_type' => [
+			'thermo',
+			'spiplast',
+			'spimetal',
+		],
+	],
+	'memoire' => [
+		'couv_ft' => TRUE,
+		'couv_fc' => TRUE,
+		'couv_fc_type' => 'printable',
+		'dos_ft' => FALSE,
+		'dos_fc' => TRUE,
+		'dos_fc_type' => 'unprintable',
+		'reliure_type' => [
+			'thermo',
+			'spiplast',
+			'spimetal',
+		],
+	],
+	'these' => [
+		'couv_ft' => '?',
+		'couv_fc' => TRUE,
+		'couv_fc_type' => 'printable',
+		'dos_ft' => '?',
+		'dos_fc' => TRUE,
+		'dos_fc_type' => 'printable',
+		'reliure_type' => [
+			'thermo',
+		],
+	],
+	'perso' => [
+		'couv_ft' => '?',
+		'couv_fc' => '?',
+		'couv_fc_type' => '?',
+		'dos_ft' => '?',
+		'dos_fc' => '?',
+		'dos_fc_type' => '?',
+		'reliure_type' => [
+			'thermo',
+			'spiplast',
+			'spimetal',
+		],
+	],
+];
 

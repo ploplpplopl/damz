@@ -1,8 +1,8 @@
 $(function () {
     // AJAX call to calculate the number of black and white or colored pages
-    $("#formDossier")[0].reset(); // reset the form for firefox
-    $("#file_description").hide();
-    $("#detailPages").hide();
+	$("#formDossier")[0].reset(); // reset the form for firefox
+	$("#file_description").hide();
+	$("#detailPages").hide();
     // First step : upload PDF
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
@@ -43,9 +43,13 @@ $(function () {
                         $("#detailPages").show();
                         $("#file_description").show().html(paragInfo);
                         $("#nomFichier").html(fichier.name);
+                        $("input[name='nomFichier']").val(fichier.name);
                         $("#nbPages").html(obj.NbPages);
+                        $("input[name='nbPages']").val(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
+                        $("input[name='nbPagesC']").val(obj.NbPagesC);
                         $("#nbPagesNB").html(obj.NbPagesNB);
+                        $("input[name='nbPagesNB']").val(obj.NbPagesNB);
                         $('#loading').empty();
                         // Make type of document available to choose when pdf is loaded.
                         $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', false);
@@ -80,8 +84,8 @@ $(function () {
         $('div.dos-color, div.couv-color').show();
     }
     // hide buttons that are not meant to be selectable
-    $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', true);
-    resetOptions();
+	$('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', true);
+	resetOptions();
     //  and force the selection of options according to the type of document
     $("#dossier").on('click', function () {
         resetOptions();
@@ -213,6 +217,7 @@ $(function () {
         let total = Number(totalNB + totalC + totalR + totalCouvFC + totalCouvFT).toFixed(2);
         calculTVA(total);
         $("#devisTotal").html(total);
+        $("input[name='total']").val(total);
     }
 
     // Calculate the price of black and white or colored pages
@@ -383,6 +388,46 @@ $(function () {
         TVA = Number(tauxTVA) * 0.01 * totalTTC;
 
         $("#devisTVA").html(TVA.toFixed(2));
+        $("input[name='tva']").val(TVA.toFixed(2));
     }
 
+	// Re-populate fields at page loading.
+	/*let nomFichier = $("input[name='nomFichier']").val(),
+		nbPages = $("input[name='nbPages']").val(),
+		nbPagesC = $("input[name='nbPagesC']").val(),
+		nbPagesNB = $("input[name='nbPagesNB']").val();
+	if (nomFichier && nbPages && nbPagesC && nbPagesNB) {
+		if (nbPagesNB == nbPages) {
+			var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en noir et blanc. <br>";
+		} else if (nbPagesC == nbPages) {
+			var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en couleur.<br>";
+		} else {
+			var paragInfo = "Ce document comporte " + nbPages + " pages, dont " + nbPagesC + " en couleurs et " + nbPagesNB + " en noir et blanc.<br>";
+		}
+		$("#file_description, #detailPages").show();
+		$("#file_description").html(paragInfo);
+		$("#nomFichier").html(nomFichier);
+		$("#nbPages").html(nbPages);
+		$("#nbPagesC").html(nbPagesC);
+		$("#nbPagesNB").html(nbPagesNB);
+	}*/
+	
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

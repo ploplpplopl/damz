@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+img{max-width:100%;}
 
 body {
     background: #eee;
@@ -49,7 +50,9 @@ footer .title {
 
 
 /* Bootstrap override */
-
+h1, h2, h3, h4, h5, h6{
+	margin-top: 1em;
+}
 fieldset {
     margin: 20px 0;
     padding: 20px;

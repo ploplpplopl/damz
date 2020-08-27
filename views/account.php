@@ -41,6 +41,9 @@ require_once 'views/head.php';
 			</div>
 			<button type="submit" name="user-info-btn" class="btn btn-primary">Enregistrer</button>
 		</form>
+<?php if (!empty($_SESSION['tunnel'])): ?>
+		<p class="mt-5"><a class="btn btn-primary" href="/index.php?action=<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
+<?php endif; ?>
 	</div>
 	<div class="col-sm-6">
 		<h2>Mes adresses</h2>

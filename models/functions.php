@@ -14,7 +14,7 @@ function debug($chaine, $bool) {
 
 // Raccourci de var_dump() + ajout de tags <pre>
 function vd() {
-	echo '<pre>'; 
+	echo '<pre>';
 	foreach (func_get_args() as $arg) {
 		var_dump($arg);
 	}

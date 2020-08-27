@@ -1,9 +1,9 @@
 <?php
 
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
-require_once 'views/head.php';
 $allColors = getAllColors();
 
+require_once 'views/head.php';
 ?>
 
 <div class="row">
@@ -11,7 +11,7 @@ $allColors = getAllColors();
 		<h1>Imprimez votre document</h1>
 		<?php echo displayMessage($errors); ?>
 
-		<form id="formDossier" method="post" action="traitement.php">
+		<form id="formDossier" method="post" action="">
 			<fieldset>
 				<!-- upload du document et détection du nombre de pages couleurs/N&B via le script compte_pages.js-->
 				<legend>Téléchargez le fichier PDF à imprimer</legend>
@@ -27,6 +27,10 @@ $allColors = getAllColors();
 					<li>Pages en couleur&nbsp;: <strong><span id="nbPagesC"></span></strong></li>
 					<li>Total des pages&nbsp;: <strong><span id="nbPages"></span></strong></li>
 				</ul>
+				<input type="hidden" name="nomFichier" value="<?php echo htmlentities($nomFichier, ENT_QUOTES); ?>">
+				<input type="hidden" name="nbPagesNB" value="<?php echo htmlentities($nbPagesNB, ENT_QUOTES); ?>">
+				<input type="hidden" name="nbPagesC" value="<?php echo htmlentities($nbPagesC, ENT_QUOTES); ?>">
+				<input type="hidden" name="nbPages" value="<?php echo htmlentities($nbPages, ENT_QUOTES); ?>">
 			</fieldset>
 
 			<fieldset>
@@ -36,30 +40,30 @@ $allColors = getAllColors();
 					<!-- Dossier -->
 					<div class="col-md-6" id="docTypeDossier">
 						<div class="topBarDocType_old">
-							<input type="radio" name="docType" value="dossier" id="dossier" />
+							<input type="radio" name="docType" value="dossier" id="dossier"<?php echo ('dossier' == $docType ? ' checked' : ''); ?>>
 							<label for="dossier"><strong>Dossier</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
+							Feuillet transparent de protection avant.<br>
+							Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Mémoire -->
 					<div class="col-md-6" id="docTypeMemoire">
 						<div class="topBarDocType_old">
-							<input type="radio" name="docType" value="memoire" id="memoire" />
+							<input type="radio" name="docType" value="memoire" id="memoire"<?php echo ('memoire' == $docType ? ' checked' : ''); ?>>
 							<label for="memoire"><strong>Mémoire</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
-									Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
+							Feuillet transparent de protection avant.<br>
+							Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
+							Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
@@ -67,28 +71,28 @@ $allColors = getAllColors();
 					<!-- Thèse -->
 					<div class="col-md-6" id="docTypeThese">
 						<div class="topBarDocType_old">
-							<input type="radio" name="docType" value="these" id="these" />
+							<input type="radio" name="docType" value="these" id="these"<?php echo ('these' == $docType ? ' checked' : ''); ?>>
 							<label for="these"><strong>Thèse</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant et arrière au choix. <br>
-									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
+							Feuillet transparent de protection avant et arrière au choix. <br>
+							Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Thermocollée blanche ou noire au choix.</small></p>
+							Thermocollée blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 					<!-- Personnalisé -->
 					<div class="col-md-6" id="docTypePerso">
 						<div class="topBarDocType_old">
-							<input type="radio" name="docType" value="perso" id="perso" />
+							<input type="radio" name="docType" value="perso" id="perso"<?php echo ('perso' == $docType ? ' checked' : ''); ?>>
 							<label for="perso"><strong>Personnalisé</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
+							Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
 							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
 						</div>
 					</div>
 				</div>
@@ -98,23 +102,23 @@ $allColors = getAllColors();
 						<!-- couverture -->
 						<p class="legend">Couverture</p>
 						<p>
-							<input type="checkbox" name="btnFTCouv" id="btnFTCouv">
+							<input type="checkbox" name="btnFTCouv" id="btnFTCouv" value="1"<?php echo (1 == $btnFTCouv ? ' checked' : ''); ?>>
 							<label for="btnFTCouv">Feuillet transparent</label><br>
-							<input type="checkbox" name="btnFCCouv" id="btnFCCouv">
+							<input type="checkbox" name="btnFCCouv" id="btnFCCouv" value="1"<?php echo (1 == $btnFCCouv ? ' checked' : ''); ?>>
 							<label for="btnFCCouv">Feuille cartonnée</label><br>
 						</p>
 						<div id="couvCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
-								<input type="radio" name="couv-impr" id="couv_printable" value="printable">
+								<input type="radio" name="couv-impr" id="couv_printable" value="printable"<?php echo ('printable' == $couvImpr ? ' checked' : ''); ?>>
 								<label for="couv_printable">Feuille imprimable</label><br>
-								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable">
+								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable"<?php echo ('unprintable' == $couvImpr ? ' checked' : ''); ?>>
 								<label for="couv_unprintable">Feuille non imprimable</label><br>
 							</p>
 							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;">
 <?php foreach ($allColors as $data) : ?>
 								<div class="couv-color couv-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> couv-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
-									<input type="radio" id="couv_color_<?php echo $data['id_dossier_color']; ?>" name="couv_color" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<input type="radio" id="couv_color_<?php echo $data['id_dossier_color']; ?>" name="couv_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo (htmlentities($data['text'], ENT_QUOTES) ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>"<?php echo ($data['id_dossier_color'] == $couvColor ? ' checked' : ''); ?>>
 									<label id="label_couv_color_<?php echo $data['id_dossier_color']; ?>" for="couv_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 								</div>
 <?php endforeach; ?>
@@ -125,23 +129,23 @@ $allColors = getAllColors();
 						<!-- dos -->
 						<p class="legend">Dos</p>
 						<p>
-							<input type="checkbox" name="btnFTDos" id="btnFTDos">
+							<input type="checkbox" name="btnFTDos" id="btnFTDos" value="1"<?php echo (1 == $btnFTDos ? ' checked' : ''); ?>>
 							<label for="btnFTDos">Feuillet transparent</label><br>
-							<input type="checkbox" name="btnFCDos" id="btnFCDos">
+							<input type="checkbox" name="btnFCDos" id="btnFCDos" value="1"<?php echo (1 == $btnFCDos ? ' checked' : ''); ?>>
 							<label for="btnFCDos">Feuille cartonnée</label><br>
 						</p>
 						<div id="dosCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
-								<input type="radio" name="dos-impr" id="dos_printable" value="printable">
+								<input type="radio" name="dos-impr" id="dos_printable" value="printable"<?php echo ('printable' == $dosImpr ? ' checked' : ''); ?>>
 								<label for="dos_printable">Feuille imprimable</label><br>
-								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable">
+								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable"<?php echo ('unprintable' == $dosImpr ? ' checked' : ''); ?>>
 								<label for="dos_unprintable">Feuille non imprimable</label><br>
 							</p>
 							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;">
 <?php foreach ($allColors as $data) : ?>
 								<div class="dos-color dos-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> dos-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
-									<input type="radio" id="dos_color_<?php echo $data['id_dossier_color']; ?>" name="dos_color" value="<?php echo htmlentities($data['text'], ENT_QUOTES); ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
+									<input type="radio" id="dos_color_<?php echo $data['id_dossier_color']; ?>" name="dos_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>"<?php echo ($data['id_dossier_color'] == $dosColor ? ' checked' : ''); ?>>
 									<label id="label_dos_color_<?php echo $data['id_dossier_color']; ?>" for="dos_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 								</div>
 <?php endforeach; ?>
@@ -153,21 +157,21 @@ $allColors = getAllColors();
 						<p class="legend">Reliure</p>
 						<p><strong>Type de reliure</strong></p>
 						<p>
-							<input type="radio" name="btnReliure" id="thermo">
+							<input type="radio" name="btnReliure" id="thermo" value="thermo"<?php echo ('thermo' == $btnReliure ? ' checked' : ''); ?>>
 							<label for="thermo">Thermocollée</label><br>
-							<input type="radio" name="btnReliure" id="spiplast">
+							<input type="radio" name="btnReliure" id="spiplast" value="spiplast"<?php echo ('spiplast' == $btnReliure ? ' checked' : ''); ?>>
 							<label for="spiplast">Spirales plastique</label><br>
-							<input type="radio" name="btnReliure" id="spimetal">
+							<input type="radio" name="btnReliure" id="spimetal" value="spimetal"<?php echo ('spimetal' == $btnReliure ? ' checked' : ''); ?>>
 							<label for="spimetal">Spirales métalliques</label><br>
 						</p>
 						<p><strong>Couleur de la reliure</strong></p>
 						<div class="row">
 							<div class="col-6">
-								<input type="radio" id="reliureBlanche" name="btnCoulReliure" value="reliureBlanche">
+								<input type="radio" id="reliureBlanche" name="btnCoulReliure" value="Blanche"<?php echo ('Blanche' == $btnCoulReliure ? ' checked' : ''); ?>>
 								<label for="reliureBlanche">Blanche</label>
 							</div>
 							<div class="col-6">
-								<input type="radio" id="reliureNoire" name="btnCoulReliure" value="reliureNoire">
+								<input type="radio" id="reliureNoire" name="btnCoulReliure" value="Noire"<?php echo ('Noire' == $btnCoulReliure ? ' checked' : ''); ?>>
 								<label for="reliureNoire">Noire</label>
 							</div>
 						</div>
@@ -181,11 +185,11 @@ $allColors = getAllColors();
 				<div class="options">
 					<div class="nbExmplaires">
 						<label for="quantity">Nombre d'exemplaires</label>
-						<input type="number" id="quantity" name="quantity" min="1" value="1">
+						<input type="number" id="quantity" name="quantity" min="1" value="<?php echo (!empty($quantity) ? $quantity : '1'); ?>">
 					</div>
 					<div>
 						<label for="rectoverso">Recto-Verso</label>
-						<input type="checkbox" name="btnFTDos" id="rectoverso">
+						<input type="checkbox" name="rectoverso" id="rectoverso" value="1"<?php echo (!empty($rectoverso) ? ' checked' : ''); ?>>
 					</div>
 				</div>
 			</fieldset>
@@ -244,6 +248,8 @@ $allColors = getAllColors();
 						<td id="devisTotal"></td>
 					</tr>
 				</table>
+				<input type="hidden" name="tva" value="<?php echo htmlentities($tva, ENT_QUOTES); ?>">
+				<input type="hidden" name="total" value="<?php echo htmlentities($total, ENT_QUOTES); ?>">
 			</fieldset>
 
 			<!-- bouton valider -->
@@ -254,9 +260,8 @@ $allColors = getAllColors();
 
 <?php
 
-$javascript = <<<PHP_JS
+$javascript .= '
 <script src="/public/js/compte_pages.js"></script>
-
-PHP_JS;
+';
 
 require_once 'views/footer.php';
