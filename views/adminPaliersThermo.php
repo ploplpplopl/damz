@@ -21,7 +21,7 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<h1>Paliers spirales métalliques</h1>
+		<h1>Paliers reliures thermocollées</h1>
 		<?php echo displayMessage($errors); ?>
 	</div>
 </div>

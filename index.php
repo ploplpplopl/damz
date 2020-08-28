@@ -110,9 +110,10 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminCouleurs.php');
 		break;
-	case 'adminSpiplast':
+	case 'adminspiplast':
 		$sTitre = 'Administration';
-		require('views/adminPaliersSpiplast.php');
+		$_SESSION['page'] = 'spiplast';
+		require('views/adminPaliers.php');
 		break;
 	case 'adminSpimetal':
 			$sTitre = 'Administration';

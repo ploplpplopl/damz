@@ -12,10 +12,11 @@ class AdminGestionMgr
      *
      * @return array
      */
-    public static function getPaliersSpiplast(): array
+    public static function getPaliers(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('SELECT * FROM paliers_spiplast');
+        $stmt = $dbh->prepare('SELECT * FROM :db');
+        $stmt->bindParam(':db', $db);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // fermeture de la connexion
@@ -29,10 +30,11 @@ class AdminGestionMgr
      * @param string $id
      * @return array
      */
-    public static function getPalierSpiplastById(string $id): array
+    public static function getPalierById(string $db, string $id): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('SELECT * FROM paliers_spiplast WHERE id = :id');
+        $stmt = $dbh->prepare('SELECT * FROM :db WHERE id = :id');
+        $stmt->bindParam(':db', $db);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -47,10 +49,11 @@ class AdminGestionMgr
      *
      * @return array
      */
-    public static function getPalierSpiplastPositionMax(): array
+    public static function getPalierPositionMax(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT MAX(position) + 1 AS pos FROM paliers_spiplast');
+        $stmt = $dbh->prepare('SELECT MAX(position) + 1 AS pos FROM :db');
+        $stmt->bindParam(':db', $db);
         $stmt->execute();
         $max = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -67,10 +70,11 @@ class AdminGestionMgr
      * @param string $max
      * @return boolean
      */
-    public static function setNewPalierSpiplast(string $palier, string $prix, string $max): bool
+    public static function setNewPalier(string $db, string $palier, string $prix, string $max): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('INSERT INTO paliers_spiplast (palier, prix, position) VALUES (:palier, :prix, :position)');
+        $stmt = $dbh->prepare('INSERT INTO :db (palier, prix, position) VALUES (:palier, :prix, :position)');
+        $stmt->bindParam(':db', $db);
         $stmt->bindParam(':palier', $palier, PDO::PARAM_INT);
         $stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
         $stmt->bindParam(':position', $max, PDO::PARAM_INT);
@@ -89,10 +93,11 @@ class AdminGestionMgr
      * @param string $id
      * @return boolean
      */
-    public static function updatePalierSpiplast(string $palier, string $prix, string $id): bool
+    public static function updatePalier(string $db, string $palier, string $prix, string $id): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('UPDATE paliers_spiplast SET palier = :palier, prix = :prix WHERE id = :id');
+        $stmt = $dbh->prepare('UPDATE :db SET palier = :palier, prix = :prix WHERE id = :id');
+        $stmt->bindParam(':db', $db);
         $stmt->bindParam(':palier', $palier, PDO::PARAM_INT);
         $stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -109,10 +114,11 @@ class AdminGestionMgr
      * @param string $id
      * @return void
      */
-    public static function delPalierSpiplast(string $id)
+    public static function delPalier(string $db, string $id)
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('DELETE FROM paliers_spiplast WHERE id = :id');
+        $stmt = $dbh->prepare('DELETE FROM :db WHERE id = :id');
+        $stmt->bindParam(':db', $db);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $stmt->closeCursor();
@@ -236,7 +242,7 @@ class AdminGestionMgr
         DbConnection::disconnect();
     }
 
-        // --------------------------------------------------------
+    // --------------------------------------------------------
     // ---------------- RELIURES THERMOCOLLEES ----------------
     // --------------------------------------------------------
     /**

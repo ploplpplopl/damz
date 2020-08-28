@@ -40,7 +40,6 @@ if (isset($_POST['edit-btn'])) {
 	}
 	
 	if (empty($errors)) {
-		$dbh = DbConnection::getConnection('administrateur');
 		if ('add' == $addUpd) {
 			$max = AdminGestionMgr::getPalierThermoPositionMax();
             $result = AdminGestionMgr::setNewPalierThermo($palier, $prix, $max['pos']);
