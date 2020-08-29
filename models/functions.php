@@ -59,3 +59,30 @@ function displayMessage($errors = NULL) {
 	
 	return $output;
 }
+
+function getUrl($pairs){
+	$QS = $_SERVER['QUERY_STRING'];
+	$href = '?';
+	if ($QS){
+		parse_str($QS, $params);
+		foreach ($pairs as $k => $v){
+			// Suppression du paramètre si existant.
+			if (isset($params[$k]))
+				unset($params[$k]);
+		}
+		foreach ($params as $key => $val){
+			if (is_array($val)){
+				foreach ($val as $val2)
+					$href .= $key.'[]='.$val2.'&amp;';
+			} else {
+				$href .= $key.'='.$val.'&amp;';
+			}
+		}
+	}
+	foreach ($pairs as $k => $v){
+		$href .= $k.'='.$v.'&amp;';
+	}
+	return trim($href, '&amp;');
+}
+
+
