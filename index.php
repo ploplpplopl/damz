@@ -20,8 +20,8 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'accueil';
 // debug('action: '.$action,$DEBUG);
 // Etapes et traitements
 switch ($action) {
-	
-	// Pages publiques.
+
+		// Pages publiques.
 	case 'home':
 		$sTitre = 'Impression de documents à Caen';
 		require('views/home.php');
@@ -43,7 +43,7 @@ switch ($action) {
 		require('views/contact.php');
 		break;
 
-	// Connexion.
+		// Connexion.
 	case 'login':
 		$sTitre = 'Connexion';
 		require('views/login.php');
@@ -71,7 +71,7 @@ switch ($action) {
 		require('controllers/resendConfirmationMail.php');
 		break;
 
-	// Pages user connecté.
+		// Pages user connecté.
 	case 'account':
 		$sTitre = 'Mon compte';
 		require('views/account.php');
@@ -81,7 +81,7 @@ switch ($action) {
 		require('views/accountAddresses.php');
 		break;
 
-	// ADMIN
+		// ADMIN
 	case 'admin':
 		$sTitre = 'Administration';
 		require('views/admin.php');
@@ -110,19 +110,23 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminCouleurs.php');
 		break;
-	case 'adminspiplast':
+	case 'adminSpiplast':
 		$sTitre = 'Administration';
 		$_SESSION['page'] = 'spiplast';
 		require('views/adminPaliers.php');
 		break;
 	case 'adminSpimetal':
-			$sTitre = 'Administration';
-			require('views/adminPaliersSpimetal.php');
-			break;
+		$sTitre = 'Administration';
+		$_SESSION['page'] = 'spimetal';
+		require('views/adminPaliers.php');
+		// require('views/adminPaliersSpimetal.php');
+		break;
 	case 'adminThermo':
-			$sTitre = 'Administration';
-			require('views/adminPaliersThermo.php');
-			break;
+		$sTitre = 'Administration';
+		$_SESSION['page'] = 'thermo';
+		require('views/adminPaliers.php');
+		// require('views/adminPaliersThermo.php');
+		break;
 
 		// default:
 		// 	require('views/head.php');

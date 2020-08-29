@@ -46,7 +46,7 @@ if (isset($_POST['edit-btn'])) {
         if ($result) {
             $_SESSION['message_status'][] = 'add' == $addUpd ? 'Palier ajouté' : 'Palier modifié';
         }
-        header('location: index.php?action=admin' . $_SESSION['page']);
+        header('location: index.php?action=admin' . ucfirst($_SESSION['page']));
         exit;
     }
 }
@@ -54,6 +54,6 @@ if (isset($_POST['edit-btn'])) {
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
     AdminGestionMgr::delPalier('paliers_' . $_SESSION['page'], $_GET['del']);
     $_SESSION['message_status'][] = 'Palier supprimé';
-    header('location: index.php?action=admin' . $_SESSION['page']);
+    header('location: index.php?action=admin' . ucfirst($_SESSION['page']));
     exit;
 }

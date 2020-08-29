@@ -45,7 +45,7 @@ require_once 'views/head.php';
 ?>
     <div class="row">
         <div class="col-12">
-            <p class="back"><a href="?action=admin<?php echo $_SESSION['page']; ?>">Annuler</a></p>
+            <p class="back"><a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>">Annuler</a></p>
         </div>
     </div>
     <form action="" method="post">
@@ -73,7 +73,7 @@ require_once 'views/head.php';
 <?php } else { ?>
     <div class="row">
         <div class="col-12">
-            <p class="add"><a href="?action=admin<?php echo $_SESSION['page']; ?>&amp;edit">Ajouter un palier</a></p>
+            <p class="add"><a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;edit">Ajouter un palier</a></p>
         </div>
     </div>
 <?php } ?>
@@ -98,8 +98,8 @@ require_once 'views/head.php';
                             <span class="section"><?php echo $data['palier']; ?></span>
                             <span class="section"><?php echo $data['prix']; ?></span>
                             <div class="actions">
-                                <a href="?action=admin<?php echo $_SESSION['page']; ?>&amp;edit=<?php echo $data['id']; ?>"><img src="/public/img/icon-mod.png" alt="Modifier" title="Modifier"></a>
-                                <a href="?action=admin<?php echo $_SESSION['page']; ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')"><img src="/public/img/icon-sup.png" alt="Supprimer" title="Supprimer"></a>
+                                <a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;edit=<?php echo $data['id']; ?>"><img src="/public/img/icon-mod.png" alt="Modifier" title="Modifier"></a>
+                                <a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')"><img src="/public/img/icon-sup.png" alt="Supprimer" title="Supprimer"></a>
                             </div>
                         </li>
                     <?php
