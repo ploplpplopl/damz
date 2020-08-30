@@ -4,11 +4,11 @@ $action = !empty($_GET['action']) ? $_GET['action'] : '';
 $menuItems = [
 	[
 		'url' => 'admin',
-		'name' => '<img src="/public/img/icon-home.png" alt=""> Accueil',
+		'name' => '<i class="fas fa-home"></i> Accueil',
 	],
 	[
 		'url' => 'adminOrders',
-		'name' => '<img src="/public/img/icon-order.png" alt=""> Commandes',
+		'name' => '<i class="fas fa-file"></i> Commandes',
 	],
 	/*[
 		'name' => 'Gestion',
