@@ -34,6 +34,7 @@ function displayMessage($errors = NULL) {
 		'error' => 'alert alert-danger',
 	];
 	
+	// merge $_SESSION['message_error'] to $errors if needed
 	if (!empty($errors)) {
 		if (!empty($_SESSION['message_error'])) {
 			$_SESSION['message_error'] = array_merge((array) $_SESSION['message_error'], $errors);
@@ -43,6 +44,7 @@ function displayMessage($errors = NULL) {
 		}
 	}
 	
+	// display errors
 	$output = '';
 	foreach ($messageTypes as $type => $class) {
 		if (isset($_SESSION['message_' . $type])) {
