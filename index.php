@@ -115,18 +115,18 @@ switch ($action) {
 		break;
 	case 'adminSpiplast':
 		$sTitre = 'Administration';
-		$_SESSION['page'] = 'spiplast';
+		$_page = 'spiplast';
 		require('views/adminPaliers.php');
 		break;
 	case 'adminSpimetal':
 		$sTitre = 'Administration';
-		$_SESSION['page'] = 'spimetal';
+		$_page = 'spimetal';
 		require('views/adminPaliers.php');
 		// require('views/adminPaliersSpimetal.php');
 		break;
 	case 'adminThermo':
 		$sTitre = 'Administration';
-		$_SESSION['page'] = 'thermo';
+		$_page = 'thermo';
 		require('views/adminPaliers.php');
 		// require('views/adminPaliersThermo.php');
 		break;
