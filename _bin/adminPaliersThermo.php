@@ -4,15 +4,15 @@ if (empty($_SESSION['user']['id_user'])) {
     header('location: index.php?action=login');
 	exit;
 }
-// protège accès direct à http://localhost/views/admin.php (views devra etre interdit avec htaccess)
+// protège accès direct à http://localhost/views/xxx.php (views devra etre interdit avec htaccess)
 if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
     header('location: /index.php?action=logout');
 	exit;
 }
 
 
-require_once 'controllers/adminPaliersCController.php';
-$paliers = getPaliersC();
+require_once 'controllers/adminPaliersThermoController.php';
+$paliers = $paliersThermo;
 
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
@@ -21,7 +21,7 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<h1>Paliers couleur</h1>
+		<h1>Paliers spirales métalliques</h1>
 		<?php echo displayMessage($errors); ?>
 	</div>
 </div>
@@ -29,7 +29,7 @@ require_once 'views/head.php';
 <?php if (isset($_GET['edit'])) { // add/upd ?>
 <div class="row">
 	<div class="col-12">
-		<p><a href="?action=adminPaliersC"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
+		<p><a href="?action=adminThermo"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
 	</div>
 </div>
 <form action="" method="post">
@@ -57,7 +57,7 @@ require_once 'views/head.php';
 <?php } else { ?>
 <div class="row">
 	<div class="col-12">
-		<p><a href="?action=adminPaliersC&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
+		<p><a href="?action=adminThermo&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
 	</div>
 </div>
 <?php } ?>
@@ -83,8 +83,8 @@ else {
 					<span class="section"><?php echo $data['palier']; ?></span>
 					<span class="section"><?php echo $data['prix']; ?></span>
 					<div class="actions">
-						<a href="?action=adminPaliersC&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
-						<a href="?action=adminPaliersC&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
+						<a href="?action=adminThermo&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
+						<a href="?action=adminThermo&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
 					</div>
 				</li>
 <?php
@@ -110,7 +110,7 @@ $(function(){
 		containment: ".drag",
 		update: function(){
 			var order = $("#draggable").sortable("serialize");
-			$("#info").load("../controllers/ajaxSortablePaliersC.php?" + order);
+			$("#info").load("../controllers/ajaxSortablePaliersNB.php?" + order);
 		}
 	}).disableSelection();
 });
