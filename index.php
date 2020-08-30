@@ -15,7 +15,7 @@ $DEBUG = $tParam['debug'];
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer')) $action = 'admprint';
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'admin')) $action = 'admAccueil';  // TODO page avec lien vers admprint et admin
 
-$action = isset($_GET['action']) ? $_GET['action'] : 'accueil';
+$action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
 // debug('action: '.$action,$DEBUG);
 // Etapes et traitements
@@ -98,6 +98,9 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminOrdersPast.php');
 		break;
+	case 'adminGetInvoice':
+		require('controllers/adminGetInvoice.php');
+		break;
 	case 'adminPaliersNB':
 		$sTitre = 'Administration';
 		require('views/adminPaliersNB.php');
@@ -115,17 +118,16 @@ switch ($action) {
 		require('views/adminPaliersSpiplast.php');
 		break;
 	case 'adminSpimetal':
-			$sTitre = 'Administration';
-			require('views/adminPaliersSpimetal.php');
-			break;
+		$sTitre = 'Administration';
+		require('views/adminPaliersSpimetal.php');
+		break;
 	case 'adminThermo':
-			$sTitre = 'Administration';
-			require('views/adminPaliersThermo.php');
-			break;
+		$sTitre = 'Administration';
+		require('views/adminPaliersThermo.php');
+		break;
 
-		// default:
-		// 	require('views/head.php');
-		// 	require('views/404.php');
-		// 	require('views/footer.php');
-		// 	break;
+	default:
+		$sTitre = 'Erreur 404';
+		require('views/404.php');
+		break;
 }

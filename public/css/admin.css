@@ -73,3 +73,10 @@ button[type=submit].full-width{
 	border:1px solid #000;
 }
 
+th .order a{
+	font-size:.875em;
+	text-decoration:none;
+}
+th .order a.active{
+	color:#0057b3;
+}
