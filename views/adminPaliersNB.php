@@ -81,7 +81,7 @@ else {
 				<li id="listItem_<?php echo $data['id']; ?>">
 					<span class="handle">≡<i class="fas fa-arrows-alt-v"></i>≡</span>
 					<span class="section"><?php echo $data['palier']; ?></span>
-					<span class="section"><?php echo $data['prix']; ?></span>
+					<span class="section"><?php echo $data['prix']; ?>&nbsp;€</span>
 					<div class="actions">
 						<a href="?action=adminPaliersNB&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
 						<a href="?action=adminPaliersNB&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>

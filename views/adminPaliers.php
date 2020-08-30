@@ -21,21 +21,11 @@ require_once 'views/head.php';
 <div class="row">
     <div class="col-12">
         <?php
-        if (isset($_SESSION['page']) && ($_SESSION['page'] == 'spiplast')) {
-            echo '<h1>Paliers spirales plastique</h1>';
+        switch ($_page) {
+			case 'spiplast': echo '<h1>Paliers spirales plastique</h1>'; break;
+			case 'spimetal': echo '<h1>Paliers spirales métalliques</h1>'; break;
+			case 'thermo': echo '<h1>Paliers reliures thermocollées</h1>'; break;
         }
-        // if (isset($_SESSION['page']) && ($_SESSION['page'] == 'spimetal')){
-        //     echo '<h1>Paliers spirales métallique</h1>';
-        // }
-        // if (isset($_SESSION['page']) && ($_SESSION['page'] == 'thermo')){
-        //     echo '<h1>Paliers reliures thermocollées</h1>';
-        // }
-        // if (isset($_SESSION['page']) && ($_SESSION['page'] == 'spiplast')){
-        //     echo '<h1>Paliers spirales plastique</h1>';
-        // }
-        // if (isset($_SESSION['page']) && ($_SESSION['page'] == 'spiplast')){
-        //     echo '<h1>Paliers spirales plastique</h1>';
-        // }
         ?>
         <?php echo displayMessage($errors); ?>
     </div>
@@ -43,39 +33,39 @@ require_once 'views/head.php';
 
 <?php if (isset($_GET['edit'])) { // add/upd 
 ?>
-    <div class="row">
-        <div class="col-12">
-            <p class="back"><a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>">Annuler</a></p>
-        </div>
-    </div>
-    <form action="" method="post">
-        <div class="row">
-            <div class="col-md-5">
-                <p>
-                    <label for="palier">Palier</label><br>
-                    <input type="text" name="palier" id="palier" value="<?php echo htmlentities($palier, ENT_QUOTES); ?>">
-                </p>
-            </div>
-            <div class="col-md-5">
-                <p>
-                    <label for="prix">Prix</label><br>
-                    <input type="text" name="prix" id="prix" value="<?php echo htmlentities($prix, ENT_QUOTES); ?>">
-                </p>
-            </div>
-            <div class="col-md-2">
-                <p>
-                    <label class="d-none d-md-block">&nbsp;</label><br class="d-none d-md-block">
-                    <input class="full-width" type="submit" name="edit-btn" value="Enregistrer">
-                </p>
-            </div>
-        </div>
-    </form>
+<div class="row">
+	<div class="col-12">
+		<p><a href="?action=admin<?php echo ucfirst($_page); ?>"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
+	</div>
+</div>
+<form action="" method="post">
+	<div class="row">
+		<div class="col-md-5">
+			<p>
+				<label for="palier">Palier</label><br>
+				<input type="text" name="palier" id="palier" value="<?php echo htmlentities($palier, ENT_QUOTES); ?>">
+			</p>
+		</div>
+		<div class="col-md-5">
+			<p>
+				<label for="prix">Prix</label><br>
+				<input type="text" name="prix" id="prix" value="<?php echo htmlentities($prix, ENT_QUOTES); ?>">
+			</p>
+		</div>
+		<div class="col-md-2">
+			<p>
+				<label class="d-none d-md-block">&nbsp;</label><br class="d-none d-md-block">
+				<input class="full-width" type="submit" name="edit-btn" value="Enregistrer">
+			</p>
+		</div>
+	</div>
+</form>
 <?php } else { ?>
-    <div class="row">
-        <div class="col-12">
-            <p class="add"><a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;edit">Ajouter un palier</a></p>
-        </div>
-    </div>
+<div class="row">
+	<div class="col-12">
+		<p><a href="?action=admin<?php echo ucfirst($_page); ?>&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
+	</div>
+</div>
 <?php } ?>
 
 <div class="row">
@@ -94,12 +84,12 @@ require_once 'views/head.php';
                     foreach ($paliers as $data) {
                     ?>
                         <li id="listItem_<?php echo $data['id']; ?>">
-                            <span class="handle">≡↕≡</span>
+                            <span class="handle">≡<i class="fas fa-arrows-alt-v"></i>≡</span>
                             <span class="section"><?php echo $data['palier']; ?></span>
-                            <span class="section"><?php echo $data['prix']; ?></span>
+                            <span class="section"><?php echo $data['prix']; ?>&nbsp;€</span>
                             <div class="actions">
-                                <a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;edit=<?php echo $data['id']; ?>"><img src="/public/img/icon-mod.png" alt="Modifier" title="Modifier"></a>
-                                <a href="?action=admin<?php echo ucfirst($_SESSION['page']); ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')"><img src="/public/img/icon-sup.png" alt="Supprimer" title="Supprimer"></a>
+                                <a href="?action=admin<?php echo ucfirst($_page); ?>&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
+                                <a href="?action=admin<?php echo ucfirst($_page); ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
                             </div>
                         </li>
                     <?php
