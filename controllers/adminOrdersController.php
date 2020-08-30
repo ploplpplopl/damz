@@ -3,6 +3,8 @@
 require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/Pagination.class.php';
 
+$archive = 'adminOrdersPast' == $_GET['action'] ? 1 : 0;
+
 // Récupération des commandes.
 $tab_order = [
 	1 => 'o.`date_add`',
@@ -100,7 +102,7 @@ $query = '
 	LEFT JOIN address AS a ON u.id_user = a.id_user
 	LEFT JOIN country AS c ON a.id_country = c.id_country
 	WHERE o.id_address = a.id_address
-	AND o.archive = \'0\'
+	AND o.archive = \'' . $archive . '\'
 	' . $where . '
 	ORDER BY ' . $order . ' ' . $way . '
 ';
@@ -111,7 +113,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $numOrders = count($orders);
 
 // Pagination.
-define('NUM_PER_PAGE', 10);
+define('NUM_PER_PAGE', 2);
 $pagination = new Pagination('page');
 // Redéfinition des attributs.
 $pagination
@@ -124,10 +126,28 @@ $pagination
 	->setItemsPerPage(NUM_PER_PAGE)
 	->setTotalRows($numOrders);
 $paginationPages = $pagination->process(5);
+$limitFrom = $pagination->limitFrom();
+$limitTo = $limitFrom + NUM_PER_PAGE;
+if ($limitTo > $numOrders) {
+	$limitTo = $numOrders;
+}
 
-$stmt = $dbh->prepare($query . ' LIMIT ' . $pagination->limitFrom() . ', ' . NUM_PER_PAGE);
+$stmt = $dbh->prepare($query . ' LIMIT ' . $limitFrom . ', ' . NUM_PER_PAGE);
 $stmt->execute($params);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt->closeCursor();
 DbConnection::disconnect();
+
+
+if (!empty($_GET['archive'])) {
+	$stmt = DbConnection::getConnection('administrateur')->prepare('UPDATE orders SET archive = \'1\' WHERE id_orders = :id');
+	$stmt->bindParam(':id', $_GET['archive'], PDO::PARAM_INT);
+	$stmt->execute();
+	$stmt->closeCursor();
+	DbConnection::disconnect();
+	
+	$_SESSION['message_status'][] = 'Commande archivée';
+	header('location: index.php?action=adminOrders');
+	exit;
+}

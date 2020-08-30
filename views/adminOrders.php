@@ -16,14 +16,10 @@ if (
 
 require_once 'controllers/adminOrdersController.php';
 
-
-
-
-
-
-
-
-$css = '<link rel="stylesheet" href="/public/css/admin.css">';
+$css = '
+<link rel="stylesheet" href="/public/css/admin.css">
+<link rel="stylesheet" href="/public/css/jquery-ui.css">
+';
 
 require_once 'views/head.php';
 ?>
@@ -44,16 +40,19 @@ require_once 'views/head.php';
 	<div class="col-12">
 		<form action="/index.php?action=adminOrders" method="get">
 			<input type="hidden" name="action" value="adminOrders">
+			<p class="mt-3 float-left"><?php echo $numOrders . ' ' . ($numOrders > 1 ? 'résultats' : 'résultat'); ?></p>
+			<p class="mt-3 float-right"><?php echo ($limitFrom + 1); ?> → <?php echo $limitTo; ?>&nbsp;/ <?php echo $numOrders; ?></p>
+			<div class="clear"></div>
 			<table class="table table-striped table-bordered table-hover table-sm table-responsive mt-3">
 				<thead class="thead-light">
 					<tr>
-						<th class="align-top">Date <span class="order"><a<?php echo ($sort_order == 1 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 1 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Prénom <span class="order"><a<?php echo ($sort_order == 2 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 2 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						nom <span class="order"><a<?php echo ($sort_order == 3 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 3 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Adresse e-mail <span class="order"><a<?php echo ($sort_order == 4 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 4 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						Téléphone <span class="order"><a<?php echo ($sort_order == 5 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 5 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Adresse <span class="order"><a<?php echo ($sort_order == 6 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 6 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Commande <span class="order"><a<?php echo ($sort_order == 7 && $sort_way == 1 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 7 && $sort_way == 2 ? ' style="color:#28578d;"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Date <span class="order"><a<?php echo ($sort_order == 1 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 1 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Prénom <span class="order"><a<?php echo ($sort_order == 2 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 2 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'2')); ?>">▼</a></span><br>
+						nom <span class="order"><a<?php echo ($sort_order == 3 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 3 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Adresse e-mail <span class="order"><a<?php echo ($sort_order == 4 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 4 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'2')); ?>">▼</a></span><br>
+						Téléphone <span class="order"><a<?php echo ($sort_order == 5 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 5 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Adresse <span class="order"><a<?php echo ($sort_order == 6 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 6 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Commande <span class="order"><a<?php echo ($sort_order == 7 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 7 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Actions</th>
 					</tr>
 					<tr>
@@ -116,10 +115,10 @@ require_once 'views/head.php';
 							<?php echo ($order['rectoverso'] ? 'recto-verso' : 'recto'); ?><br>
 						</td>
 						<td>
-							<a href="#" title="Facture">▢</a>
-							<a href="#" title="PDF">▢</a>
-							<a href="#" title="Étiquette">▢</a>
-							<a href="#" title="Archiver">▢</a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Étiquette"><i class="fas fa-receipt"></i></a>
+							<a href="/index.php?action=adminOrders&amp;archive=<?php echo $order['id_orders']; ?>" onclick="return confirm('Voulez-vous vraiment archiver cette commande ?')" title="Archiver"><i class="fas fa-archive"></i></a>
 						</td>
 					</tr>
 	<?php endforeach; ?>

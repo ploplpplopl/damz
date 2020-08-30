@@ -98,6 +98,9 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminOrdersPast.php');
 		break;
+	case 'adminGetInvoice':
+		require('controllers/adminGetInvoice.php');
+		break;
 	case 'adminPaliersNB':
 		$sTitre = 'Administration';
 		require('views/adminPaliersNB.php');

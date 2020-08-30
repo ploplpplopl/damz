@@ -248,7 +248,7 @@ class Pagination {
 	/**
 	 * Pagination processing.
 	 *
-	 * @param int $pageOffset Item offset before and after the current page (default: 10).
+	 * @param int $pageOffset Item offset before and after the current page (default: 4).
 	 *
 	 * return array
 	 *   $array['page']: Button text.
@@ -256,7 +256,7 @@ class Pagination {
 	 *   $array['num']: Page number for the links.
 	 *   $array['linked']: Wether button is a link.
 	 */
-	public function process($pageOffset = 10): array {
+	public function process($pageOffset = 4): array {
 		if (!isset($this->pagesCount)) {
 			$this->pagesCount = $this->pagesCount();
 		}
