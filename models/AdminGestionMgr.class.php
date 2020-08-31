@@ -15,7 +15,7 @@ class AdminGestionMgr
     public static function getPaliers(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT * FROM '.$db);
+        $stmt = $dbh->query('SELECT * FROM ' . $db);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // fermeture de la connexion
@@ -32,7 +32,7 @@ class AdminGestionMgr
     public static function getPalierById(string $db, string $id): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('SELECT * FROM '.$db.' WHERE id = :id');
+        $stmt = $dbh->prepare('SELECT * FROM ' . $db . ' WHERE id = :id');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ class AdminGestionMgr
     public static function getPalierPositionMax(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT MAX(position) + 1 AS pos FROM '.$db);
+        $stmt = $dbh->query('SELECT MAX(position) + 1 AS pos FROM ' . $db);
         $stmt->execute();
         $max = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -70,7 +70,7 @@ class AdminGestionMgr
     public static function setNewPalier(string $db, string $palier, string $prix, string $max): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('INSERT INTO '.$db.' (palier, prix, position) VALUES (:palier, :prix, :position)');
+        $stmt = $dbh->prepare('INSERT INTO ' . $db . ' (palier, prix, position) VALUES (:palier, :prix, :position)');
         $stmt->bindParam(':palier', $palier, PDO::PARAM_INT);
         $stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
         $stmt->bindParam(':position', $max, PDO::PARAM_INT);
@@ -92,7 +92,7 @@ class AdminGestionMgr
     public static function updatePalier(string $db, string $palier, string $prix, string $id): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('UPDATE '.$db.' SET palier = :palier, prix = :prix WHERE id = :id');
+        $stmt = $dbh->prepare('UPDATE ' . $db . ' SET palier = :palier, prix = :prix WHERE id = :id');
         $stmt->bindParam(':palier', $palier, PDO::PARAM_INT);
         $stmt->bindParam(':prix', $prix, PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -134,7 +134,7 @@ class AdminGestionMgr
      */
     public static function getOrders(array $params, int $archive, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
     {
-		$query = '
+        $query = '
 			SELECT o.*, u.first_name, u.last_name, u.email, u.phone,
 			a.address, a.address2, a.zip_code, a.city, c.name AS country_name
 			FROM orders AS o
@@ -146,13 +146,13 @@ class AdminGestionMgr
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '
 		';
-		if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
-			$query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
-		}
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare($query);
-		$stmt->execute($params);
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
+            $query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
+        }
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare($query);
+        $stmt->execute($params);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
@@ -165,12 +165,35 @@ class AdminGestionMgr
      */
     public static function archiveOrder(int $id)
     {
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare('UPDATE orders SET archive = \'1\' WHERE id_orders = :id');
-		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-		$stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare('UPDATE orders SET archive = \'1\' WHERE id_orders = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+    }
+
+    /**
+     * Get an order, with some related user information.
+     *
+     * @param integer $id
+     * @return void
+     */
+    public static function getSingleOrder(int $id)
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare('
+            SELECT o.*, u.first_name, u.last_name, u.date_add 
+            FROM orders AS o
+            INNER JOIN user AS u ON o.id_user = u.id_user
+            WHERE id_orders = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
     }
 
     /**
@@ -186,7 +209,7 @@ class AdminGestionMgr
      */
     public static function getUsers(array $params, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
     {
-		$query = '
+        $query = '
 			SELECT *, (
 				SELECT COUNT(id_orders)
 				FROM orders AS o
@@ -197,16 +220,15 @@ class AdminGestionMgr
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '
 		';
-		if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
-			$query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
-		}
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare($query);
-		$stmt->execute($params);
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
+            $query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
+        }
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare($query);
+        $stmt->execute($params);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
     }
-
 }

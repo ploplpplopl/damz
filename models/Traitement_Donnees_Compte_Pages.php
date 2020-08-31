@@ -30,6 +30,7 @@ try {
 	$parts = explode('.', $_FILES['file']['name']);
 	$extension = end($parts);
 	$filename = md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.' . $extension;
+	chmod($_SERVER['DOCUMENT_ROOT'] . '/uploads', 0777);
 	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $filename);
 
 	//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où 0 est bien, et tout autre chiffre indique problème

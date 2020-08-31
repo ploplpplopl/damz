@@ -55,7 +55,7 @@ if (isset($_GET['filter'])) {
 	$docType = !empty($_GET['doc_type']) ? $_GET['doc_type'] : [];
 
 	// TODO Add controls.
-	
+
 	if (!empty($date_from)) {
 		$where .= ' AND o.`date_add` > :date_from';
 		$params[':date_from'] = $date_from;
@@ -133,5 +133,22 @@ if (!empty($_GET['archive'])) {
 	AdminGestionMgr::archiveOrder($_GET['archive']);
 	$_SESSION['message_status'][] = 'Commande archivée';
 	header('location: index.php?action=adminOrders');
+	exit;
+}
+
+// DL PDF client file to print
+if (!empty($_GET['dl']) && is_numeric($_GET['dl'])) {
+	$order = AdminGestionMgr::getSingleOrder($_GET['dl']);
+	header('Content-type: application/pdf');
+	header('Content-Disposition: attachment; filename="' . str_replace(' ', '_', $order['first_name'] . '_' . $order['last_name']) . '_' . date('Y-m-d_H-i', strtotime($order['date_add'])) . '.pdf"');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');
+	header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+	header('Pragma: anytextexeptno-cache', true);
+	header('Cache-Control: private');
+	header('Expires: 0');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: ' . filesize(_ROOT_DIR_ . '/uploads/' . $order['nom_fichier']));
+	echo file_get_contents(_ROOT_DIR_ . '/uploads/' . $order['nom_fichier']);
 	exit;
 }

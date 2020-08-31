@@ -115,7 +115,7 @@ require_once 'views/head.php';
 						</td>
 						<td>
 							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
+							<a href="/index.php?action=adminOrdersPast&amp;dl=<?php echo $order['id_orders']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
 							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Étiquette"><i class="fas fa-receipt"></i></a>
 						</td>
 					</tr>

@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_SESSION['user']) || empty($_SESSION['tunnel'])) {
-    header('location: index.php?action=accueil');
+	header('location: index.php?action=accueil');
 	exit;
 }
 
@@ -75,51 +75,54 @@ require_once 'views/head.php';
 </div>
 <form method="post" action="">
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<h2>Adresse de livraison</h2>
-<?php if (empty($userAddresses)): ?>
-			<p>Aucune adresse, en <a href="/index.php?action=accountAddresses">ajouter une</a>.</p>
-<?php else: ?>
-	<?php foreach ($userAddresses as $userAddress): ?>
-			<div class="form-group">
-				<label for="address_<?php echo $userAddress['id_address']; ?>">
-				<input type="radio" name="address" id="address_<?php echo $userAddress['id_address']; ?>" value="<?php echo $userAddress['id_address']; ?>"<?php echo ($address == $userAddress['id_address'] ? ' checked' : ''); ?>>
-				<strong><?php echo htmlentities($userAddress['addr_label'], ENT_QUOTES); ?></strong><br>
-				<?php
-				echo htmlentities($userAddress['addr_name'], ENT_QUOTES) . '<br>';
-				echo htmlentities($userAddress['address'], ENT_QUOTES) . '<br>';
-				echo (!empty($userAddress['address2']) ? htmlentities($userAddress['address2'], ENT_QUOTES) . '<br>' : '');
-				echo htmlentities($userAddress['zip_code'] . ' ' . $userAddress['city'], ENT_QUOTES) . '<br>';
-				echo htmlentities($userAddress['country_name'], ENT_QUOTES) . '<br>';
-				?>
-				</label>
-			</div>
-	<?php endforeach; ?>
-			<p class="mt-3"><a href="/index.php?action=accountAddresses">Gérer mes adresses</a></p>
-<?php endif; ?>
+			<?php if (empty($userAddresses)) : ?>
+				<p>Aucune adresse, en <a href="/index.php?action=accountAddresses">ajouter une</a>.</p>
+			<?php else : ?>
+				<?php foreach ($userAddresses as $userAddress) : ?>
+					<div class="form-group">
+						<label for="address_<?php echo $userAddress['id_address']; ?>">
+							<input type="radio" name="address" id="address_<?php echo $userAddress['id_address']; ?>" value="<?php echo $userAddress['id_address']; ?>" <?php echo ($address == $userAddress['id_address'] ? ' checked' : ''); ?>>
+							<strong><?php echo htmlentities($userAddress['addr_label'], ENT_QUOTES); ?></strong><br>
+							<?php
+							echo htmlentities($userAddress['addr_name'], ENT_QUOTES) . '<br>';
+							echo htmlentities($userAddress['address'], ENT_QUOTES) . '<br>';
+							echo (!empty($userAddress['address2']) ? htmlentities($userAddress['address2'], ENT_QUOTES) . '<br>' : '');
+							echo htmlentities($userAddress['zip_code'] . ' ' . $userAddress['city'], ENT_QUOTES) . '<br>';
+							echo htmlentities($userAddress['country_name'], ENT_QUOTES) . '<br>';
+							?>
+						</label>
+					</div>
+				<?php endforeach; ?>
+				<p class="mt-3"><a href="/index.php?action=accountAddresses">Gérer mes adresses</a></p>
+			<?php endif; ?>
 			<h2>Téléphone</h2>
-<?php if (empty($userPhone)): ?>
-			<p>Aucun numéro de téléphone, en <a href="/index.php?action=account">ajouter un</a>.<br>
-			<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
-<?php else: ?>
-			<p>Mon numéro de téléphone&nbsp;: <?php echo htmlentities($userPhone, ENT_QUOTES); ?><br>
-			<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
-			<p class="mt-3"><a href="/index.php?action=account">Modifier</a></p>
-<?php endif; ?>
+			<?php if (empty($userPhone)) : ?>
+				<p>Aucun numéro de téléphone, en <a href="/index.php?action=account">ajouter un</a>.<br>
+					<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
+			<?php else : ?>
+				<p>Mon numéro de téléphone&nbsp;: <?php echo htmlentities($userPhone, ENT_QUOTES); ?><br>
+					<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
+				<p class="mt-3"><a href="/index.php?action=account">Modifier</a></p>
+			<?php endif; ?>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-4">
+			<h2>Mode de livraison</h2>
+		</div>
+		<div class="col-md-4">
 			<h2>Moyen de paiement</h2>
 			<div class="form-group">
 				<label for="payment_paypal">
-				<input type="radio" name="payment" id="payment_paypal" value="paypal"<?php echo ('paypal' == $payment ? ' checked' : ''); ?>>
-				PayPal<br>
-				<img class="mt-2" src="/public/img/paypal.png" alt="PayPal"></label>
+					<input type="radio" name="payment" id="payment_paypal" value="paypal" <?php echo ('paypal' == $payment ? ' checked' : ''); ?>>
+					PayPal<br>
+					<img class="mt-2" src="/public/img/paypal.png" alt="PayPal"></label>
 			</div>
 			<div class="form-group">
 				<label for="payment_stripe">
-				<input type="radio" name="payment" id="payment_stripe" value="stripe"<?php echo ('stripe' == $payment ? ' checked' : ''); ?>>
-				Stripe<br>
-				<img class="mt-2" src="/public/img/stripe.png" alt="Stripe"></label>
+					<input type="radio" name="payment" id="payment_stripe" value="stripe" <?php echo ('stripe' == $payment ? ' checked' : ''); ?>>
+					Stripe<br>
+					<img class="mt-2" src="/public/img/stripe.png" alt="Stripe"></label>
 			</div>
 		</div>
 	</div>
