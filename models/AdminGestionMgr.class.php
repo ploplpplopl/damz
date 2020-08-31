@@ -104,20 +104,104 @@ class AdminGestionMgr
     }
 
     /**
-     * Delete un palier
+     * Delete a level.
      *
+     * @param string $table
      * @param string $id
      * @return void
      */
-    public static function delPalier(string $db, string $id)
+    public static function delPalier(string $table, int $id)
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('DELETE FROM '.$db.' WHERE id = :id');
+        $stmt = $dbh->prepare('DELETE FROM ' . $table . ' WHERE id = :id');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $stmt->closeCursor();
-        // fermeture de la connexion
         DbConnection::disconnect();
+    }
+
+    /**
+     * Getting orders.
+     *
+     * @param array $params The request parameters.
+     * @param int $archive The archive field: 1 or 0.
+     * @param string $where The WHERE part of the request.
+     * @param string $order The first parameter of the ORDER BY part of the request.
+     * @param string $way The second parameter of the ORDER BY part of the request.
+     * @param int $limitFrom (optional) The first parameter of the LIMIT part of the request.
+     * @param int $limitTo (optional) The second parameter of the LIMIT part of the request.
+     * @return array The result set.
+     */
+    public static function getOrders(array $params, int $archive, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
+    {
+		$query = '
+			SELECT o.*, u.first_name, u.last_name, u.email, u.phone,
+			a.address, a.address2, a.zip_code, a.city, c.name AS country_name
+			FROM orders AS o
+			LEFT JOIN user AS u ON o.id_user = u.id_user
+			LEFT JOIN address AS a ON u.id_user = a.id_user
+			LEFT JOIN country AS c ON a.id_country = c.id_country
+			WHERE o.id_address = a.id_address
+			AND o.archive = \'' . $archive . '\'
+			' . $where . '
+			ORDER BY ' . $order . ' ' . $way . '
+		';
+		if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
+			$query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
+		}
+		$dbh = DbConnection::getConnection('administrateur');
+		$stmt = $dbh->prepare($query);
+		$stmt->execute($params);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+
+    /**
+     * Archive an order.
+     *
+     * @param string $id
+     */
+    public static function archiveOrder(int $id)
+    {
+		$dbh = DbConnection::getConnection('administrateur');
+		$stmt = $dbh->prepare('UPDATE orders SET archive = \'1\' WHERE id_orders = :id');
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$stmt->closeCursor();
+		DbConnection::disconnect();
+    }
+
+    /**
+     * Getting users.
+     *
+     * @param array $params The request parameters.
+     * @param string $where The WHERE part of the request.
+     * @param string $order The first parameter of the ORDER BY part of the request.
+     * @param string $way The second parameter of the ORDER BY part of the request.
+     * @param int $limitFrom (optional) The first parameter of the LIMIT part of the request.
+     * @param int $limitTo (optional) The second parameter of the LIMIT part of the request.
+     * @return array The result set.
+     */
+    public static function getUsers(array $params, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
+    {
+		$query = '
+			SELECT * FROM user AS u
+			WHERE 1
+			' . $where . '
+			ORDER BY ' . $order . ' ' . $way . '
+		';
+		if ((!empty($limitFrom) || 0 === $limitFrom) && isset($limitTo)) {
+			$query .= ' LIMIT ' . (int) $limitFrom . ', ' . (int) $limitTo;
+		}
+		$dbh = DbConnection::getConnection('administrateur');
+		$stmt = $dbh->prepare($query);
+		$stmt->execute($params);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
     }
 
 }
