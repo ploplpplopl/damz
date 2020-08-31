@@ -15,9 +15,9 @@ $query = '
 	SELECT o.*, u.first_name, u.last_name, u.email, u.phone,
 	a.address, a.address2, a.zip_code, a.city, c.name AS country_name
 	FROM orders AS o
-	LEFT JOIN user AS u ON o.id_user = u.id_user
-	LEFT JOIN address AS a ON u.id_user = a.id_user
-	LEFT JOIN country AS c ON a.id_country = c.id_country
+	INNER JOIN user AS u ON o.id_user = u.id_user
+	INNER JOIN address AS a ON u.id_user = a.id_user
+	INNER JOIN country AS c ON a.id_country = c.id_country
 	WHERE o.id_address = a.id_address
 	AND o.archive = \'0\'
 	AND id_orders = :id

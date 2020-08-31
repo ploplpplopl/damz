@@ -11,7 +11,7 @@ function getUserAddresses() {
 	$stmt = DbConnection::getConnection('administrateur')->prepare('
 		SELECT a.*, c.name AS country_name
 		FROM address AS a
-		LEFT JOIN country AS c
+		INNER JOIN country AS c
 		ON a.id_country = c.id_country
 		WHERE a.id_user = :id
 	');
