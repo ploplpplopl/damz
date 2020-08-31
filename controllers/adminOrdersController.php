@@ -36,7 +36,7 @@ $email = '';
 $phone = '';
 $zipcode = '';
 $city = '';
-$docType = '';
+$docType = [];
 
 $params = [];
 $where = '';
@@ -52,7 +52,7 @@ if (isset($_GET['filter'])) {
 	$phone = !empty($_GET['phone']) ? $_GET['phone'] : '';
 	$zipcode = !empty($_GET['zip_code']) ? $_GET['zip_code'] : '';
 	$city = !empty($_GET['city']) ? $_GET['city'] : '';
-	$docType = !empty($_GET['doc_type']) ? $_GET['doc_type'] : '';
+	$docType = !empty($_GET['doc_type']) ? $_GET['doc_type'] : [];
 
 	// TODO Add controls.
 	
@@ -89,8 +89,17 @@ if (isset($_GET['filter'])) {
 		$params[':city'] = '%' . $city . '%';
 	}
 	if (!empty($docType)) {
-		$where .= ' AND o.`doc_type` = :doc_type';
-		$params[':doc_type'] = $docType;
+		$where .= ' AND (';
+		$i = 0;
+		foreach ($docType as $k => $v) {
+			if ($i) {
+				$where .= ' OR ';
+			}
+			$where .= 'o.`doc_type` = :doc_type' . $k;
+			$params[':doc_type' . $k] = $v;
+			$i++;
+		}
+		$where .= ')';
 	}
 }
 
