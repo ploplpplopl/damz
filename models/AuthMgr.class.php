@@ -231,7 +231,7 @@ class AuthMgr
      */
     public static function disconnectUser()
     {
-        unset($_SESSION['user']);
+        unset($_SESSION['user'], $_SESSION['file_to_print'], $_SESSION['tunnel']);
         /*
 		$_SESSION = array(); // Détruit toutes les variables de session
         session_unset(); // obsolete

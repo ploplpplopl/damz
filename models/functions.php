@@ -34,6 +34,7 @@ function displayMessage($errors = NULL) {
 		'error' => 'alert alert-danger',
 	];
 	
+	// merge $_SESSION['message_error'] to $errors if needed
 	if (!empty($errors)) {
 		if (!empty($_SESSION['message_error'])) {
 			$_SESSION['message_error'] = array_merge((array) $_SESSION['message_error'], $errors);
@@ -43,6 +44,7 @@ function displayMessage($errors = NULL) {
 		}
 	}
 	
+	// display errors
 	$output = '';
 	foreach ($messageTypes as $type => $class) {
 		if (isset($_SESSION['message_' . $type])) {
@@ -59,3 +61,30 @@ function displayMessage($errors = NULL) {
 	
 	return $output;
 }
+
+function getUrl($pairs){
+	$QS = $_SERVER['QUERY_STRING'];
+	$href = '?';
+	if ($QS){
+		parse_str($QS, $params);
+		foreach ($pairs as $k => $v){
+			// Suppression du paramètre si existant.
+			if (isset($params[$k]))
+				unset($params[$k]);
+		}
+		foreach ($params as $key => $val){
+			if (is_array($val)){
+				foreach ($val as $val2)
+					$href .= $key.'[]='.$val2.'&amp;';
+			} else {
+				$href .= $key.'='.$val.'&amp;';
+			}
+		}
+	}
+	foreach ($pairs as $k => $v){
+		$href .= $k.'='.$v.'&amp;';
+	}
+	return trim($href, '&amp;');
+}
+
+

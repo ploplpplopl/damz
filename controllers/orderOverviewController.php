@@ -79,7 +79,8 @@ if (isset($_POST['order-btn'])) {
 		// Enregistrement de la commande en BDD.
 		$dbh = DbConnection::getConnection('administrateur');
 		$stmt = $dbh->prepare('INSERT INTO orders (date_add, id_user, id_address, nom_fichier, nb_page, nb_page_nb, nb_page_c, doc_type, couv_ft, couv_fc, couv_fc_type, couv_fc_color, dos_ft, dos_fc, dos_fc_type, dos_fc_color, reliure_type, reliure_color, quantity, rectoverso, tva, total) VALUES (:date_add, :id_user, :id_address, :nom_fichier, :nb_page, :nb_page_nb, :nb_page_c, :doc_type, :couv_ft, :couv_fc, :couv_fc_type, :couv_fc_color, :dos_ft, :dos_fc, :dos_fc_type, :dos_fc_color, :reliure_type, :reliure_color, :quantity, :rectoverso, :tva, :total)');
-		$stmt->bindParam(':date_add', date('Y-m-d H:i:s'), PDO::PARAM_INT);
+		$date_add = date('Y-m-d H:i:s');
+		$stmt->bindParam(':date_add', $date_add, PDO::PARAM_STR);
 		$stmt->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
 		$stmt->bindParam(':id_address', $address, PDO::PARAM_INT);
 		$stmt->bindParam(':nom_fichier', $_SESSION['file_to_print']['nom_fichier'], PDO::PARAM_STR);

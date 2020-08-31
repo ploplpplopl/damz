@@ -9,6 +9,7 @@ $settings['environment'] = 'dev';
 $settings['site_name'] = 'dossier-rapide.fr';
 
 // URL du site.
+// TODO verifier url en prod et supprimer condition ternaire
 $settings['site_url'] = 'dev' == $settings['environment'] ?
 	$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] : 'https://dossier-rapide.fr';
 

@@ -15,13 +15,13 @@ $DEBUG = $tParam['debug'];
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer')) $action = 'admprint';
 // if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'admin')) $action = 'admAccueil';  // TODO page avec lien vers admprint et admin
 
-$action = isset($_GET['action']) ? $_GET['action'] : 'accueil';
+$action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
 // debug('action: '.$action,$DEBUG);
 // Etapes et traitements
 switch ($action) {
-	
-	// Pages publiques.
+
+		// Pages publiques.
 	case 'home':
 		$sTitre = 'Impression de documents à Caen';
 		require('views/home.php');
@@ -43,7 +43,7 @@ switch ($action) {
 		require('views/contact.php');
 		break;
 
-	// Connexion.
+		// Connexion.
 	case 'login':
 		$sTitre = 'Connexion';
 		require('views/login.php');
@@ -71,7 +71,7 @@ switch ($action) {
 		require('controllers/resendConfirmationMail.php');
 		break;
 
-	// Pages user connecté.
+		// Pages user connecté.
 	case 'account':
 		$sTitre = 'Mon compte';
 		require('views/account.php');
@@ -81,7 +81,7 @@ switch ($action) {
 		require('views/accountAddresses.php');
 		break;
 
-	// ADMIN
+		// ADMIN
 	case 'admin':
 		$sTitre = 'Administration';
 		require('views/admin.php');
@@ -98,6 +98,9 @@ switch ($action) {
 		$sTitre = 'Administration';
 		require('views/adminOrdersPast.php');
 		break;
+	case 'adminGetInvoice':
+		require('controllers/adminGetInvoice.php');
+		break;
 	case 'adminPaliersNB':
 		$sTitre = 'Administration';
 		require('views/adminPaliersNB.php');
@@ -112,20 +115,24 @@ switch ($action) {
 		break;
 	case 'adminSpiplast':
 		$sTitre = 'Administration';
-		require('views/adminPaliersSpiplast.php');
+		$_page = 'spiplast';
+		require('views/adminPaliers.php');
 		break;
 	case 'adminSpimetal':
-			$sTitre = 'Administration';
-			require('views/adminPaliersSpimetal.php');
-			break;
+		$sTitre = 'Administration';
+		$_page = 'spimetal';
+		require('views/adminPaliers.php');
+		// require('views/adminPaliersSpimetal.php');
+		break;
 	case 'adminThermo':
-			$sTitre = 'Administration';
-			require('views/adminPaliersThermo.php');
-			break;
+		$sTitre = 'Administration';
+		$_page = 'thermo';
+		require('views/adminPaliers.php');
+		// require('views/adminPaliersThermo.php');
+		break;
 
-		// default:
-		// 	require('views/head.php');
-		// 	require('views/404.php');
-		// 	require('views/footer.php');
-		// 	break;
+	default:
+		$sTitre = 'Erreur 404';
+		require('views/404.php');
+		break;
 }

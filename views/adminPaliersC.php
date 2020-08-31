@@ -29,7 +29,7 @@ require_once 'views/head.php';
 <?php if (isset($_GET['edit'])) { // add/upd ?>
 <div class="row">
 	<div class="col-12">
-		<p class="back"><a href="?action=adminPaliersC">Annuler</a></p>
+		<p><a href="?action=adminPaliersC"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
 	</div>
 </div>
 <form action="" method="post">
@@ -57,7 +57,7 @@ require_once 'views/head.php';
 <?php } else { ?>
 <div class="row">
 	<div class="col-12">
-		<p class="add"><a href="?action=adminPaliersC&amp;edit">Ajouter un palier</a></p>
+		<p><a href="?action=adminPaliersC&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
 	</div>
 </div>
 <?php } ?>
@@ -79,12 +79,12 @@ else {
 	foreach ($paliers as $data) {
 ?>
 				<li id="listItem_<?php echo $data['id']; ?>">
-					<span class="handle">≡↕≡</span>
+					<span class="handle">≡<i class="fas fa-arrows-alt-v"></i>≡</span>
 					<span class="section"><?php echo $data['palier']; ?></span>
-					<span class="section"><?php echo $data['prix']; ?></span>
+					<span class="section"><?php echo $data['prix']; ?>&nbsp;€</span>
 					<div class="actions">
-						<a href="?action=adminPaliersC&amp;edit=<?php echo $data['id']; ?>"><img src="/public/img/icon-mod.png" alt="Modifier" title="Modifier"></a>
-						<a href="?action=adminPaliersC&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')"><img src="/public/img/icon-sup.png" alt="Supprimer" title="Supprimer"></a>
+						<a href="?action=adminPaliersC&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
+						<a href="?action=adminPaliersC&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
 					</div>
 				</li>
 <?php
