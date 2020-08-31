@@ -34,21 +34,23 @@ $email = '';
 $phone = '';
 $confirmed = '';
 $userType = [];
+$numOrders = '';
 
 $params = [];
 $where = '';
 
 if (isset($_GET['filter'])) {
-	$date_from_fr = $_GET['date_from'];
+	$date_from_fr = !empty($_GET['date_from']) ? $_GET['date_from'] : '';
 	$date_from = !empty($date_from_fr) ? date('Y-m-d', strtotime($date_from_fr)) : '';
-	$date_to_fr = $_GET['date_to'];
+	$date_to_fr = !empty($_GET['date_to']) ? $_GET['date_to'] : '';
 	$date_to = !empty($date_to_fr) ? date('Y-m-d', strtotime($date_to_fr)) : '';
-	$firstname = $_GET['first_name'];
-	$lastname = $_GET['last_name'];
-	$email = $_GET['email'];
-	$phone = $_GET['phone'];
-	$confirmed = $_GET['confirmed'];
+	$firstname = !empty($_GET['first_name']) ? $_GET['first_name'] : '';
+	$lastname = !empty($_GET['last_name']) ? $_GET['last_name'] : '';
+	$email = !empty($_GET['email']) ? $_GET['email'] : '';
+	$phone = !empty($_GET['phone']) ? $_GET['phone'] : '';
+	$confirmed = !empty($_GET['confirmed']) || (isset($_GET['confirmed']) && $_GET['confirmed'] === '0') ? $_GET['confirmed'] : '';
 	$userType = !empty($_GET['user_type']) ? $_GET['user_type'] : [];
+	$numOrders = !empty($_GET['num_orders']) || (isset($_GET['num_orders']) && $_GET['num_orders'] === '0') ? $_GET['num_orders'] : '';
 
 	// TODO Add controls.
 	
@@ -93,13 +95,21 @@ if (isset($_GET['filter'])) {
 		}
 		$where .= ')';
 	}
+	if (!empty($numOrders) || $numOrders === '0') {
+		$where .= ' AND (
+			SELECT COUNT(id_orders)
+			FROM orders AS o
+			WHERE o.id_user = u.id_user
+		) = :num_orders';
+		$params[':num_orders'] = $numOrders;
+	}
 }
 
 $users = AdminGestionMgr::getUsers($params, $where, $order, $way);
 $numUsers = count($users);
 
 // Pagination.
-define('NUM_PER_PAGE', 1);
+define('NUM_PER_PAGE', 10);
 $pagination = new Pagination('page');
 // Redéfinition des attributs.
 $pagination
@@ -120,4 +130,23 @@ if ($limitTo > $numUsers) {
 
 $users = AdminGestionMgr::getUsers($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
 
-// Archive an order.
+// Edit user.
+$id = '';
+$user_email = '';
+$user_pseudo = '';
+$user_user_type = '';
+$user_subscr_confirmed = '';
+$errors = [];
+
+$addUpd = 'add';
+if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
+	$addUpd = 'upd';
+	$stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM user WHERE id_user = :id');
+	$stmt->bindParam(':id', $_GET['edit']);
+	$stmt->execute();
+	$result = $stmt->fetch(PDO::FETCH_ASSOC);
+	$id = $result['id_user'];
+	//$unprintable = $result['unprintable'];
+	$stmt->closeCursor();
+	DbConnection::disconnect();
+}

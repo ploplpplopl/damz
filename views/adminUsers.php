@@ -30,7 +30,43 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
+<?php if (isset($_GET['edit'])): // add/upd ?>
+		<p><a href="?action=adminUsers"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
+		<form action="" method="post" class="mb-4">
+			<div class="form-group">
+				<label for="signup-user_type">Type de compte</label>
+				<select id="signup-user_type" name="user_type" class="form-control">
+					<option value="">-- Sélectionner --</option>
+					<option value="admin">Administrateur</option>
+					<option value="admprinter">Imprimeur</option>
+					<option value="user">Utilisateur</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="signup-email">Adresse e-mail</label>
+				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
+			</div>
+			<div class="form-group">
+				<label for="signup-pseudo">Pseudo (pour la connexion)</label>
+				<input type="text" id="signup-pseudo" name="pseudo" class="form-control" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required="required">
+			</div>
+			<div class="form-group">
+				<label for="signup-password">Mot de passe</label>
+				<input type="password" id="signup-password" name="password" class="form-control" required="required">
+			</div>
+			<div class="form-group">
+				<label for="signup-passwordC">Confirmation du mot de passe</label>
+				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
+			</div>
+			<div class="form-check">
+				<input type="checkbox" id="signup-subsc_confirmed" name="subsc_confirmed" class="form-check-input" value="1"<?php echo ($user_subscr_confirmed == 1 ? ' checked' : ''); ?>>
+				<label class="form-check-label" for="signup-subsc_confirmed">Utilisateur confirmé</label>
+			</div>
+			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Valider</button>
+		</form>
+<?php else: ?>
 		<p><a href="?action=adminUsers&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un utilisateur</a></p>
+<?php endif; ?>
 		<form action="" method="get">
 			<input type="hidden" name="action" value="adminUsers">
 			<p class="float-left"><?php echo $numUsers . ' ' . ($numUsers > 1 ? 'résultats' : 'résultat'); ?></p>
@@ -46,6 +82,7 @@ require_once 'views/head.php';
 						Téléphone <span class="order"><a<?php echo ($sort_order == 5 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 5 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Confirmé <span class="order"><a<?php echo ($sort_order == 6 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 6 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Type <span class="order"><a<?php echo ($sort_order == 7 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 7 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						<th class="align-top">Nb de comm. <span class="order"><a<?php echo ($sort_order == 8 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 8 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Actions</th>
 					</tr>
 					<tr>
@@ -76,6 +113,9 @@ require_once 'views/head.php';
 							</select>
 						</th>
 						<th class="align-top">
+							<input type="text" name="num_orders" value="<?php echo htmlentities($numOrders, ENT_QUOTES); ?>">
+						</th>
+						<th class="align-top">
 							<button class="btn btn-primary btn-sm" name="filter">Filtrer</button><br>
 							<a class="btn btn-secondary btn-sm" href="/index.php?action=adminUsers" title="Supprimer les filtres">×</a>
 						</th>
@@ -83,7 +123,7 @@ require_once 'views/head.php';
 				</thead>
 				<tbody>
 <?php if (empty($users)): ?>
-					<tr><td colspan="6">Aucun utilisateur</td></tr>
+					<tr><td colspan="7">Aucun utilisateur</td></tr>
 <?php else: ?>
 	<?php foreach ($users as $user): ?>
 					<tr>
@@ -93,14 +133,21 @@ require_once 'views/head.php';
 							<?php echo $user['last_name']; ?><br>
 						</td>
 						<td>
+			<?php if (!empty($user['num_orders'])): ?>
+							<a href="/index.php?action=adminOrders&amp;email=<?php echo $user['email']; ?>&amp;filter" title="Voir ses commandes"><?php echo $user['email']; ?></a><br>
+			<?php else: ?>
 							<?php echo $user['email']; ?><br>
 							<?php echo $user['phone']; ?><br>
+			<?php endif; ?>
 						</td>
 						<td>
 							<?php echo $user['subscr_confirmed']; ?><br>
 						</td>
 						<td>
 							<?php echo $user['user_type']; ?><br>
+						</td>
+						<td>
+							<?php echo $user['num_orders']; ?><br>
 						</td>
 						<td>
 							<a href="/index.php?action=adminUsers&amp;edit=<?php echo $user['id_user']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
