@@ -183,7 +183,7 @@ class AdminGestionMgr
     {
         $dbh = DbConnection::getConnection('administrateur');
         $stmt = $dbh->prepare('
-            SELECT o.*, u.first_name, u.last_name, u.date_add 
+            SELECT o.*, u.first_name, u.last_name, u.date_add
             FROM orders AS o
             INNER JOIN user AS u ON o.id_user = u.id_user
             WHERE id_orders = :id
