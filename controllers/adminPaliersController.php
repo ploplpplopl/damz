@@ -52,7 +52,7 @@ if (isset($_POST['edit-btn'])) {
 }
 
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-    AdminGestionMgr::delPalier('paliers_' . $_page, $_GET['del']);
+    AdminGestionMgr::delPalier('paliers_' . $_page, intval($_GET['del']));
     $_SESSION['message_status'][] = 'Palier supprimé';
     header('location: index.php?action=admin' . ucfirst($_page));
     exit;

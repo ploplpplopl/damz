@@ -38,10 +38,10 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<form action="/index.php?action=adminOrders" method="get">
+		<form action="" method="get">
 			<input type="hidden" name="action" value="adminOrders">
 			<p class="mt-3 float-left"><?php echo $numOrders . ' ' . ($numOrders > 1 ? 'résultats' : 'résultat'); ?></p>
-			<p class="mt-3 float-right"><?php echo ($limitFrom + 1); ?> → <?php echo $limitTo; ?>&nbsp;/ <?php echo $numOrders; ?></p>
+			<p class="mt-3 float-right"><?php echo ($limitFrom + 1 == $limitTo ? $limitTo : ($limitFrom + 1) . ' → ' . $limitTo); ?>&nbsp;/ <?php echo $numOrders; ?></p>
 			<div class="clear"></div>
 			<table class="table table-striped table-bordered table-hover table-sm table-responsive mt-3">
 				<thead class="thead-light">
@@ -56,19 +56,19 @@ require_once 'views/head.php';
 						<th class="align-top">Actions</th>
 					</tr>
 					<tr>
-						<th>
+						<th class="align-top">
 							<input type="text" name="date_from" id="date_from" value="<?php echo htmlentities($date_from_fr, ENT_QUOTES); ?>" placeholder="De" title="De">
 							<input type="text" name="date_to" id="date_to" value="<?php echo htmlentities($date_to_fr, ENT_QUOTES); ?>" placeholder="À" title="À">
 						</th>
-						<th>
+						<th class="align-top">
 							<input type="text" name="first_name" value="<?php echo htmlentities($firstname, ENT_QUOTES); ?>" placeholder="Prénom" title="Prénom">
 							<input type="text" name="last_name" value="<?php echo htmlentities($lastname, ENT_QUOTES); ?>" placeholder="Nom" title="Nom">
 						</th>
-						<th>
+						<th class="align-top">
 							<input type="text" name="email" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" placeholder="E-mail" title="E-mail">
 							<input type="text" name="phone" value="<?php echo htmlentities($phone, ENT_QUOTES); ?>" placeholder="Téléphone" title="Téléphone">
 						</th>
-						<th>
+						<th class="align-top">
 							<input type="text" name="zip_code" value="<?php echo htmlentities($zipcode, ENT_QUOTES); ?>" placeholder="Code postal" title="Code postal">
 							<input type="text" name="city" value="<?php echo htmlentities($city, ENT_QUOTES); ?>" placeholder="Ville" title="Ville">
 						</th>
@@ -81,7 +81,7 @@ require_once 'views/head.php';
 								<option value="perso"<?php echo ($docType === 'perso' ? ' selected' : ''); ?>>Personnalisé</option>
 							</select>
 						</th>
-						<th>
+						<th class="align-top">
 							<button class="btn btn-primary btn-sm" name="filter">Filtrer</button><br>
 							<a class="btn btn-secondary btn-sm" href="/index.php?action=adminOrders" title="Supprimer les filtres">×</a>
 						</th>
@@ -126,7 +126,7 @@ require_once 'views/head.php';
 				</tbody>
 			</table>
 		</form>
-		<?php echo $pagination->render($paginationPages, 'top'); ?>
+		<?php echo $pagination->render($paginationPages); ?>
 	</div>
 </div>
 
