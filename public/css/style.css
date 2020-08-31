@@ -14,10 +14,11 @@ header .bandeau {
     text-align: center;
 	padding:20px;
 }
+/* TODO max-width en fonction de la taille de l'écran */
 .wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 900px;
+    max-width: 1200px;
     margin: auto;
     background: white;
     overflow-wrap: break-word;

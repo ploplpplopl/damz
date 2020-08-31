@@ -14,6 +14,7 @@ $tab_order = [
 	5 => 'u.`phone`',
 	6 => 'a.`city`',
 	7 => 'o.`doc_type`',
+	8 => 'o.`id_orders`',
 ];
 $tab_way = [
 	1 => 'ASC',
@@ -21,11 +22,12 @@ $tab_way = [
 ];
 
 $sort_order = !empty($_GET['sort_order']) ? $_GET['sort_order'] : 1;
-$sort_way = !empty($_GET['sort_way']) ? $_GET['sort_way'] : 1;
+$sort_way = !empty($_GET['sort_way']) ? $_GET['sort_way'] : ($archive ? 2 : 1);
 
 $order = ($sort_order && array_key_exists($sort_order, $tab_order) ? $tab_order[$sort_order] : $tab_order[1]);
-$way = ($sort_way && array_key_exists($sort_way, $tab_way) ? $tab_way[$sort_way] : $tab_way[1]);
+$way = ($sort_way && array_key_exists($sort_way, $tab_way) ? $tab_way[$sort_way] : ($archive ? $tab_way[2] : $tab_way[1]));
 
+$id_orders = '';
 $date_from = '';
 $date_from_fr = '';
 $date_to = '';
@@ -42,6 +44,7 @@ $params = [];
 $where = '';
 
 if (isset($_GET['filter'])) {
+	$id_orders = !empty($_GET['id_orders']) ? $_GET['id_orders'] : '';
 	$date_from_fr = !empty($_GET['date_from']) ? $_GET['date_from'] : '';
 	$date_from = !empty($date_from_fr) ? date('Y-m-d', strtotime($date_from_fr)) : '';
 	$date_to_fr = !empty($_GET['date_to']) ? $_GET['date_to'] : '';
@@ -56,6 +59,10 @@ if (isset($_GET['filter'])) {
 
 	// TODO Add controls.
 
+	if (!empty($id_orders)) {
+		$where .= ' AND o.`id_orders` = :id_orders';
+		$params[':id_orders'] = $id_orders;
+	}
 	if (!empty($date_from)) {
 		$where .= ' AND o.`date_add` > :date_from';
 		$params[':date_from'] = $date_from;

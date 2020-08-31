@@ -46,9 +46,10 @@ require_once 'views/head.php';
 			<table class="table table-striped table-bordered table-hover table-sm table-responsive mt-3">
 				<thead class="thead-light">
 					<tr>
+					<th class="align-top">Numéro <span class="order"><a<?php echo ($sort_order == 8 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 8 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'2')); ?>">▼</a></span><br>
 						<th class="align-top">Date <span class="order"><a<?php echo ($sort_order == 1 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 1 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Prénom <span class="order"><a<?php echo ($sort_order == 2 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 2 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						nom <span class="order"><a<?php echo ($sort_order == 3 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 3 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'2')); ?>">▼</a></span></th>
+						Nom <span class="order"><a<?php echo ($sort_order == 3 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 3 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Adresse e-mail <span class="order"><a<?php echo ($sort_order == 4 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 4 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'2')); ?>">▼</a></span><br>
 						Téléphone <span class="order"><a<?php echo ($sort_order == 5 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 5 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'2')); ?>">▼</a></span></th>
 						<th class="align-top">Adresse <span class="order"><a<?php echo ($sort_order == 6 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 6 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'2')); ?>">▼</a></span></th>
@@ -56,6 +57,9 @@ require_once 'views/head.php';
 						<th class="align-top">Actions</th>
 					</tr>
 					<tr>
+						<th class="align-top">
+						<input type="text" name="id_orders" id="id_orders" value="<?php echo htmlentities($id_orders, ENT_QUOTES); ?>" placeholder="№ facture" title="№">
+						</th>
 						<th class="align-top">
 							<input type="text" name="date_from" id="date_from" value="<?php echo htmlentities($date_from_fr, ENT_QUOTES); ?>" placeholder="De" title="De">
 							<input type="text" name="date_to" id="date_to" value="<?php echo htmlentities($date_to_fr, ENT_QUOTES); ?>" placeholder="À" title="À">
@@ -73,7 +77,7 @@ require_once 'views/head.php';
 							<input type="text" name="city" value="<?php echo htmlentities($city, ENT_QUOTES); ?>" placeholder="Ville" title="Ville">
 						</th>
 						<th class="align-top">
-							<select name="doc_type[]" multiple style="min-width:5em;height:4em;">
+							<select name="doc_type[]" multiple style="min-width:5em;height:5em;">
 								<option value="dossier"<?php echo (in_array('dossier', $docType) ? ' selected' : ''); ?>>Dossier</option>
 								<option value="memoire"<?php echo (in_array('memoire', $docType) ? ' selected' : ''); ?>>Mémoire</option>
 								<option value="these"<?php echo (in_array('these', $docType) ? ' selected' : ''); ?>>Thèse</option>
@@ -88,10 +92,11 @@ require_once 'views/head.php';
 				</thead>
 				<tbody>
 <?php if (empty($orders)): ?>
-					<tr><td colspan="6">Aucune archive</td></tr>
+					<tr><td colspan="7">Aucune archive</td></tr>
 <?php else: ?>
 	<?php foreach ($orders as $order): ?>
 					<tr>
+					<td><?php echo $order['id_orders']; ?></td>
 						<td><?php echo date('d-m-Y H:i', strtotime($order['date_add'])); ?></td>
 						<td>
 							<?php echo $order['first_name']; ?><br>
@@ -114,9 +119,9 @@ require_once 'views/head.php';
 							<?php echo ($order['rectoverso'] ? 'recto-verso' : 'recto'); ?><br>
 						</td>
 						<td>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=1" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
 							<a href="/index.php?action=adminOrdersPast&amp;dl=<?php echo $order['id_orders']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>" title="Étiquette"><i class="fas fa-receipt"></i></a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=1" title="Étiquette"><i class="fas fa-receipt"></i></a>
 						</td>
 					</tr>
 	<?php endforeach; ?>

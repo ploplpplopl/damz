@@ -231,4 +231,5 @@ class AdminGestionMgr
         DbConnection::disconnect();
         return $result;
     }
+
 }

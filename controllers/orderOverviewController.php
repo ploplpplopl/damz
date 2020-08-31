@@ -106,7 +106,7 @@ if (isset($_POST['order-btn'])) {
 		$stmt->closeCursor();
 		DbConnection::disconnect();
 		
-		// Effectuer le paiement.
+		// TODO Effectuer le paiement.
 		// Après le paiement, ne pas oublier : unset($_SESSION['file_to_print'], $_SESSION['tunnel']);
 	}
 }

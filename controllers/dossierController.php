@@ -194,11 +194,11 @@ if (isset($_POST['dossier-btn'])) {
 		}
 		
 		/*
-il veut une phrase qui reprend toutes les options choisies et le prix total. c'est tout.
-sinon ya aussi le field "options suiplémentaires" . il veut que ca s'appelle "Impression"
-dedans : un radio avec 'impression à l'identique du doc' / 'N&B intégral'
+TODO évolutions :
+dans le label "Impression" : un radio avec 'impression à l'identique du doc' / 'N&B intégral'
 et un radio : 'recto' / 'recto-verso'
-et le champ "nb d'exemplaires"
+et le champ "nb d'exemplaires".
+à la place du devis, il veut une phrase qui reprend toutes les options choisies et le prix total. c'est tout.
 		*/
 		
 		// Mise en session de l'étape du tunnel de paiement.
