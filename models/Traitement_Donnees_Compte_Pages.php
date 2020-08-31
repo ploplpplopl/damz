@@ -1,14 +1,14 @@
 <?php
 
-sleep(1);
-print_r(json_encode([
-	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
-	'NbPages' => 334,
-	'NbPagesC' => 303,
-	'NbPagesNB' => 31,
-	'TabPages' => [1,15,34],
-]));
-exit;
+// sleep(1);
+// print_r(json_encode([
+// 	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
+// 	'NbPages' => 334,
+// 	'NbPagesC' => 303,
+// 	'NbPagesNB' => 31,
+// 	'TabPages' => [1,15,34],
+// ]));
+// exit;
 
 //Adapter l'application pour le site pro; rechercher solution pour plugin WordPress
 
@@ -72,6 +72,7 @@ try {
 	$nbPagesNB = $nbPages - count($tabPagesCouleurs);
 
 	//Création d'un tableau avec clés, puis transformation en JSON renvoyé à la page formulairePDF.ph pour affichage
+	// TODO envoyer aussi original-filename pour l'affichage uniquement
 	$tabFinal = [
 		'filename' => $filename,
 		'NbPages' => $nbPages,

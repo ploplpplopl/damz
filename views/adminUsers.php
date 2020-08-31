@@ -200,6 +200,8 @@ $(function() {
 		firstDay: 1,
 		maxDate: "+0d",
 		minDate: "-10y",
+		changeMonth: true,
+		changeYear: true,
 		//showOn: "both",
 		//buttonText: "Choisir",
 		nextText: "Suivant",

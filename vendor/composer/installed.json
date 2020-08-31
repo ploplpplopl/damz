@@ -79,17 +79,17 @@
     },
     {
         "name": "egulias/email-validator",
-        "version": "2.1.18",
-        "version_normalized": "2.1.18.0",
+        "version": "2.1.19",
+        "version_normalized": "2.1.19.0",
         "source": {
             "type": "git",
             "url": "https://github.com/egulias/EmailValidator.git",
-            "reference": "cfa3d44471c7f5bfb684ac2b0da7114283d78441"
+            "reference": "840d5603eb84cc81a6a0382adac3293e57c1c64c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/cfa3d44471c7f5bfb684ac2b0da7114283d78441",
-            "reference": "cfa3d44471c7f5bfb684ac2b0da7114283d78441",
+            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/840d5603eb84cc81a6a0382adac3293e57c1c64c",
+            "reference": "840d5603eb84cc81a6a0382adac3293e57c1c64c",
             "shasum": ""
         },
         "require": {
@@ -105,7 +105,7 @@
         "suggest": {
             "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
         },
-        "time": "2020-06-16T20:11:17+00:00",
+        "time": "2020-08-08T21:28:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -186,34 +186,34 @@
     },
     {
         "name": "spipu/html2pdf",
-        "version": "v5.2.2",
-        "version_normalized": "5.2.2.0",
+        "version": "v5.2.1",
+        "version_normalized": "5.2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/spipu/html2pdf.git",
-            "reference": "e6d8ca22347b6691bb8c2652212b1be2c89b3eff"
+            "reference": "7dca57b61fdb2d6920635ff2332dbc82d4be19f3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/spipu/html2pdf/zipball/e6d8ca22347b6691bb8c2652212b1be2c89b3eff",
-            "reference": "e6d8ca22347b6691bb8c2652212b1be2c89b3eff",
+            "url": "https://api.github.com/repos/spipu/html2pdf/zipball/7dca57b61fdb2d6920635ff2332dbc82d4be19f3",
+            "reference": "7dca57b61fdb2d6920635ff2332dbc82d4be19f3",
             "shasum": ""
         },
         "require": {
-            "ext-gd": "*",
             "ext-mbstring": "*",
-            "php": "^5.6 || ^7.0",
+            "php": "^5.4 || ^7.0",
             "tecnickcom/tcpdf": "^6.2"
         },
         "require-dev": {
             "phake/phake": "^2.0",
-            "phpunit/phpunit": "^5.0"
+            "phpunit/phpunit": "^4.0 || ^5.0",
+            "squizlabs/php_codesniffer": "^3.0"
         },
         "suggest": {
             "ext-gd": "Allows to embed images into the PDF",
             "fagundes/zff-html2pdf": "if you need to integrate Html2Pdf with Zend Framework 2 (zf2)"
         },
-        "time": "2020-03-22T16:23:26+00:00",
+        "time": "2018-10-26T13:33:18+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -306,8 +306,8 @@
     },
     {
         "name": "symfony/polyfill-iconv",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-iconv.git",
@@ -385,17 +385,17 @@
     },
     {
         "name": "symfony/polyfill-intl-idn",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-intl-idn.git",
-            "reference": "bc6549d068d0160e0f10f7a5a23c7d1406b95ebe"
+            "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/bc6549d068d0160e0f10f7a5a23c7d1406b95ebe",
-            "reference": "bc6549d068d0160e0f10f7a5a23c7d1406b95ebe",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/5dcab1bc7146cf8c1beaa4502a3d9be344334251",
+            "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251",
             "shasum": ""
         },
         "require": {
@@ -407,7 +407,7 @@
         "suggest": {
             "ext-intl": "For best performance"
         },
-        "time": "2020-07-14T12:35:20+00:00",
+        "time": "2020-08-04T06:02:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -472,8 +472,8 @@
     },
     {
         "name": "symfony/polyfill-intl-normalizer",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -555,8 +555,8 @@
     },
     {
         "name": "symfony/polyfill-mbstring",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -634,8 +634,8 @@
     },
     {
         "name": "symfony/polyfill-php70",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php70.git",
@@ -713,8 +713,8 @@
     },
     {
         "name": "symfony/polyfill-php72",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php72.git",
