@@ -99,7 +99,7 @@ require_once 'views/head.php';
 							<?php echo $order['last_name']; ?><br>
 						</td>
 						<td>
-							<?php echo $order['email']; ?><br>
+							<a href="/index.php?action=adminUsers&amp;email=<?php echo $order['email']; ?>&amp;filter" title="Voir l'utilisateur"><?php echo $order['email']; ?></a><br>
 							<?php echo $order['phone']; ?><br>
 						</td>
 						<td>
@@ -145,6 +145,8 @@ $(function() {
 		firstDay: 1,
 		maxDate: "+0d",
 		minDate: "-10y",
+		changeMonth: true,
+		changeYear: true,
 		//showOn: "both",
 		//buttonText: "Choisir",
 		nextText: "Suivant",

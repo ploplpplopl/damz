@@ -187,7 +187,12 @@ class AdminGestionMgr
     public static function getUsers(array $params, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
     {
 		$query = '
-			SELECT * FROM user AS u
+			SELECT *, (
+				SELECT COUNT(id_orders)
+				FROM orders AS o
+				WHERE o.id_user = u.id_user
+			) AS num_orders
+			FROM user AS u
 			WHERE 1
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '

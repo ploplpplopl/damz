@@ -46,7 +46,7 @@ page{line-height:1.2;}
             </tr>
         </table>
     </page_footer>
-<p style="text-align:center;"><br><br><img src="http://damz/public/img/stripe.png" alt="AMT"><br><br><br></p>
+<p style="text-align:center;"><br><br><img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="AMT"><br><br><br></p>
 <h1 style="text-align:center;font-size:34px;">RÉFÉRENCES DE MARCHÉS</h1>
 <p style="text-align:center;"><br><br><br>Tous secteurs d'activité</p>
 <p style="text-align:center;">Type de chantier : Tous types de chantiers</p>
@@ -72,7 +72,7 @@ project_owner<br>
 po_address<br>
 </td><td style="width:5mm;background:#fff;">
 </td><td style="width:95mm;background:#fff;" valign="top">
-	<img src="http://damz/public/img/paypal.png" alt="" style="width:95mm;"><br><br>
+	<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="" style="width:95mm;"><br><br>
 Montant des travaux : <b>amount amount_per_year k€ / an</b><br>
 Début de réalisation : <b>'.$d['year_start'].'</b><br>
 Fin de réalisation : <b>'.$d['year_end'].'</b>

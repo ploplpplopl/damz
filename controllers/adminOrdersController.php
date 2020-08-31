@@ -42,17 +42,17 @@ $params = [];
 $where = '';
 
 if (isset($_GET['filter'])) {
-	$date_from_fr = $_GET['date_from'];
+	$date_from_fr = !empty($_GET['date_from']) ? $_GET['date_from'] : '';
 	$date_from = !empty($date_from_fr) ? date('Y-m-d', strtotime($date_from_fr)) : '';
-	$date_to_fr = $_GET['date_to'];
+	$date_to_fr = !empty($_GET['date_to']) ? $_GET['date_to'] : '';
 	$date_to = !empty($date_to_fr) ? date('Y-m-d', strtotime($date_to_fr)) : '';
-	$firstname = $_GET['first_name'];
-	$lastname = $_GET['last_name'];
-	$email = $_GET['email'];
-	$phone = $_GET['phone'];
-	$zipcode = $_GET['zip_code'];
-	$city = $_GET['city'];
-	$docType = $_GET['doc_type'];
+	$firstname = !empty($_GET['first_name']) ? $_GET['first_name'] : '';
+	$lastname = !empty($_GET['last_name']) ? $_GET['last_name'] : '';
+	$email = !empty($_GET['email']) ? $_GET['email'] : '';
+	$phone = !empty($_GET['phone']) ? $_GET['phone'] : '';
+	$zipcode = !empty($_GET['zip_code']) ? $_GET['zip_code'] : '';
+	$city = !empty($_GET['city']) ? $_GET['city'] : '';
+	$docType = !empty($_GET['doc_type']) ? $_GET['doc_type'] : '';
 
 	// TODO Add controls.
 	
@@ -98,7 +98,7 @@ $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 $numOrders = count($orders);
 
 // Pagination.
-define('NUM_PER_PAGE', 2);
+define('NUM_PER_PAGE', 10);
 $pagination = new Pagination('page');
 // Redéfinition des attributs.
 $pagination
@@ -106,7 +106,7 @@ $pagination
 	->setGoPrevious('‹')
 	->setGoNext('›')
 	->setGoLast('»')
-	//->setPaginationWrapper('<nav aria-label="Page navigation"><ul class="pagination">%s</ul></nav>')
+	//->setPaginationWrapper('<nav><ul class="pagination">%s</ul></nav>')
 	//->setAvoidDuplicateContent(FALSE)
 	->setItemsPerPage(NUM_PER_PAGE)
 	->setTotalRows($numOrders);
