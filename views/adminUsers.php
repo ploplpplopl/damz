@@ -133,12 +133,8 @@ require_once 'views/head.php';
 							<?php echo $user['last_name']; ?><br>
 						</td>
 						<td>
-			<?php if (!empty($user['num_orders'])): ?>
-							<a href="/index.php?action=adminOrders&amp;email=<?php echo $user['email']; ?>&amp;filter" title="Voir ses commandes"><?php echo $user['email']; ?></a><br>
-			<?php else: ?>
 							<?php echo $user['email']; ?><br>
 							<?php echo $user['phone']; ?><br>
-			<?php endif; ?>
 						</td>
 						<td>
 							<?php echo $user['subscr_confirmed']; ?><br>
