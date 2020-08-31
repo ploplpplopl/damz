@@ -39,7 +39,7 @@ require_once 'views/head.php';
 <div class="row">
 	<div class="col-12">
 		<form action="" method="get">
-			<input type="hidden" name="action" value="adminOrders">
+			<input type="hidden" name="action" value="adminOrdersPast">
 			<p class="mt-3 float-left"><?php echo $numOrders . ' ' . ($numOrders > 1 ? 'résultats' : 'résultat'); ?></p>
 			<p class="mt-3 float-right"><?php echo ($limitFrom + 1 == $limitTo ? $limitTo : ($limitFrom + 1) . ' → ' . $limitTo); ?>&nbsp;/ <?php echo $numOrders; ?></p>
 			<div class="clear"></div>
@@ -73,17 +73,16 @@ require_once 'views/head.php';
 							<input type="text" name="city" value="<?php echo htmlentities($city, ENT_QUOTES); ?>" placeholder="Ville" title="Ville">
 						</th>
 						<th class="align-top">
-							<select name="doc_type">
-								<option value="">Type de document</option>
-								<option value="dossier"<?php echo ($docType === 'dossier' ? ' selected' : ''); ?>>Dossier</option>
-								<option value="memoire"<?php echo ($docType === 'memoire' ? ' selected' : ''); ?>>Mémoire</option>
-								<option value="these"<?php echo ($docType === 'these' ? ' selected' : ''); ?>>Thèse</option>
-								<option value="perso"<?php echo ($docType === 'perso' ? ' selected' : ''); ?>>Personnalisé</option>
+							<select name="doc_type[]" multiple style="min-width:5em;height:4em;">
+								<option value="dossier"<?php echo (in_array('dossier', $docType) ? ' selected' : ''); ?>>Dossier</option>
+								<option value="memoire"<?php echo (in_array('memoire', $docType) ? ' selected' : ''); ?>>Mémoire</option>
+								<option value="these"<?php echo (in_array('these', $docType) ? ' selected' : ''); ?>>Thèse</option>
+								<option value="perso"<?php echo (in_array('perso', $docType) ? ' selected' : ''); ?>>Personnalisé</option>
 							</select>
 						</th>
 						<th class="align-top">
 							<button class="btn btn-primary btn-sm" name="filter">Filtrer</button><br>
-							<a class="btn btn-secondary btn-sm" href="/index.php?action=adminOrders" title="Supprimer les filtres">×</a>
+							<a class="btn btn-secondary btn-sm" href="/index.php?action=adminOrdersPast" title="Supprimer les filtres">×</a>
 						</th>
 					</tr>
 				</thead>
