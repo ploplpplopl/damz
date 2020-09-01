@@ -24,7 +24,7 @@ require_once 'views/head.php';
 <div class="row">
 	<div class="col-12">
 		<h1>Utilisateurs</h1>
-		<?php echo displayMessage(); ?>
+		<?php echo displayMessage($errors); ?>
 	</div>
 </div>
 
@@ -37,18 +37,18 @@ require_once 'views/head.php';
 				<label for="signup-user_type">Type de compte</label>
 				<select id="signup-user_type" name="user_type" class="form-control">
 					<option value="">-- Sélectionner --</option>
-					<option value="admin">Administrateur</option>
-					<option value="admprinter">Imprimeur</option>
-					<option value="user">Utilisateur</option>
+					<option value="admin"<?php echo ('admin' == $user_user_type ? ' selected' : ''); ?>>Administrateur</option>
+					<option value="admprinter"<?php echo ('admprinter' == $user_user_type ? ' selected' : ''); ?>>Imprimeur</option>
+					<option value="user"<?php echo ('user' == $user_user_type ? ' selected' : ''); ?>>Utilisateur</option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label for="signup-email">Adresse e-mail</label>
-				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
+				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($user_email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
 			</div>
 			<div class="form-group">
 				<label for="signup-pseudo">Pseudo (pour la connexion)</label>
-				<input type="text" id="signup-pseudo" name="pseudo" class="form-control" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required="required">
+				<input type="text" id="signup-pseudo" name="pseudo" class="form-control" value="<?php echo htmlentities($user_pseudo, ENT_QUOTES); ?>" required="required">
 			</div>
 			<div class="form-group">
 				<label for="signup-password">Mot de passe</label>
@@ -58,11 +58,8 @@ require_once 'views/head.php';
 				<label for="signup-passwordC">Confirmation du mot de passe</label>
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
 			</div>
-			<div class="form-check">
-				<input type="checkbox" id="signup-subsc_confirmed" name="subsc_confirmed" class="form-check-input" value="1"<?php echo ($user_subscr_confirmed == 1 ? ' checked' : ''); ?>>
-				<label class="form-check-label" for="signup-subsc_confirmed">Utilisateur confirmé</label>
-			</div>
-			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Valider</button>
+			<p class="text-danger">L'utilisateur sera notifié par e-mail.</p>
+			<button type="submit" id="signup-btn" name="add-user-btn" class="btn btn-primary">Ajouter</button>
 		</form>
 <?php else: ?>
 		<p><a href="?action=adminUsers&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un utilisateur</a></p>
