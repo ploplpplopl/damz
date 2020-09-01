@@ -1,5 +1,10 @@
 <?php
 
+if (empty($_SESSION['user']['id_user'])) {
+    header('location: index.php?action=login');
+	exit;
+}
+
 require_once 'controllers/accountController.php';
 
 $addresses = getUserAddresses();
@@ -82,14 +87,13 @@ require_once 'views/head.php';
 <?php
 /*
 
-@TODO
+TODO
 
 - Entrer son mot de passe
 - Envoyer un e-mail
 - Au clic sur le lien dans l'e-mail : suppression
 
 Trouver une solution pour conserver l'association 'archives de commandes' et 'user'.
-J'en ai bien une mais elle est putain de chiante à mettre en place :-(
 
 */
 ?>

@@ -2,6 +2,18 @@
 
 require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 
+// $_SESSION['user']["id_user"]=> "56"
+// $_SESSION['user']["first_name"]=> "dam"
+// $_SESSION['user']["last_name"]=> "tho"
+// $_SESSION['user']["email"]=> "damien@thoorens.fr"
+// $_SESSION['user']["phone"]=> ""
+// $_SESSION['user']["pseudo"]=> "damien"
+// $_SESSION['user']["user_type"]=> "user"
+// $_SESSION['user']["secure_key"]=> "4de924aa086028dedeed19e34239d8151afc735d0b586d9e47b9de055f38ce1fe3291154b00ea666dcb85b9b00a806661784"
+// $_SESSION['user']["subscr_confirmed"]=> "1"
+// $_SESSION['user']["date_add"]=> "2020-08-27 11:24:10"
+// $_SESSION['user']["gender"]=> NULL
+
 /**
  * Récupération des couleurs des cartons imprimables / non imprimables.
  *

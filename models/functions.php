@@ -48,10 +48,11 @@ function displayMessage($errors = NULL) {
 	$output = '';
 	foreach ($messageTypes as $type => $class) {
 		if (isset($_SESSION['message_' . $type])) {
-			$output .= '<div class="' . $class . '">';
+			$output .= '<div class="' . $class . ' alert-dismissible">';
 			$output .= '<ul>';
 			foreach ((array) $_SESSION['message_' . $type] as $message) {
-				$output .= '<li>' . $message . '</li>';
+				$output .= '<li>' . $message . '</li>
+				<a href="#" class="close" >&times;</a>';
 			}
 			$output .= '</ul>';
 			$output .= '</div>';

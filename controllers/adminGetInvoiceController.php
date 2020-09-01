@@ -1,42 +1,19 @@
 <?php
 
-require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
-require_once _ROOT_DIR_ . '/vendor/autoload.php';
+// require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
+require_once _ROOT_DIR_ . '/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 
-if (empty($_GET['id'])) {
+if (empty($_GET['id']) || empty($_GET['archive'])) {
 	exit;
 }
-
 $id = (int) $_GET['id'];
-
-/*
-$query = '
-	SELECT o.*, u.first_name, u.last_name, u.email, u.phone,
-	a.address, a.address2, a.zip_code, a.city, c.name AS country_name
-	FROM orders AS o
-	INNER JOIN user AS u ON o.id_user = u.id_user
-	INNER JOIN address AS a ON u.id_user = a.id_user
-	INNER JOIN country AS c ON a.id_country = c.id_country
-	WHERE o.id_address = a.id_address
-	AND o.archive = \'0\'
-	AND id_orders = :id
-';
-$dbh = DbConnection::getConnection('administrateur');
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':id', $id);
-$stmt->execute();
-$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$stmt->closeCursor();
-DbConnection::disconnect();
-vd($orders);
-exit;
-*/
-$params = [];
-$where = '';
 $archive = $_GET['archive'];
+
+$where = '';
+$params = [];
 
 $where .= ' AND o.`id_orders` = :id_orders';
 $params[':id_orders'] = $id;
