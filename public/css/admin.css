@@ -8,6 +8,8 @@ input, textarea, select{
 	width:100%;
 }
 input[type=submit],
+input[type=checkbox],
+input[type=radio],
 button[type=submit]{
 	width:auto;
 }
