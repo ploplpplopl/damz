@@ -1,11 +1,11 @@
 $(function () {
     // Closing notifications.
-    $(".alert-success, .alert-warning, .alert-danger")
+    $(".close")
 	.css("cursor", "pointer")
 	.attr("title", "Fermer")
 	.click(function (e) {
 		e.preventDefault();
-		$(this).slideUp(1000);
+		$(".alert-success, .alert-warning, .alert-danger").slideUp(500);
 	});
 
 	// Delete user address.

@@ -14,7 +14,7 @@ $settings['site_url'] = 'dev' == $settings['environment'] ?
 	$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] : 'https://dossier-rapide.fr';
 
 // E-mail : from.
-$settings['from'] = 'contact@dossier-rapide.fr';
+$settings['from'] = 'info@dossier-rapide.fr';
 // E-mail : reply-to.
 $settings['reply-to'] = 'no-reply@dossier-rapide.fr';
 // E-mail : smtp.
