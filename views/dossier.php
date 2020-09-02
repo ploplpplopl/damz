@@ -264,11 +264,7 @@ require_once 'views/head.php';
 			</fieldset>
 
 			<!-- bouton valider -->
-<<<<<<< HEAD
 			<input type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2" value="Valider">
-=======
-			<input type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2" value="Valider" >
->>>>>>> 52a263858c2fd10439cda73b250283a6e73ecc7b
 		</form>
 	</div>
 </div>
