@@ -1,17 +1,16 @@
 <?php
 
-// require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
-require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
 require_once _ROOT_DIR_ . '/vendor/autoload.php';
+require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 
-if (empty($_GET['id']) || empty($_GET['archive'])) {
+// TODO if (empty($_GET['id']) || empty($_GET['archive'])) {
+if (empty($_GET['id'])) {
 	exit;
 }
 $id = (int) $_GET['id'];
 $archive = $_GET['archive'];
-
 $where = '';
 $params = [];
 
@@ -71,21 +70,15 @@ ob_start();
 	<page_footer>
 		<table style="width:100%;">
 			<tr>
-				<td style="width:50%;text-align:left;">AMT<br> 14/16 Voie de Montavas<br> 91320 Wissous</td>
-				<td style="width:50%;text-align:right;">Tél : +33 1 69 19 47 47<br> Fax : +33 1 69 19 47 48<br> E-mail : administratif@amt-france.com</td>
+				<td style="width:50%;text-align:left;">COPIFAC<br> 116 et 106 rue de Geôle<br> 14000 Caen</td>
+				<td style="width:50%;text-align:right;">Tél : 02 31 38 98 66<br> E-mail : contact@copifac.fr</td>
 			</tr>
 		</table>
 	</page_footer>
-	<p style="text-align:center;"><br><br><img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="AMT"><br><br><br></p>
-	<h1 style="text-align:center;font-size:34px;">RÉFÉRENCES DE MARCHÉS</h1>
-	<p style="text-align:center;"><br><br><br>Tous secteurs d'activité</p>
-	<p style="text-align:center;">Type de chantier : Tous types de chantiers</p>
-</page>
-<page style="font-size:16px;">
-	<br><br>
+	<h1 style="text-align:center;font-size:34px;">Facture N° <?php echo $id_orders; ?></h1>
 	<hr style="color:#ccc;">
 	<nobreak>
-		<h2 style="font-size:24px;letter-spacing:-1px;">Titre</h2>
+		<h2 style="font-size:24px;letter-spacing:-1px;">Résumé de la commande</h2>
 		<table>
 			<tr>
 				<td style="width:92mm;background:#eee;padding:1mm;">
@@ -98,7 +91,11 @@ ob_start();
 				</td>
 			</tr>
 		</table>
-		<p>kind_work</p>
+		<p>Nom du fichier : <?php echo(str_replace(' ', '_', $id_orders . '_' . $doc_type) . '_' . date("Y-m-d_H-i", strtotime($date_add)) . '.pdf'); ?></p>
+<p>Nombre de pages total : <?php echo($nb_page); ?></p>
+
+
+
 		<table>
 			<tr>
 				<td style="width:95mm;background:#fff;">
@@ -113,7 +110,9 @@ ob_start();
 				<td style="width:5mm;background:#fff;">
 				</td>
 				<td style="width:95mm;background:#fff;" valign="top">
-					<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="" style="width:95mm;"><br><br>
+					<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="" style="width:35mm;"><br><br>
+					<p style="text-align:center;"><br><br><img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="AMT"><br><br><br></p>
+
 					Montant des travaux : <b>amount amount_per_year k€ / an</b><br>
 					Début de réalisation : <b>'.$d['year_start'].'</b><br>
 					Fin de réalisation : <b>'.$d['year_end'].'</b>
@@ -142,4 +141,4 @@ $html2pdf->pdf->SetSubject('Dossier-rapide');
 $html2pdf->pdf->SetDisplayMode('real', 'SinglePage', 'UseThumbs');
 $html2pdf->setDefaultFont('arial');
 $html2pdf->writeHTML($sPdf);
-$html2pdf->output(/*'facture_' . $id_orders . '.pdf', 'D'*/);
+$html2pdf->output(/*$id_orders . '_facture' . '.pdf', 'D'*/);
