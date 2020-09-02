@@ -143,11 +143,11 @@ if (!empty($_GET['archive'])) {
 	exit;
 }
 
-// DL PDF client file to print
+// Download PDF client file to print
 if (!empty($_GET['dl']) && is_numeric($_GET['dl'])) {
 	$order = AdminGestionMgr::getSingleOrder($_GET['dl']);
 	header('Content-type: application/pdf');
-	header('Content-Disposition: attachment; filename="' . str_replace(' ', '_', $order['first_name'] . '_' . $order['last_name']) . '_' . date('Y-m-d_H-i', strtotime($order['date_add'])) . '.pdf"');
+	header('Content-Disposition: attachment; filename="' . str_replace(' ', '_', $order['id_orders'] . '_' . $order['doc_type']) . '_' . date("Y-m-d_H-i", strtotime($order['date_add'])) . '.pdf"');
 	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	header('Cache-Control: no-store, no-cache, must-revalidate');
 	header('Cache-Control: pre-check=0, post-check=0, max-age=0');
