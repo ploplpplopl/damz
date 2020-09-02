@@ -17,7 +17,7 @@ require_once 'views/head.php';
 				<legend>Téléchargez le fichier PDF à imprimer</legend>
 				<div class="custom-file">
 					<input type="file" class="custom-file-input" id="uploadPDF" accept=".pdf,application/pdf">
-					<label class="custom-file-label" for="uploadPDF">Sélectionner un PDF</label>
+					<label class="custom-file-label" for="uploadPDF">Sélectionner un PDF</label><span id='error-upload'>Sélectionnez un fichier</span>
 				</div>
 				<div id="loading"></div>
 				<p class="mt-5" id="file_description"></p>
@@ -35,13 +35,13 @@ require_once 'views/head.php';
 
 			<fieldset>
 				<!-- Type de document à imprimer -->
-				<legend>Type de document à imprimer</legend>
+				<legend id='legend_doctype'>Type de document à imprimer</legend>
 				<div class="row">
 					<!-- Dossier -->
 					<div class="col-md-6" id="docTypeDossier">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="dossier" id="dossier" <?php echo ('dossier' == $docType ? ' checked' : ''); ?>>
-							<label for="dossier"><strong>Dossier</strong></label>
+							<label for="dossier"><strong>Dossier</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -55,7 +55,7 @@ require_once 'views/head.php';
 					<div class="col-md-6" id="docTypeMemoire">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="memoire" id="memoire" <?php echo ('memoire' == $docType ? ' checked' : ''); ?>>
-							<label for="memoire"><strong>Mémoire</strong></label>
+							<label for="memoire"><strong>Mémoire</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -72,7 +72,7 @@ require_once 'views/head.php';
 					<div class="col-md-6" id="docTypeThese">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="these" id="these" <?php echo ('these' == $docType ? ' checked' : ''); ?>>
-							<label for="these"><strong>Thèse</strong></label>
+							<label for="these"><strong>Thèse</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -86,7 +86,7 @@ require_once 'views/head.php';
 					<div class="col-md-6" id="docTypePerso">
 						<div class="topBarDocType_old">
 							<input type="radio" name="docType" value="perso" id="perso" <?php echo ('perso' == $docType ? ' checked' : ''); ?>>
-							<label for="perso"><strong>Personnalisé</strong></label>
+							<label for="perso"><strong>Personnalisé</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -110,10 +110,12 @@ require_once 'views/head.php';
 						<div id="couvCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
+								<span id='error-couv-print'>Sélectionnez un type de feuille cartonnée</span>
 								<input type="radio" name="couv-impr" id="couv_printable" value="printable" <?php echo ('printable' == $couvImpr ? ' checked' : ''); ?>>
 								<label for="couv_printable">Feuille imprimable</label><br>
 								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable" <?php echo ('unprintable' == $couvImpr ? ' checked' : ''); ?>>
 								<label for="couv_unprintable">Feuille non imprimable</label><br>
+								<span id='error-couv-color'>Sélectionnez une couleur</span>
 							</p>
 							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;">
 								<?php foreach ($allColors as $data) : ?>
@@ -137,10 +139,12 @@ require_once 'views/head.php';
 						<div id="dosCouleurFC">
 							<p><strong>Couleur de la feuille cartonnée</strong></p>
 							<p>
+								<span id='error-dos-print'>Sélectionnez un type de feuille cartonnée</span>
 								<input type="radio" name="dos-impr" id="dos_printable" value="printable" <?php echo ('printable' == $dosImpr ? ' checked' : ''); ?>>
 								<label for="dos_printable">Feuille imprimable</label><br>
 								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable" <?php echo ('unprintable' == $dosImpr ? ' checked' : ''); ?>>
 								<label for="dos_unprintable">Feuille non imprimable</label><br>
+								<span id='error-dos-color'>Sélectionnez une couleur</span>
 							</p>
 							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;">
 								<?php foreach ($allColors as $data) : ?>
@@ -155,8 +159,9 @@ require_once 'views/head.php';
 					<div class="col-lg-4">
 						<!-- Reliure -->
 						<p class="legend">Reliure</p>
-						<p><strong>Type de reliure</strong></p>
+						<p id="type_reliure"><strong>Type de reliure</strong></p>
 						<p>
+							<span id='error-reliure'>Sélectionnez une reliure</span>
 							<input type="radio" name="btnReliure" id="thermo" value="thermo" <?php echo ('thermo' == $btnReliure ? ' checked' : ''); ?>>
 							<label for="thermo">Thermocollée</label><br>
 							<input type="radio" name="btnReliure" id="spiplast" value="spiplast" <?php echo ('spiplast' == $btnReliure ? ' checked' : ''); ?>>
@@ -166,6 +171,7 @@ require_once 'views/head.php';
 						</p>
 						<p><strong>Couleur de la reliure</strong></p>
 						<div class="row">
+							<span id='error-color-reliure'>Sélectionnez une couleur de reliure</span>
 							<div class="col-6">
 								<input type="radio" id="reliureBlanche" name="btnCoulReliure" value="Blanche" <?php echo ('Blanche' == $btnCoulReliure ? ' checked' : ''); ?>>
 								<label for="reliureBlanche">Blanche</label>
@@ -184,7 +190,8 @@ require_once 'views/head.php';
 				<legend class="titre1">Impression</legend>
 				<!-- <div class="NBIntegral">
 					<label for="NBIntegral">Imprimer toutes les pages en N&B</label>
-					<input type="checkbox" name="NBIntegral" id="NBIntegral" value="1" <?php //echo (!empty($NBIntegral) ? ' checked' : ''); ?>>
+					<input type="checkbox" name="NBIntegral" id="NBIntegral" value="1" <?php //echo (!empty($NBIntegral) ? ' checked' : ''); 
+																						?>>
 				</div> -->
 				<div class="rectoverso">
 					<label for="rectoverso">Recto-Verso</label>
@@ -257,7 +264,7 @@ require_once 'views/head.php';
 			</fieldset>
 
 			<!-- bouton valider -->
-			<input type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2" value="Valider" >
+			<input type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2" value="Valider">
 		</form>
 	</div>
 </div>

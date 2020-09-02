@@ -197,7 +197,7 @@ $(function () {
         });
 
         $('#thermo, #spiplast, #spimetal').on('click', function () {
-            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+            $('#reliureNoire, #reliureBlanche').prop('checked', false).prop('disabled', false);
         });
         $('#reliureNoire, #reliureBlanche').on('click', function () {
             $('#quantity, #rectoverso').prop('disabled', false);
@@ -442,5 +442,73 @@ $(function () {
         //}
     }, false);*/
 
+
+    var btnDOM0 = document.getElementById('submit');
+    btnDOM0.onclick = function () {
+        return validateForm();
+    };
+
+    $('[id^=error-]').css('display', 'none');
+    $('[class^=error-]').css('display', 'none');
+
+    function validateForm() {
+        // check if PDF is uploaded
+        items = $('#uploadPDF')[0].files;
+        if (typeof items == 'undefined' || items == null || items.length == 0) {
+            // console.log('items is empty array.');
+            $('span#error-upload').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'uploadPDF';
+            return false;
+        }
+        // check if doc type is selected
+        if (!$('#dossier').prop('checked') && !$('#memoire').prop('checked') && !$('#these').prop('checked') && !$('#perso').prop('checked')) {
+            $('.error-doctype').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'legend_doctype';
+            return false;
+        }
+        // FIRST PAGE
+        // when FIRST page is selected, check if (un)printable option is set
+        if ($('#btnFCCouv').prop('checked') && (!$('input[name=couv-impr]')[0].checked && !$('input[name=couv-impr]')[1].checked)) {
+            $('#error-couv-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'couvCouleurFC';
+            return false;
+        }
+        // when (un)printable option is set for the FIRST page of the document, check if color is selected
+        if (($('input[name=couv-impr]')[0].checked || $('input[name=couv-impr]')[1].checked) && $('input[name="couv_color"]:checked').val() == null) {
+            $('#error-couv-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'couvCouleurFC';
+            return false;
+        }
+
+        // LAST PAGE
+        // when LAST page is selected, check if (un)printable option is set
+        if ($('#btnFCDos').prop('checked') && (!$('input[name=dos-impr]')[0].checked && !$('input[name=dos-impr]')[1].checked)) {
+            $('#error-dos-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'dosCouleurFC';
+            return false;
+        }
+        // when (un)printable option is set for the LAST page of the document, check if color is selected
+        if (($('input[name=dos-impr]')[0].checked || $('input[name=dos-impr]')[1].checked) && $('input[name="dos_color"]:checked').val() == null) {
+            $('#error-dos-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'dosCouleurFC';
+            return false;
+        }
+
+        // RELIURE
+        // check if reliure type is selected
+        if (!$('input[name=btnReliure]')[0].checked && !$('input[name=btnReliure]')[1].checked && !$('input[name=btnReliure]')[2].checked) {
+            $('#error-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'type_reliure';
+            return false;
+        }
+        // when type of reliure is selected, check if color is selected
+        if (($('input[name=btnReliure]')[0].checked || $('input[name=btnReliure]')[1].checked || $('input[name=btnReliure]')[2].checked) && $('input[name="btnCoulReliure"]:checked').val() == null) {
+            $('#error-color-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(5000);
+            window.location.hash = 'type_reliure';
+            return false;
+        }
+
+        return true;
+    }
 
 });
