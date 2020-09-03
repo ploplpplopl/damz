@@ -29,7 +29,8 @@ $nom_fichier = $orders[0]["nom_fichier"]; // => "c3a0c212fe80bc7ec01819b467b0910
 $nb_page = $orders[0]["nb_page"]; // => "34"
 $nb_page_nb = $orders[0]["nb_page_nb"]; // => "31"
 $nb_page_c = $orders[0]["nb_page_c"]; // => "3"
-$doc_type = $orders[0]["doc_type"]; // => "these"
+$doc_type_ori = $orders[0]["doc_type"]; // => "these"
+$doc_type = $settings['mapping'][$orders[0]["doc_type"]]; // => "Thèse"
 $couv_ft = $orders[0]["couv_ft"]; // => "0"
 $couv_fc = $orders[0]["couv_fc"]; // => "1"
 $couv_fc_type = $orders[0]["couv_fc_type"]; // => "printable"
@@ -46,16 +47,16 @@ if ($id_dos_color) {
 	$result = AdminGestionMgr::getColorsByID($id_dos_color);
 	$dos_fc_color = $result['text']; // => "orange foncé"
 }
-$reliure_type = $orders[0]["reliure_type"]; // => "thermo"
-if ($reliure_type == 'spiplast') {
-	$reliure_type = 'Spirale plastique';
-}
-if ($reliure_type == 'spimetal') {
-	$reliure_type = 'Spirale métallique';
-}
-if ($reliure_type == 'thermo') {
-	$reliure_type = 'Thermocollée';
-}
+$reliure_type = $settings['mapping'][$orders[0]["reliure_type"]]; // => "thermo"
+// if ($reliure_type == 'spiplast') {
+// 	$reliure_type = 'Spirale plastique';
+// }
+// if ($reliure_type == 'spimetal') {
+// 	$reliure_type = 'Spirale métallique';
+// }
+// if ($reliure_type == 'thermo') {
+// 	$reliure_type = 'Thermocollée';
+// }
 $reliure_color = $orders[0]["reliure_color"]; // => "Blanche"
 $quantity = $orders[0]["quantity"]; // => "1"
 $rectoverso = $orders[0]["rectoverso"]; // => "0"
@@ -95,6 +96,7 @@ ob_start();
 			</tr>
 		</table>
 	</page_footer>
+	<img src="<?php echo $settings['site_url']; ?>/public/img/logo_copyfac.png" alt="copyfac" style="width:30mm;background-color:#6690a1;">
 	<h1 style="text-align:center;font-size:34px;">Facture N° <?php echo $id_orders; ?></h1>
 	<hr style="color:#ccc;">
 	<nobreak>
@@ -105,7 +107,7 @@ ob_start();
 					Nom du fichier
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (str_replace(' ', '_', $id_orders . '_' . $doc_type) . '_' . date("Y-m-d_H-i", strtotime($date_add)) . '.pdf'); ?>
+					<?php echo (str_replace(' ', '_', $id_orders . '_' . $doc_type_ori) . '_' . date("Y-m-d_H-i", strtotime($date_add)) . '.pdf'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -154,18 +156,18 @@ ob_start();
 			</tr>
 			<tr>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					Couverture : Feuillet transparent
+					Couverture : feuillet transparent
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($couv_ft) ? 'oui' : 'non'); ?>
+					<?php echo (($couv_ft) ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					Couverture : Feuille cartonnée
+					Couverture : feuille cartonnée
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($couv_fc) ? 'oui : ' . $couv_fc_color : 'non'); ?>
+					<?php echo (($couv_fc) ? 'Oui : ' . strtolower($couv_fc_color) : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -174,18 +176,18 @@ ob_start();
 			</tr>
 			<tr>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					Dos : Feuillet transparent
+					Dos : feuillet transparent
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($dos_ft) ? 'oui' : 'non'); ?>
+					<?php echo (($dos_ft) ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					Dos : Feuille cartonnée
+					Dos : feuille cartonnée
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($dos_fc) ? 'oui : ' . $dos_fc_color : 'non'); ?>
+					<?php echo (($dos_fc) ? 'Oui : ' . strtolower($dos_fc_color) : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -197,7 +199,7 @@ ob_start();
 					Reliure : type
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($reliure_type); ?>
+					<?php echo (ucfirst($reliure_type)); ?>
 				</td>
 			</tr>
 			<tr>
@@ -229,7 +231,7 @@ ob_start();
 					Recto-verso
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($rectoverso) ? 'oui' : 'non'); ?>
+					<?php echo (($rectoverso) ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -245,7 +247,7 @@ ob_start();
 					TOTAL
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo $total . '€  (dont TVA : ' . $tva . '€)'; ?>
+					<?php echo $total . ' €  (dont TVA : ' . $tva . ' €)'; ?>
 				</td>
 			</tr>
 		</table>
@@ -253,9 +255,10 @@ ob_start();
 		<p></p>
 		<p></p>
 
-		<table style="width:100%;background:#fff;border:1px solid;">
+		<table style="width:100%;background:#fff;border-collapse:collapse;">
 			<tr>
-				<td style="width:40%;background:#fff;border:1px solid;">
+				<td style="width:40%;background:#fff;border:1px solid;padding:0 5mm;" valign="top">
+					<br>
 					<b>Adresse de livraison</b><br>
 					<?php echo $addr_name ?><br>
 					<?php echo $address ?><br>
@@ -264,12 +267,12 @@ ob_start();
 					<b>Transporteur</b><br>
 					TNT <br>
 				</td>
-				<td style="width:60%;background:#fff;border:1px solid;" valign="center">
+				<td style="width:60%;background:#fff;border:1px solid;padding:0 5mm;" valign="top">
 					<br>
-					<b>Date de commande : <?php echo $date_add ?></b> <br><br>
-					Montant des travaux : <?php echo $total . '€  (dont TVA : ' . $tva . '€)'; ?><br>
-					Montant livraison : 3,50€<br>
-					<b>Montant Total : <?php echo $total_num + 3.5 . '€'; ?></b> <br><br>
+					<b>Date de commande : <?php echo date('d-m-Y H\hi', strtotime($date_add)) ?></b> <br><br>
+					Montant des travaux : <?php echo $total . ' €  (dont TVA : ' . $tva . ' €)'; ?><br>
+					Montant livraison : 3,50 €<br>
+					<b>Montant total : <?php echo number_format($total_num + 3.5, 2, ',', ' ') . ' €'; ?></b> <br><br>
 					<b>Mode de paiement</b><br>
 					<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="paypal" style="width:20mm;"><br>
 					<img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="visa" style="width:20mm;"><br>
