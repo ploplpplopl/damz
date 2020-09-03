@@ -120,6 +120,10 @@ class AdminGestionMgr
         DbConnection::disconnect();
     }
 
+
+    // ------------------------------------------
+    // ----------------- ORDERS -----------------
+    // ------------------------------------------
     /**
      * Getting orders.
      *
@@ -136,7 +140,7 @@ class AdminGestionMgr
     {
         $query = '
 			SELECT o.*, u.first_name, u.last_name, u.email, u.phone,
-			a.address, a.address2, a.zip_code, a.city, c.name AS country_name
+			a.addr_name, a.address, a.address2, a.zip_code, a.city, c.name AS country_name
 			FROM orders AS o
 			INNER JOIN user AS u ON o.id_user = u.id_user
 			INNER JOIN address AS a ON u.id_user = a.id_user
@@ -196,6 +200,10 @@ class AdminGestionMgr
         return $result;
     }
 
+
+    // -----------------------------------------
+    // ----------------- USERS -----------------
+    // -----------------------------------------
     /**
      * Getting users.
      *
@@ -232,4 +240,31 @@ class AdminGestionMgr
         return $result;
     }
 
+
+    // ------------------------------------------
+    // ----------------- COLORS -----------------
+    // ------------------------------------------
+    /**
+     * Get all colors
+     *
+     * @return array
+     */
+    public static function getColors(): array
+    {
+        $query = 'SELECT * FROM dossier_color ORDER BY position DESC';
+        $sth = DbConnection::getConnection('administrateur')->query($query);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getColorsByID($id): array
+    {
+        $stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM dossier_color WHERE id_dossier_color = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
 }

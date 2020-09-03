@@ -33,34 +33,54 @@ $doc_type = $orders[0]["doc_type"]; // => "these"
 $couv_ft = $orders[0]["couv_ft"]; // => "0"
 $couv_fc = $orders[0]["couv_fc"]; // => "1"
 $couv_fc_type = $orders[0]["couv_fc_type"]; // => "printable"
-$couv_fc_color = $orders[0]["couv_fc_color"]; // => "15"
+$id_couv_color = $orders[0]["couv_fc_color"]; // => "15"
+if ($id_couv_color) {
+	$result = AdminGestionMgr::getColorsByID($id_couv_color);
+	$couv_fc_color = $result['text']; // => "orange clair"
+}
 $dos_ft = $orders[0]["dos_ft"]; // => "0"
 $dos_fc = $orders[0]["dos_fc"]; // => "1"
 $dos_fc_type = $orders[0]["dos_fc_type"]; // => "printable"
-$dos_fc_color = $orders[0]["dos_fc_color"]; // => "14"
+$id_dos_color = $orders[0]["dos_fc_color"]; // => "14"
+if ($id_dos_color) {
+	$result = AdminGestionMgr::getColorsByID($id_dos_color);
+	$dos_fc_color = $result['text']; // => "orange foncé"
+}
 $reliure_type = $orders[0]["reliure_type"]; // => "thermo"
+if ($reliure_type == 'spiplast') {
+	$reliure_type = 'Spirale plastique';
+}
+if ($reliure_type == 'spimetal') {
+	$reliure_type = 'Spirale métallique';
+}
+if ($reliure_type == 'thermo') {
+	$reliure_type = 'Thermocollée';
+}
 $reliure_color = $orders[0]["reliure_color"]; // => "Blanche"
 $quantity = $orders[0]["quantity"]; // => "1"
 $rectoverso = $orders[0]["rectoverso"]; // => "0"
-$tva = $orders[0]["tva"]; // => "0.89"
-$total = $orders[0]["total"]; // => "8.88"
-$archive = $orders[0]["archive"]; // => "0"
+$tva = number_format($orders[0]["tva"], 2, ',', ' '); // => "0.89"
+$total = number_format($orders[0]["total"], 2, ',', ' ');
+$total_num = $orders[0]["total"];
+// $archive = $orders[0]["archive"]; // => "0"
 $first_name = $orders[0]["first_name"]; // => "dam"
 $last_name = $orders[0]["last_name"]; // => "tho"
 $email = $orders[0]["email"]; // => "damien@thoorens.fr"
 $phone = $orders[0]["phone"]; // => ""
+$addr_name = $orders[0]["addr_name"]; // => "damdam toto"
 $address = $orders[0]["address"]; // => "8 rue ducu"
-$address2 = $orders[0]["address2"]; // => ""
+$address2 = $orders[0]["address2"]; // => "complement"
 $zip_code = $orders[0]["zip_code"]; // => "45000"
 $city = $orders[0]["city"]; // => "huit"
 $country_name = $orders[0]["country_name"]; // => "France"
-
-
+// vd($orders[0]);
+// exit;
 
 // Download PDF.
 ob_start();
 
 ?>
+
 <style type="text/css">
 	page {
 		line-height: 1.2;
@@ -79,43 +99,181 @@ ob_start();
 	<hr style="color:#ccc;">
 	<nobreak>
 		<h2 style="font-size:24px;letter-spacing:-1px;">Résumé de la commande</h2>
-		<table>
+		<table style="width:100%">
 			<tr>
-				<td style="width:92mm;background:#eee;padding:1mm;">
-					activity
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Nom du fichier
 				</td>
-				<td style="width:5mm;background:#fff;">
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (str_replace(' ', '_', $id_orders . '_' . $doc_type) . '_' . date("Y-m-d_H-i", strtotime($date_add)) . '.pdf'); ?>
 				</td>
-				<td style="width:92mm;background:#eee;padding:1mm;">
-					project
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Nombre de pages total
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($nb_page); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Nombre de pages noir et blanc
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($nb_page_nb); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Nombre de pages couleur
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($nb_page_c); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Type de document
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($doc_type); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Couverture : Feuillet transparent
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (($couv_ft) ? 'oui' : 'non'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Couverture : Feuille cartonnée
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (($couv_fc) ? 'oui : ' . $couv_fc_color : 'non'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Dos : Feuillet transparent
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (($dos_ft) ? 'oui' : 'non'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Dos : Feuille cartonnée
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (($dos_fc) ? 'oui : ' . $dos_fc_color : 'non'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Reliure : type
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($reliure_type); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Reliure : couleur
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($reliure_color); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Nombre d'exemplaires
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo ($quantity); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					Recto-verso
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo (($rectoverso) ? 'oui' : 'non'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;height:1mm;"> </td>
+				<td style="width:50%;height:1mm;"> </td>
+			</tr>
+			<tr>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					TOTAL
+				</td>
+				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
+					<?php echo $total . '€  (dont TVA : ' . $tva . '€)'; ?>
 				</td>
 			</tr>
 		</table>
-		<p>Nom du fichier : <?php echo(str_replace(' ', '_', $id_orders . '_' . $doc_type) . '_' . date("Y-m-d_H-i", strtotime($date_add)) . '.pdf'); ?></p>
-<p>Nombre de pages total : <?php echo($nb_page); ?></p>
 
+		<p></p>
+		<p></p>
 
-
-		<table>
+		<table style="width:100%;background:#fff;border:1px solid;">
 			<tr>
-				<td style="width:95mm;background:#fff;">
-					<b>Adresse</b><br>
-					address1<br>
-					address2<br>
-					zip_code city<br><br>
-					<b>Maître d\'ouvrage</b><br>
-					project_owner<br>
-					po_address<br>
+				<td style="width:40%;background:#fff;border:1px solid;">
+					<b>Adresse de livraison</b><br>
+					<?php echo $addr_name ?><br>
+					<?php echo $address ?><br>
+					<?php echo $address2 ?><br>
+					<?php echo $zip_code . ' ' . $city ?><br><br>
+					<b>Transporteur</b><br>
+					TNT <br>
 				</td>
-				<td style="width:5mm;background:#fff;">
-				</td>
-				<td style="width:95mm;background:#fff;" valign="top">
-					<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="" style="width:35mm;"><br><br>
-					<p style="text-align:center;"><br><br><img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="AMT"><br><br><br></p>
-
-					Montant des travaux : <b>amount amount_per_year k€ / an</b><br>
-					Début de réalisation : <b>'.$d['year_start'].'</b><br>
-					Fin de réalisation : <b>'.$d['year_end'].'</b>
+				<td style="width:60%;background:#fff;border:1px solid;" valign="center">
+					<br>
+					<b>Date de commande : <?php echo $date_add ?></b> <br><br>
+					Montant des travaux : <?php echo $total . '€  (dont TVA : ' . $tva . '€)'; ?><br>
+					Montant livraison : 3,50€<br>
+					<b>Montant Total : <?php echo $total_num + 3.5 . '€'; ?></b> <br><br>
+					<b>Mode de paiement</b><br>
+					<img src="<?php echo $settings['site_url']; ?>/public/img/paypal.png" alt="paypal" style="width:20mm;"><br>
+					<img src="<?php echo $settings['site_url']; ?>/public/img/stripe.png" alt="visa" style="width:20mm;"><br>
+					<br>
 				</td>
 			</tr>
 		</table>

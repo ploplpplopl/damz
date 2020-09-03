@@ -1,14 +1,11 @@
 <?php
 
 require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
+require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
+
 
 // Récupération des couleurs.
-function getCouleurs() {
-	$query = 'SELECT * FROM dossier_color ORDER BY position DESC';
-	$sth = DbConnection::getConnection('administrateur')->query($query);
-	$sth->execute();
-	return $sth->fetchAll(PDO::FETCH_ASSOC);
-}
+$colors = AdminGestionMgr::getColors();
 
 $id = '';
 $text = '';
@@ -20,17 +17,12 @@ $errors = [];
 $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
-	$stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM dossier_color WHERE id_dossier_color = :id');
-	$stmt->bindParam(':id', $_GET['edit']);
-	$stmt->execute();
-	$result = $stmt->fetch(PDO::FETCH_ASSOC);
+	$result = AdminGestionMgr::getColorsByID($_GET['edit']);
 	$id = $result['id_dossier_color'];
 	$text = $result['text'];
 	$hex = $result['hex'];
 	$printable = $result['printable'];
 	$unprintable = $result['unprintable'];
-	$stmt->closeCursor();
-	DbConnection::disconnect();
 }
 
 if (isset($_POST['edit-btn'])) {
