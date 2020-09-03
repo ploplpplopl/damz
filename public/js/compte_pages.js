@@ -1,8 +1,8 @@
 $(function () {
     // AJAX call to calculate the number of black and white or colored pages
-	$("#formDossier")[0].reset(); // reset the form for firefox
-	$("#file_description").hide();
-	$("#detailPages").hide();
+    $("#formDossier")[0].reset(); // reset the form for firefox
+    $("#file_description").hide();
+    $("#detailPages").hide();
     // First step : upload PDF
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
@@ -84,8 +84,8 @@ $(function () {
         $('div.dos-color, div.couv-color').show();
     }
     // hide buttons that are not meant to be selectable
-	$('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', true);
-	resetOptions();
+    $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', true);
+    resetOptions();
     //  and force the selection of options according to the type of document
     $("#dossier").on('click', function () {
         resetOptions();
@@ -197,7 +197,7 @@ $(function () {
         });
 
         $('#thermo, #spiplast, #spimetal').on('click', function () {
-            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
+            $('#reliureNoire, #reliureBlanche').prop('checked', false).prop('disabled', false);
         });
         $('#reliureNoire, #reliureBlanche').on('click', function () {
             $('#quantity, #rectoverso').prop('disabled', false);
@@ -402,43 +402,113 @@ $(function () {
         $("input[name='tva']").val(TVA.toFixed(2));
     }
 
-	// Re-populate fields at page loading.
-	/*let nomFichier = $("input[name='nomFichier']").val(),
-		nbPages = $("input[name='nbPages']").val(),
-		nbPagesC = $("input[name='nbPagesC']").val(),
-		nbPagesNB = $("input[name='nbPagesNB']").val();
-	if (nomFichier && nbPages && nbPagesC && nbPagesNB) {
-		if (nbPagesNB == nbPages) {
-			var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en noir et blanc. <br>";
-		} else if (nbPagesC == nbPages) {
-			var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en couleur.<br>";
-		} else {
-			var paragInfo = "Ce document comporte " + nbPages + " pages, dont " + nbPagesC + " en couleurs et " + nbPagesNB + " en noir et blanc.<br>";
-		}
-		$("#file_description, #detailPages").show();
-		$("#file_description").html(paragInfo);
-		$("#nomFichier").html(nomFichier);
-		$("#nbPages").html(nbPages);
-		$("#nbPagesC").html(nbPagesC);
-		$("#nbPagesNB").html(nbPagesNB);
-	}*/
-	
+    // Re-populate fields at page loading.
+    /*let nomFichier = $("input[name='nomFichier']").val(),
+        nbPages = $("input[name='nbPages']").val(),
+        nbPagesC = $("input[name='nbPagesC']").val(),
+        nbPagesNB = $("input[name='nbPagesNB']").val();
+    if (nomFichier && nbPages && nbPagesC && nbPagesNB) {
+        if (nbPagesNB == nbPages) {
+            var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en noir et blanc. <br>";
+        } else if (nbPagesC == nbPages) {
+            var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en couleur.<br>";
+        } else {
+            var paragInfo = "Ce document comporte " + nbPages + " pages, dont " + nbPagesC + " en couleurs et " + nbPagesNB + " en noir et blanc.<br>";
+        }
+        $("#file_description, #detailPages").show();
+        $("#file_description").html(paragInfo);
+        $("#nomFichier").html(nomFichier);
+        $("#nbPages").html(nbPages);
+        $("#nbPagesC").html(nbPagesC);
+        $("#nbPagesNB").html(nbPagesNB);
+    }*/
+
+    // Check form before validation
+    /*var form = $("#formDossier");
+    form.addEventListener("submit", function (event) {
+        // Chaque fois que l'utilisateur tente d'envoyer les données
+        // on vérifie que le champ email est valide.
+        // if (!email.validity.valid) {
+        if (document.getElementById('dossier').checked) {
+            alert('ok');
+        } else {
+            alert('KO');
+        }
+        // S'il est invalide, on affiche un message d'erreur personnalisé
+        //   error.innerHTML = "J'attends une adresse e-mail correcte, mon cher !";
+        //   error.className = "error active";
+        // Et on empêche l'envoi des données du formulaire
+        //   event.preventDefault();
+        //}
+    }, false);*/
+
+
+    var btnDOM0 = document.getElementById('submit');
+    btnDOM0.onclick = function () {
+        return validateForm();
+    };
+
+    $('[id^=error-]').css('display', 'none');
+    $('[class^=error-]').css('display', 'none');
+
+    function validateForm() {
+        // check if PDF is uploaded
+        items = $('#uploadPDF')[0].files;
+        if (typeof items == 'undefined' || items == null || items.length == 0) {
+            // console.log('items is empty array.');
+            $('span#error-upload').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'uploadPDF';
+            return false;
+        }
+        // check if doc type is selected
+        if (!$('#dossier').prop('checked') && !$('#memoire').prop('checked') && !$('#these').prop('checked') && !$('#perso').prop('checked')) {
+            $('.error-doctype').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'legend_doctype';
+            return false;
+        }
+        // FIRST PAGE
+        // when FIRST page is selected, check if (un)printable option is set
+        if ($('#btnFCCouv').prop('checked') && (!$('input[name=couv-impr]')[0].checked && !$('input[name=couv-impr]')[1].checked)) {
+            $('#error-couv-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'couvCouleurFC';
+            return false;
+        }
+        // when (un)printable option is set for the FIRST page of the document, check if color is selected
+        if (($('input[name=couv-impr]')[0].checked || $('input[name=couv-impr]')[1].checked) && $('input[name="couv_color"]:checked').val() == null) {
+            $('#error-couv-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'couvCouleurFC';
+            return false;
+        }
+
+        // LAST PAGE
+        // when LAST page is selected, check if (un)printable option is set
+        if ($('#btnFCDos').prop('checked') && (!$('input[name=dos-impr]')[0].checked && !$('input[name=dos-impr]')[1].checked)) {
+            $('#error-dos-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'dosCouleurFC';
+            return false;
+        }
+        // when (un)printable option is set for the LAST page of the document, check if color is selected
+        if (($('input[name=dos-impr]')[0].checked || $('input[name=dos-impr]')[1].checked) && $('input[name="dos_color"]:checked').val() == null) {
+            $('#error-dos-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'dosCouleurFC';
+            return false;
+        }
+
+        // RELIURE
+        // check if reliure type is selected
+        if (!$('input[name=btnReliure]')[0].checked && !$('input[name=btnReliure]')[1].checked && !$('input[name=btnReliure]')[2].checked) {
+            $('#error-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'type_reliure';
+            return false;
+        }
+        // when type of reliure is selected, check if color is selected
+        if (($('input[name=btnReliure]')[0].checked || $('input[name=btnReliure]')[1].checked || $('input[name=btnReliure]')[2].checked) && $('input[name="btnCoulReliure"]:checked').val() == null) {
+            $('#error-color-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            window.location.hash = 'type_reliure';
+            return false;
+        }
+
+        return true;
+    }
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

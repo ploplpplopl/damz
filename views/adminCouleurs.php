@@ -12,7 +12,7 @@ if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user
 
 
 require_once 'controllers/adminCouleursController.php';
-$colors = getCouleurs();
+// $colors = getCouleurs();
 
 $css = '<link rel="stylesheet" href="/public/css/admin.css">';
 
