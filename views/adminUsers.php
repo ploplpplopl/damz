@@ -30,7 +30,7 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-<?php if (isset($_GET['edit'])): // add/upd ?>
+<?php if (isset($_GET['edit']) && empty($_GET['edit'])): // add ?>
 		<p><a href="?action=adminUsers"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
 		<form action="" method="post" class="mb-4">
 			<div class="form-group">
@@ -59,7 +59,39 @@ require_once 'views/head.php';
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
 			</div>
 			<p class="text-danger">L'utilisateur sera notifié par e-mail.</p>
-			<button type="submit" id="signup-btn" name="add-user-btn" class="btn btn-primary">Ajouter</button>
+			<button type="submit" name="add-user-btn" class="btn btn-primary">Ajouter</button>
+		</form>
+<?php elseif (!empty($_GET['edit'])): // upd ?>
+		<p><a href="?action=adminUsers"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
+		<form action="" method="post" class="mb-4">
+			<div class="form-group">
+				<label for="signup-email">Adresse e-mail</label>
+				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($user_email, ENT_QUOTES); ?>" disabled>
+			</div>
+			<div class="form-group">
+				<label for="signup-user_type">Type de compte</label>
+				<select id="signup-user_type" name="user_type" class="form-control">
+					<option value="">-- Sélectionner --</option>
+					<option value="admin"<?php echo ('admin' == $user_user_type ? ' selected' : ''); ?>>Administrateur</option>
+					<option value="admprinter"<?php echo ('admprinter' == $user_user_type ? ' selected' : ''); ?>>Imprimeur</option>
+					<option value="user"<?php echo ('user' == $user_user_type ? ' selected' : ''); ?>>Utilisateur</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="signup-first_name">Prénom</label>
+				<input type="text" id="signup-first_name" name="first_name" class="form-control" value="<?php echo htmlentities($user_first_name, ENT_QUOTES); ?>">
+			</div>
+			<div class="form-group">
+				<label for="signup-last_name">Nom</label>
+				<input type="text" id="signup-last_name" name="last_name" class="form-control" value="<?php echo htmlentities($user_last_name, ENT_QUOTES); ?>">
+			</div>
+			<div class="form-group">
+				<label for="signup-phone">Téléphone</label>
+				<input type="text" id="signup-phone" name="phone" class="form-control" value="<?php echo htmlentities($user_phone, ENT_QUOTES); ?>">
+			</div>
+			<p class="text-danger">L'utilisateur sera notifié par e-mail.</p>
+			<input type="hidden" name="id_user" value="<?php echo (int) $id; ?>">
+			<button type="submit" name="upd-user-btn" class="btn btn-primary">Modifier</button>
 		</form>
 <?php else: ?>
 		<p><a href="?action=adminUsers&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un utilisateur</a></p>
@@ -145,9 +177,9 @@ require_once 'views/head.php';
 						<td>
 							<a href="/index.php?action=adminUsers&amp;edit=<?php echo $user['id_user']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
 							<a href="?action=adminUsers&amp;del=<?php echo $user['id_user']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
-							<!--a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $user['id_user']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $user['id_user']; ?>" title="Étiquette"><i class="fas fa-receipt"></i></a>
-							<a href="/index.php?action=adminUsers&amp;archive=<?php echo $user['id_user']; ?>" onclick="return confirm('Voulez-vous vraiment archiver cette commande ?')" title="Archiver"><i class="fas fa-archive"></i></a-->
+						<?php if (!empty($user['subscr_confirmed'])): ?>
+							<br><a href="/index.php?action=adminUsers&amp;resend-confirmation-link=<?php echo $user['id_user']; ?>" onclick="return confirm('Voulez-vous vraiment renvoyer le lien de confirmation à cet utilisateur ?')" title="Renvoyer le lien de confirmation"><i class="fas fa-check-square"></i></a>
+						<?php endif; ?>
 						</td>
 					</tr>
 	<?php endforeach; ?>

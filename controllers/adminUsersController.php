@@ -152,9 +152,87 @@ if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 	$id = $result['id_user'];
-	//$unprintable = $result['unprintable'];
+	$user_email = $result['email'];
+	$user_user_type = $result['user_type'];
+	$user_first_name = $result['first_name'];
+	$user_last_name = $result['last_name'];
+	$user_phone = $result['phone'];
 	$stmt->closeCursor();
 	DbConnection::disconnect();
+}
+
+if (!empty($_GET['resend-confirmation-link'])) {
+	$id = intval($_GET['resend-confirmation-link']);
+	
+	$dbh = DbConnection::getConnection('administrateur');
+	$stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id');
+	$stmt->bindParam(':id', $id);
+	$stmt->execute();
+	$tUser = $stmt->fetch(PDO::FETCH_ASSOC);
+	$stmt->closeCursor();
+	
+	sendMail('signup.html', [
+		'{site_url}' => $settings['site_url'],
+		'{token}' => $tUser['token'],
+	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
+	
+	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';
+
+	header('location: index.php?action=adminUsers');
+	exit;
+}
+
+if (isset($_POST['upd-user-btn'])) {
+	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
+	$user_first_name = trim($_POST['first_name']);
+	$user_last_name = trim($_POST['last_name']);
+	$user_phone = trim($_POST['phone']);
+	$id = intval($_POST['id_user']);
+
+    if (empty($user_user_type)) {
+        $errors[] = 'Type de compte requis';
+    }
+    if (!empty($user_first_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_first_name)) {
+        $errors[] = 'Le prénom contient des caractères invalides';
+    }
+    if (!empty($user_last_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_last_name)) {
+        $errors[] = 'Le nom contient des caractères invalides';
+    }
+    if (!empty($user_phone) && !preg_match('/^[+0-9. ()-]*$/i', $user_phone)) {
+        $errors[] = 'Le numéro de téléphone n\'est pas valide';
+    }
+
+    if (empty($errors)) {
+		$dbh = DbConnection::getConnection('administrateur');
+		$query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
+		$stmt->bindParam(':first_name', $user_first_name, PDO::PARAM_STR);
+		$stmt->bindParam(':last_name', $user_last_name, PDO::PARAM_STR);
+		$stmt->bindParam(':phone', $user_phone, PDO::PARAM_STR);
+		$stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
+		$result = $stmt->execute();
+		$stmt->closeCursor();
+		DbConnection::disconnect();
+		
+        if (!$result) {
+            $_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';
+        }
+		else {
+			// Send confirmation email to user.
+			$emailSent = sendMail('user-upd.html', [
+				'{user_type}' => $user_user_type,
+				'{first_name}' => $user_first_name,
+				'{last_name}' => $user_last_name,
+				'{phone}' => $user_phone,
+			], 'Modification de vos informations personnelles sur ' . $settings['site_name'], $user_email);
+
+			$_SESSION['message_status'][] = 'Le compte <em>' . $user_email . '</em> a été mis à jour';
+
+            header('location: index.php?action=adminUsers');
+			exit;
+        }
+    }
 }
 
 if (isset($_POST['add-user-btn'])) {
