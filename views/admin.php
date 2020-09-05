@@ -21,23 +21,23 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<h1>Récap. des trucs sur le site</h1>
+		<h1>Administration</h1>
 		<?php echo displayMessage(); ?>
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-4">
-		<p><strong>21 utilisateurs enregistrés</strong><br>
-		<a href="">Gérer les utilisateurs</a></p>
+	<div class="col-md-4 mt-3">
+		<p><strong><span class="display-1">21</span><br> utilisateurs enregistrés</strong><br>
+		<a href="/index.php?action=adminUsers">Gérer les utilisateurs</a></p>
 	</div>
-	<div class="col-4">
-		<p><strong>5 commandes en cours</strong><br>
-		<a href="">Gérer les commandes</a></p>
+	<div class="col-md-4 mt-3">
+		<p><strong><span class="display-1">5</span><br> commandes en cours</strong><br>
+		<a href="/index.php?action=adminOrders">Gérer les commandes</a></p>
 	</div>
-	<div class="col-4">
-		<p><strong>42 commandes archivées</strong><br>
-		<a href="">Voir les archives</a></p>
+	<div class="col-md-4 mt-3">
+		<p><strong><span class="display-1">42</span><br> commandes archivées</strong><br>
+		<a href="/index.php?action=adminOrdersPast">Voir les archives</a></p>
 	</div>
 </div>
 

@@ -8,26 +8,31 @@ body {
     font-size: 100%;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
-
-header .bandeau {
-    background: #333;
-    text-align: center;
-	padding:20px;
-}
-/* TODO max-width en fonction de la taille de l'écran */
 .wrapper {
-    display: flex;
-    flex-direction: column;
     max-width: 1200px;
     margin: auto;
-    background: white;
-    overflow-wrap: break-word;
+    background: #fff;
 	box-shadow:0 0 7px #666;
 	min-height:100vh;
 	position: relative;
 }
+
+.bandeau {
+    background: #1f2933;
+    text-align: center;
+	padding:1.5em;
+}
+.bandeau img{
+    max-width:260px;
+}
+
+nav.bg-dark{background:#354758 !important;}
+nav.bg-light{background:#e9ecef !important;}
+
+/* TODO max-width en fonction de la taille de l'écran */
 .content {
-	padding:0 30px 250px;
+	padding:0 1.5em 250px;
+	hyphens: auto;
 }
 footer {
 	position: absolute;
@@ -36,23 +41,16 @@ footer {
 	height: 200px;
     margin: 200px 0 0;
     padding: 20px;
-    background-color: rgb(8, 113, 145);
-    color: white;
-    text-align: center;
+    background:#354758;
+    color: #fff;
 }
-footer p {
-    margin: 0.5em;
-}
-footer .title {
-    margin: 0;
-    font-size: 1.5em;
-}
-
+footer a{color:#9bceff;}
+footer a:hover{color:#fff;}
 
 
 /* Bootstrap override */
 h1, h2, h3, h4, h5, h6{
-	margin-top: 1em;
+	margin-top: .5em;
 }
 fieldset {
     margin: 20px 0;

@@ -12,13 +12,13 @@ require_once 'views/head.php';
 	</div>
 </div>
 <div class="row">
-	<div class="col-4">
+	<div class="col-md-4">
 		<p>Lien 1</p>
 	</div>
-	<div class="col-4">
+	<div class="col-md-4">
 		<p>Lien 2</p>
 	</div>
-	<div class="col-4">
+	<div class="col-md-4">
 		<p>Lien 3</p>
 	</div>
 </div>
