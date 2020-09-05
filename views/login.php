@@ -17,11 +17,11 @@ require_once 'views/head.php';
 			<div class="form-group">
 				<label>Mot de passe</label>
 				<input type="password" name="password" class="form-control form-control-lg" required>
-				<p class="text-right"><a href="/index.php?action=forgotPassword">Mot de passe oublié&nbsp;?</a></p>
+				<p class="text-right"><a href="/mot-de-passe-oublie">Mot de passe oublié&nbsp;?</a></p>
 			</div>
 			<button type="submit" name="login-btn" class="btn btn-primary">Connexion</button>
 		</form>
-		<p class="mt-5">Vous n'avez pas de compte&nbsp;? <a href="/index.php?action=signup">Enregistrez-vous</a></p>
+		<p class="mt-5">Vous n'avez pas de compte&nbsp;? <a href="/inscription">Enregistrez-vous</a></p>
 	</div>
 </div>
 

@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_SESSION['user']['id_user'])) {
-    header('location: index.php?action=login');
+    header('location: /connexion');
 	exit;
 }
 
@@ -10,7 +10,7 @@ if (
 	!empty($_SESSION['user']['user_type']) &&
 	!in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])
 ) {
-    header('location: /index.php?action=logout');
+    header('location: /deconnexion');
 	exit;
 }
 

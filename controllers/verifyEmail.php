@@ -24,6 +24,6 @@ else {
 		exit;
 	}
 	
-	header('location: index.php?action=login');
+	header('location: /connexion');
 	exit;
 }

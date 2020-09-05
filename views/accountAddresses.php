@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_SESSION['user']['id_user'])) {
-    header('location: index.php?action=login');
+    header('location: /connexion');
 	exit;
 }
 
@@ -16,7 +16,7 @@ require_once 'views/head.php';
 <div class="row">
 	<div class="col-12">
 		<h1>Mon compte</h1>
-		<p>Retour à la page <a href="/index.php?action=account">Mon compte</a>.</p>
+		<p>Retour à la page <a href="/mon-compte">Mon compte</a>.</p>
 		<?php echo displayMessage($errorsAddress); ?>
 	</div>
 </div>
@@ -39,7 +39,7 @@ require_once 'views/head.php';
 			<?php endforeach; ?>
 		<?php endif; ?>
 		<?php if (!empty($_SESSION['tunnel'])) : ?>
-			<p class="mt-5"><a class="btn btn-primary" href="/index.php?action=<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
+			<p class="mt-5"><a class="btn btn-primary" href="<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
 		<?php endif; ?>
 	</div>
 	<div class="col-sm-6">

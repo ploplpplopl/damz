@@ -28,7 +28,7 @@ require_once 'views/head.php';
 			</div>
 			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Inscription</button>
 		</form>
-		<p class="mt-5">Vous avez déjà un compte&nbsp;? <a href="index.php?action=login">Connectez-vous</a></p>
+		<p class="mt-5">Vous avez déjà un compte&nbsp;? <a href="/connexion">Connectez-vous</a></p>
 	</div>
 </div>
 

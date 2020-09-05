@@ -202,16 +202,16 @@ et le champ "nb d'exemplaires".
 		*/
 		
 		// Mise en session de l'étape du tunnel de paiement.
-		$_SESSION['tunnel'] = 'orderOverview';
+		$_SESSION['tunnel'] = '/commande/resume';
 		
 		// Détection de la connexion de l'utilisateur.
 		if (empty($_SESSION['user'])) {
-			$_SESSION['message_warning'][] = 'Veuillez vous identifier ou <a href="/index.php?action=signup">vous inscrire</a> pour poursuivre votre commande';
-			header('location: index.php?action=login');
+			$_SESSION['message_warning'][] = 'Veuillez vous identifier ou <a href="/inscription">vous inscrire</a> pour poursuivre votre commande';
+			header('location: /connexion');
 			exit;
 		}
 		
-		header('location: index.php?action=orderOverview');
+		header('location: /commande/resume');
 		exit;
 	}
 }

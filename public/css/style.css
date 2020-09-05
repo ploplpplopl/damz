@@ -3,6 +3,9 @@
 }
 img{max-width:100%;}
 
+::-moz-selection{background:#1f2933; color:#fff !important; text-shadow:none;}
+::selection{background:#1f2933; color:#fff !important; text-shadow:none;}
+
 body {
     background: #eee;
     font-size: 100%;
@@ -56,12 +59,17 @@ fieldset {
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 5px;
+background: #f2f5f8;
+background: -moz-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
+background: -webkit-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
+background: linear-gradient(to bottom, #f2f5f8 0%, #ffffff 100%);
 }
 legend {
 	display: inline;
 	width: auto;
 	padding: 0 10px;
+	text-shadow:0 0 20px #fff;
 }
 .legend{
 	font-weight: bold;

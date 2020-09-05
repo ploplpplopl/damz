@@ -9,5 +9,5 @@ $emailSent = sendMail('signup.html', [
 
 $_SESSION['message_status'][] = 'Un lien de confirmation vous a été adressé à <em>' . $_GET['email'] . '</em> pour finaliser votre inscription';
 
-header('location: index.php?action=login');
+header('location: /connexion');
 exit;

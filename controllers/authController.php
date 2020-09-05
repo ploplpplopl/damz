@@ -74,15 +74,15 @@ if (isset($_POST['signup-btn'])) {
 			
             if (!$emailSent) {
                 $_SESSION['message_status'][] = 'Votre inscription est prise en compte';
-                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/index.php?action=verifyUser&amp;token=' . $token . '">renvoyer l\'e-mail</a>';
+                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '">renvoyer l\'e-mail</a>';
 				
-                header('location: index.php?action=login');
+                header('location: /connexion');
 				exit;
             }
 			else {
 				$_SESSION['message_status'][] = 'Un lien de confirmation vous a été adressé à <em>' . $email . '</em> pour finaliser votre inscription';
 
-                header('location: index.php?action=login');
+                header('location: /connexion');
 				exit;
             }
         }
@@ -107,22 +107,22 @@ if (isset($_POST['login-btn'])) {
 				break;
 				
 			case 'not_confirmed':
-				$errors[] = 'Veuillez confirmer votre compte, si vous n\'avez pas reçu d\'e-mail de confirmation <a href="/index.php?action=resendConfirmationMail&amp;token=' . $checkLogin['user']['secure_key'] . '&amp;email=' . $checkLogin['user']['email'] . '">cliquez ici</a>';
+				$errors[] = 'Veuillez confirmer votre compte, si vous n\'avez pas reçu d\'e-mail de confirmation <a href="/email-confirmation?token=' . $checkLogin['user']['secure_key'] . '&amp;email=' . $checkLogin['user']['email'] . '">cliquez ici</a>';
 				break;
 				
 			case 'ok':
 				switch ($checkLogin['user']['user_type']) {
 					case 'admin':
 					case 'admprinter':
-						$action = 'admin';
+						$redirect = '/index.php?action=admin';
 						break;
 						
 					case 'user':
 					default:
-						$action = 'accueil';
+						$redirect = '/impression';
 						// Redirection si la connexion se fait durant le tunnel de paiement.
 						if (!empty($_SESSION['tunnel'])) {
-							$action = $_SESSION['tunnel'];
+							$redirect = $_SESSION['tunnel'];
 						}
 						break;
 				}
@@ -130,7 +130,7 @@ if (isset($_POST['login-btn'])) {
                 // storing the user's data in the session generates his connection
 				$_SESSION['user'] = $checkLogin['user'];
 				
-				header('location: index.php?action=' . $action);
+				header('location: ' . $redirect);
 				exit;
 				break;
         }
@@ -169,7 +169,7 @@ if (isset($_POST['forgot-password-btn'])) {
 			else {
 				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé. Cliquez dessus pour réinitialiser votre mot de passe.';
             }
-			header('location: index.php?action=forgotPassword');
+			header('location: /mot-de-passe-oublie');
 			exit;
         }
     }
@@ -213,7 +213,7 @@ if (isset($_POST['reset-password-btn'])) {
 				
 			case 'password_updated':
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
-				header('location: index.php?action=login');
+				header('location: /connexion');
 				exit;
 				break;
 		}
@@ -223,7 +223,7 @@ if (isset($_POST['reset-password-btn'])) {
 // --------------- LOGOUT ---------------
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     AuthMgr::disconnectUser();
-    header('location: index.php?action=login');
+    header('location: /connexion');
     exit;
 }
 

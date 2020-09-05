@@ -19,7 +19,7 @@
     <div class="wrapper">
         <header>
 			<div class="bandeau">
-				<a href="/index.php?action=accueil">
+				<a href="/">
                     <img src="public/img/logo.png" alt="Copifac" id="imgcopifac">
 				</a>
 			</div>
