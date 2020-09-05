@@ -2,10 +2,18 @@
 		</div><!-- .content -->
 		
 		<footer>
-			<p class="title">COPIFAC</p>
-			<p class="address">116 et 106 rue de Geôle<br>
-			14000 Caen</p>
-			<p class="phone">02 31 38 98 66</p>
+			<div class="row">
+				<div class="col-md-4 offset-md-4 col-6 text-left text-md-center">
+					<p class="h4 text-uppercase">Copifac</p>
+					<p>116 et 106 rue de Geôle<br>
+					14000 Caen</p>
+					<p>02 31 38 98 66</p>
+				</div>
+				<div class="col-md-4 col-6 text-right">
+					<p>Tous droits réservés.</p>
+					<p><a href="#">Mentions légales</a></p>
+				</div>
+			</div>
 		</footer>
 
 	</div><!-- .wrapper -->
