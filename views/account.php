@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_SESSION['user']['id_user'])) {
-    header('location: index.php?action=login');
+    header('location: /connexion');
 	exit;
 }
 
@@ -47,7 +47,7 @@ require_once 'views/head.php';
 			<button type="submit" name="user-info-btn" class="btn btn-primary">Enregistrer</button>
 		</form>
 <?php if (!empty($_SESSION['tunnel'])): ?>
-		<p class="mt-5"><a class="btn btn-primary" href="/index.php?action=<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
+		<p class="mt-5"><a class="btn btn-primary" href="<?php echo $_SESSION['tunnel']; ?>">Poursuivre ma commande</a></p>
 <?php endif; ?>
 	</div>
 	<div class="col-sm-6">
@@ -66,7 +66,7 @@ require_once 'views/head.php';
 		</p>
 	<?php endforeach; ?>
 <?php endif; ?>
-		<div class="text-right mb-4"><a href="/index.php?action=accountAddresses">Gérer mes adresses</a></div>
+		<div class="text-right mb-4"><a href="/mon-compte/mes-adresses">Gérer mes adresses</a></div>
 		<h2>Modifier mon mot de passe</h2>
 		<?php echo displayMessage($errorsPassword); ?>
 		<form action="" method="post">

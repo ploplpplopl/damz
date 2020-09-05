@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_SESSION['user']) || empty($_SESSION['tunnel'])) {
-	header('location: index.php?action=accueil');
+	header('location: /impression');
 	exit;
 }
 
@@ -78,7 +78,7 @@ require_once 'views/head.php';
 		<div class="col-md-4">
 			<h2>Adresse de livraison</h2>
 			<?php if (empty($userAddresses)) : ?>
-				<p>Aucune adresse, en <a href="/index.php?action=accountAddresses">ajouter une</a>.</p>
+				<p>Aucune adresse, en <a href="/mon-compte/mes-adresses">ajouter une</a>.</p>
 			<?php else : ?>
 				<?php foreach ($userAddresses as $userAddress) : ?>
 					<div class="form-group">
@@ -95,16 +95,16 @@ require_once 'views/head.php';
 						</label>
 					</div>
 				<?php endforeach; ?>
-				<p class="mt-3"><a href="/index.php?action=accountAddresses">Gérer mes adresses</a></p>
+				<p class="mt-3"><a href="/mon-compte/mes-adresses">Gérer mes adresses</a></p>
 			<?php endif; ?>
 			<h2>Téléphone</h2>
 			<?php if (empty($userPhone)) : ?>
-				<p>Aucun numéro de téléphone, en <a href="/index.php?action=account">ajouter un</a>.<br>
+				<p>Aucun numéro de téléphone, en <a href="/mon-compte">ajouter un</a>.<br>
 					<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
 			<?php else : ?>
 				<p>Mon numéro de téléphone&nbsp;: <?php echo htmlentities($userPhone, ENT_QUOTES); ?><br>
 					<small class="text-muted">Pour vous joindre en cas de problème avec votre commande.</small></p>
-				<p class="mt-3"><a href="/index.php?action=account">Modifier</a></p>
+				<p class="mt-3"><a href="/mon-compte">Modifier</a></p>
 			<?php endif; ?>
 		</div>
 		<div class="col-md-4">

@@ -122,13 +122,11 @@ switch ($action) {
 		$sTitre = 'Administration';
 		$_page = 'spimetal';
 		require('views/adminPaliers.php');
-		// require('views/adminPaliersSpimetal.php');
 		break;
 	case 'adminThermo':
 		$sTitre = 'Administration';
 		$_page = 'thermo';
 		require('views/adminPaliers.php');
-		// require('views/adminPaliersThermo.php');
 		break;
 
 	default:

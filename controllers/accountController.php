@@ -106,7 +106,7 @@ if (isset($_POST['user-info-btn'])) {
 			
 			$_SESSION['message_status'][] = 'Vos informations personnelles sont mises à jour';
 		}
-		header('location: index.php?action=account');
+		header('location: /mon-compte');
 		exit;
 	}
 }
@@ -151,7 +151,7 @@ if (isset($_POST['user-password-btn'])) {
 		if ($result) {
 			$_SESSION['message_status'][] = 'Votre mot de passe est mis à jour';
 		}
-		header('location: index.php?action=account');
+		header('location: /mon-compte');
 		exit;
 	}
 }
@@ -169,7 +169,7 @@ if (isset($_POST['delete-account-btn'])) {
 	$stmt->closeCursor();
 	DbConnection::disconnect();
 	$_SESSION['message_status'][] = 'Votre compte est supprimé';
-	header('location: index.php?action=home');
+	header('location: /');
 	exit;*/
 }
 
@@ -275,7 +275,7 @@ if (isset($_POST['user-address-btn'])) {
 		if ($result) {
 			$_SESSION['message_status'][] = 'add' == $addUpd ? 'Adresse ajoutée' : 'Adresse modifiée';
 		}
-		header('location: index.php?action=accountAddresses');
+		header('location: /commande/adresse');
 		exit;
 	}
 }
@@ -289,6 +289,6 @@ if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
 	$stmt->closeCursor();
 	DbConnection::disconnect();
 	$_SESSION['message_status'][] = 'Adresse supprimée';
-	header('location: index.php?action=accountAddresses');
+	header('location: /commande/adresse');
 	exit;
 }
