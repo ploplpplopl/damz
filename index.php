@@ -42,6 +42,10 @@ switch ($action) {
 		$sTitre = 'Contactez-nous';
 		require('views/contact.php');
 		break;
+	case 'legals':
+		$sTitre = 'Mentions légales';
+		require('views/legals.php');
+		break;
 
 		// Connexion.
 	case 'login':
