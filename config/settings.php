@@ -28,6 +28,13 @@ $settings['mail-username'] = 'copifac.test@gmail.com';
 // E-mail : password.
 $settings['mail-password'] = 'AzE-46KmL7_PtG';
 
+// Types de compte.
+$settings['accounts'] = [
+	'admin' => 'Administrateur',
+	'admprinter' => 'Imprimeur',
+	'user' => 'Utilisateur',
+];
+
 // Commande : mapping des valeurs du formulaire en français.
 $settings['mapping'] = [
 	'dossier' => 'Dossier',
