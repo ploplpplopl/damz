@@ -40,8 +40,9 @@ require_once 'views/head.php';
 					<!-- Dossier -->
 					<div class="col-md-6" id="docTypeDossier">
 						<div class="topBarDocType_old">
+							<span class='error-doctype'>Sélectionnez un type de document</span>
 							<input type="radio" name="docType" value="dossier" id="dossier" <?php echo ('dossier' == $docType ? ' checked' : ''); ?>>
-							<label for="dossier"><strong>Dossier</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
+							<label for="dossier"><strong>Dossier</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -54,8 +55,9 @@ require_once 'views/head.php';
 					<!-- Mémoire -->
 					<div class="col-md-6" id="docTypeMemoire">
 						<div class="topBarDocType_old">
+							<span class='error-doctype'>Sélectionnez un type de document</span>
 							<input type="radio" name="docType" value="memoire" id="memoire" <?php echo ('memoire' == $docType ? ' checked' : ''); ?>>
-							<label for="memoire"><strong>Mémoire</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
+							<label for="memoire"><strong>Mémoire</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -71,8 +73,9 @@ require_once 'views/head.php';
 					<!-- Thèse -->
 					<div class="col-md-6" id="docTypeThese">
 						<div class="topBarDocType_old">
+							<span class='error-doctype'>Sélectionnez un type de document</span>
 							<input type="radio" name="docType" value="these" id="these" <?php echo ('these' == $docType ? ' checked' : ''); ?>>
-							<label for="these"><strong>Thèse</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
+							<label for="these"><strong>Thèse</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -85,8 +88,9 @@ require_once 'views/head.php';
 					<!-- Personnalisé -->
 					<div class="col-md-6" id="docTypePerso">
 						<div class="topBarDocType_old">
+							<span class='error-doctype'>Sélectionnez un type de document</span>
 							<input type="radio" name="docType" value="perso" id="perso" <?php echo ('perso' == $docType ? ' checked' : ''); ?>>
-							<label for="perso"><strong>Personnalisé</strong></label><span class='error-doctype'>Sélectionnez un type de document</span>
+							<label for="perso"><strong>Personnalisé</strong></label>
 						</div>
 						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
 							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
@@ -112,12 +116,12 @@ require_once 'views/head.php';
 							<p>
 								<span id='error-couv-print'>Sélectionnez un type de feuille cartonnée</span>
 								<input type="radio" name="couv-impr" id="couv_printable" value="printable" <?php echo ('printable' == $couvImpr ? ' checked' : ''); ?>>
-								<label for="couv_printable">Feuille imprimable</label><br>
+								<label for="couv_printable">Imprimable</label><br>
 								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable" <?php echo ('unprintable' == $couvImpr ? ' checked' : ''); ?>>
-								<label for="couv_unprintable">Feuille non imprimable</label><br>
+								<label for="couv_unprintable">Non imprimable</label><br>
 								<span id='error-couv-color'>Sélectionnez une couleur</span>
 							</p>
-							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;">
+							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;background:beige;">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="couv-color couv-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> couv-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
 										<input type="radio" id="couv_color_<?php echo $data['id_dossier_color']; ?>" name="couv_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo (htmlentities($data['text'], ENT_QUOTES) ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>" <?php echo ($data['id_dossier_color'] == $couvColor ? ' checked' : ''); ?>>
@@ -141,12 +145,12 @@ require_once 'views/head.php';
 							<p>
 								<span id='error-dos-print'>Sélectionnez un type de feuille cartonnée</span>
 								<input type="radio" name="dos-impr" id="dos_printable" value="printable" <?php echo ('printable' == $dosImpr ? ' checked' : ''); ?>>
-								<label for="dos_printable">Feuille imprimable</label><br>
+								<label for="dos_printable">Imprimable</label><br>
 								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable" <?php echo ('unprintable' == $dosImpr ? ' checked' : ''); ?>>
-								<label for="dos_unprintable">Feuille non imprimable</label><br>
+								<label for="dos_unprintable">Non imprimable</label><br>
 								<span id='error-dos-color'>Sélectionnez une couleur</span>
 							</p>
-							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;">
+							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;;background:beige;">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="dos-color dos-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> dos-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
 										<input type="radio" id="dos_color_<?php echo $data['id_dossier_color']; ?>" name="dos_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>" <?php echo ($data['id_dossier_color'] == $dosColor ? ' checked' : ''); ?>>

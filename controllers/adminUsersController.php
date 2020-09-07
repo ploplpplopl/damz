@@ -316,8 +316,8 @@ if (isset($_POST['add-user-btn'])) {
 			
             if (!$emailSent) {
                 $_SESSION['message_status'][] = 'L\'inscription de l\'utilisateur est prise en compte';
-                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '&amp;back=adminUsers">renvoyer l\'e-mail</a>';
-				
+				$_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '&amp;back=' . urlencode('/index.php?action=adminUsers') . '">renvoyer l\'e-mail</a>';
+								
                 header('location: /connexion');
 				exit;
             }

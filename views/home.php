@@ -127,9 +127,9 @@ require_once 'views/head.php';
 </div>
 
 <?php
-
+// TODO télécharger les scripts js
 $javascript = '
-<script src="http://malsup.github.com/jquery.cycle2.js"></script>
+<script src="http://malsup.github.com/jquery.cycle2.js"></script> 
 <script src="http://malsup.github.io/min/jquery.cycle2.caption2.min.js"></script>
 ';
 
