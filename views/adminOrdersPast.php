@@ -26,14 +26,14 @@ require_once 'views/head.php';
 
 <div class="row">
 	<div class="col-12">
-		<h1>Historique des commandes</h1>
+		<h1>Commandes archivées</h1>
 		<?php echo displayMessage(); ?>
 	</div>
 </div>
 
 <ul class="nav nav-tabs">
 	<li class="nav-item"><a class="nav-link" href="/index.php?action=adminOrders">Commandes</a></li>
-	<li class="nav-item"><a class="nav-link active" href="/index.php?action=adminOrdersPast">Historique</a></li>
+	<li class="nav-item"><a class="nav-link active" href="/index.php?action=adminOrdersPast">Archives</a></li>
 </ul>
 
 <div class="row">

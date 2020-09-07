@@ -33,7 +33,7 @@ require_once 'views/head.php';
 
 <ul class="nav nav-tabs">
 	<li class="nav-item"><a class="nav-link active" href="/index.php?action=adminOrders">Commandes</a></li>
-	<li class="nav-item"><a class="nav-link" href="/index.php?action=adminOrdersPast">Historique</a></li>
+	<li class="nav-item"><a class="nav-link" href="/index.php?action=adminOrdersPast">Archives</a></li>
 </ul>
 
 <div class="row">
