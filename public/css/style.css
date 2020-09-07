@@ -29,9 +29,6 @@ body {
     max-width:260px;
 }
 
-nav.bg-dark{background:#354758 !important;}
-nav.bg-light{background:#e9ecef !important;}
-
 /* TODO max-width en fonction de la taille de l'écran */
 .content {
 	padding:0 1.5em 250px;
@@ -52,6 +49,11 @@ footer a:hover{color:#fff;}
 
 
 /* Bootstrap override */
+nav.bg-dark{background:#354758 !important;}
+.navbar-dark .navbar-nav .nav-link{color:rgba(255,255,255,.75);}
+.navbar-dark .navbar-nav .nav-link:hover{color:#fff;}
+nav.bg-light{background:#e9ecef !important;}
+
 h1, h2, h3, h4, h5, h6{
 	margin-top: .5em;
 }
@@ -60,10 +62,10 @@ fieldset {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-background: #f2f5f8;
-background: -moz-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
-background: -webkit-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
-background: linear-gradient(to bottom, #f2f5f8 0%, #ffffff 100%);
+	background: #fff;
+	background: -moz-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
+	background: -webkit-linear-gradient(top, #f2f5f8 0%, #ffffff 100%);
+	background: linear-gradient(to bottom, #f2f5f8 0%, #ffffff 100%);
 }
 legend {
 	display: inline;

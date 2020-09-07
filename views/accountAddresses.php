@@ -51,7 +51,7 @@ require_once 'views/head.php';
 			</div>
 			<div class="form-group">
 				<label for="address">Adresse</label>
-				<input type="text" id="address" name="address" class="form-control" value="<?php echo htmlentities($address, ENT_QUOTES); ?>" required="required" placeholder="N° de voie, rue…">
+				<input type="text" id="address" name="address" class="form-control" value="<?php echo htmlentities($address, ENT_QUOTES); ?>" required="required" placeholder="№ de voie, rue…">
 			</div>
 			<div class="form-group">
 				<label for="address2">Complément d'adresse (facultatif)</label>

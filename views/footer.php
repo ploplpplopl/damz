@@ -11,7 +11,7 @@
 				</div>
 				<div class="col-md-4 col-6 text-right">
 					<p>Tous droits réservés.</p>
-					<p><a href="#">Mentions légales</a></p>
+					<p><a href="/mentions-legales">Mentions légales</a></p>
 				</div>
 			</div>
 		</footer>
@@ -23,13 +23,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="public/js/scripts.js"></script>
 <?php echo $javascript; ?>
-
-<?php /*
-<script src="public/js/Paliers_jquery.js"></script>
-<script src="public/js/page.js"></script>
-<script src="public/js/tab.js"></script>
-<script src="public/js/compte_pages.js"></script>
-*/ ?>
 
 </body>
 </html>

@@ -96,8 +96,12 @@ ob_start();
 			</tr>
 		</table>
 	</page_footer>
-	<img src="<?php echo $settings['site_url']; ?>/public/img/logo_copyfac.png" alt="copyfac" style="width:30mm;background-color:#6690a1;">
-	<h1 style="text-align:center;font-size:34px;">Facture N° <?php echo $id_orders; ?></h1>
+	<table style="width:100%">
+		<tr>
+			<td style="width:30%;"><img src="<?php echo $settings['site_url']; ?>/public/img/logo_copyfac.png" alt="copyfac" style="width:50mm;background-color:#6690a1;"></td>
+			<td style="width:70%;text-align:right;font-size:24px;">Facture N° <?php echo $id_orders; ?></td>
+		</tr>
+	</table>
 	<hr style="color:#ccc;">
 	<nobreak>
 		<h2 style="font-size:24px;letter-spacing:-1px;">Résumé de la commande</h2>
@@ -119,7 +123,7 @@ ob_start();
 					Nombre de pages total
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($nb_page); ?>
+					<?php echo $nb_page; ?>
 				</td>
 			</tr>
 			<tr>
@@ -127,7 +131,7 @@ ob_start();
 					Nombre de pages noir et blanc
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($nb_page_nb); ?>
+					<?php echo $nb_page_nb; ?>
 				</td>
 			</tr>
 			<tr>
@@ -135,7 +139,7 @@ ob_start();
 					Nombre de pages couleur
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($nb_page_c); ?>
+					<?php echo $nb_page_c; ?>
 				</td>
 			</tr>
 			<tr>
@@ -147,7 +151,7 @@ ob_start();
 					Type de document
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($doc_type); ?>
+					<?php echo $doc_type; ?>
 				</td>
 			</tr>
 			<tr>
@@ -159,7 +163,7 @@ ob_start();
 					Couverture : feuillet transparent
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($couv_ft) ? 'Oui' : 'Non'); ?>
+					<?php echo ($couv_ft ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -167,7 +171,7 @@ ob_start();
 					Couverture : feuille cartonnée
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($couv_fc) ? 'Oui : ' . strtolower($couv_fc_color) : 'Non'); ?>
+					<?php echo ($couv_fc ? 'Oui : ' . mb_strtolower($couv_fc_color) : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -179,7 +183,7 @@ ob_start();
 					Dos : feuillet transparent
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($dos_ft) ? 'Oui' : 'Non'); ?>
+					<?php echo ($dos_ft ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -187,7 +191,7 @@ ob_start();
 					Dos : feuille cartonnée
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($dos_fc) ? 'Oui : ' . strtolower($dos_fc_color) : 'Non'); ?>
+					<?php echo ($dos_fc ? 'Oui : ' . mb_strtolower($dos_fc_color) : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -199,7 +203,7 @@ ob_start();
 					Reliure : type
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (ucfirst($reliure_type)); ?>
+					<?php echo ucfirst($reliure_type); ?>
 				</td>
 			</tr>
 			<tr>
@@ -207,7 +211,7 @@ ob_start();
 					Reliure : couleur
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($reliure_color); ?>
+					<?php echo $reliure_color; ?>
 				</td>
 			</tr>
 			<tr>
@@ -219,7 +223,7 @@ ob_start();
 					Nombre d'exemplaires
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo ($quantity); ?>
+					<?php echo $quantity; ?>
 				</td>
 			</tr>
 			<tr>
@@ -231,7 +235,7 @@ ob_start();
 					Recto-verso
 				</td>
 				<td style="width:50%;background:#eee;height:6mm;padding-left:2mm;">
-					<?php echo (($rectoverso) ? 'Oui' : 'Non'); ?>
+					<?php echo ($rectoverso ? 'Oui' : 'Non'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -260,16 +264,16 @@ ob_start();
 				<td style="width:40%;background:#fff;border:1px solid;padding:0 5mm;" valign="top">
 					<br>
 					<b>Adresse de livraison</b><br>
-					<?php echo $addr_name ?><br>
-					<?php echo $address ?><br>
-					<?php echo $address2 ?><br>
-					<?php echo $zip_code . ' ' . $city ?><br><br>
+					<?php echo $addr_name; ?><br>
+					<?php echo $address; ?><br>
+					<?php echo ($address2 ? $address2 . '<br>' : ''); ?>
+					<?php echo $zip_code . ' ' . $city; ?><br><br>
 					<b>Transporteur</b><br>
-					TNT <br>
+					TNT<br>
 				</td>
 				<td style="width:60%;background:#fff;border:1px solid;padding:0 5mm;" valign="top">
 					<br>
-					<b>Date de commande : <?php echo date('d-m-Y H\hi', strtotime($date_add)) ?></b> <br><br>
+					<b>Date de commande : <?php echo date('d-m-Y H\hi', strtotime($date_add)); ?></b><br><br>
 					Montant des travaux : <?php echo $total . ' €  (dont TVA : ' . $tva . ' €)'; ?><br>
 					Montant livraison : 3,50 €<br>
 					<b>Montant total : <?php echo number_format($total_num + 3.5, 2, ',', ' ') . ' €'; ?></b> <br><br>
@@ -302,4 +306,4 @@ $html2pdf->pdf->SetSubject('Dossier-rapide');
 $html2pdf->pdf->SetDisplayMode('real', 'SinglePage', 'UseThumbs');
 $html2pdf->setDefaultFont('arial');
 $html2pdf->writeHTML($sPdf);
-$html2pdf->output(/*$id_orders . '_facture' . '.pdf', 'D'*/);
+$html2pdf->output($id_orders . '_facture' . '.pdf', 'D');
