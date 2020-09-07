@@ -133,7 +133,6 @@ if ($limitTo > $numUsers) {
 	$limitTo = $numUsers;
 }
 
-// TODO $users non utilisé :
 $users = AdminGestionMgr::getUsers($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
 
 // Edit user.

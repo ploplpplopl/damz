@@ -42,8 +42,9 @@ $(function () {
                         }
                         $("#detailPages").show();
                         $("#file_description").show().html(paragInfo);
-                        $("#nomFichier").html(obj.filename);
+                        $("#nomFichier").html(obj.filename_client);
                         $("input[name='nomFichier']").val(obj.filename);
+                        $("input[name='nomFichier_client']").val(obj.filename_client);
                         $("#nbPages").html(obj.NbPages);
                         $("input[name='nbPages']").val(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);

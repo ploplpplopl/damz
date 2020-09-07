@@ -30,6 +30,7 @@ try {
 	$parts = explode('.', $_FILES['file']['name']);
 	$extension = end($parts);
 	$filename = md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.' . $extension;
+	$filename_client = $_FILES['file']['name'];
 	chmod($_SERVER['DOCUMENT_ROOT'] . '/uploads', 0777);
 	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $filename);
 
@@ -76,6 +77,7 @@ try {
 	// TODO envoyer aussi original-filename pour l'affichage uniquement
 	$tabFinal = [
 		'filename' => $filename,
+		'filename_client' => $filename_client,
 		'NbPages' => $nbPages,
 		'NbPagesC' => count($tabPagesCouleurs),
 		'NbPagesNB' => $nbPagesNB,

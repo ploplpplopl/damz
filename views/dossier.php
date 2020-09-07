@@ -28,6 +28,7 @@ require_once 'views/head.php';
 					<li>Total des pages&nbsp;: <strong><span id="nbPages"></span></strong></li>
 				</ul>
 				<input type="hidden" name="nomFichier" value="<?php echo htmlentities($nomFichier, ENT_QUOTES); ?>">
+				<input type="hidden" name="nomFichier_client" value="<?php echo htmlentities($nomFichier_client, ENT_QUOTES); ?>">
 				<input type="hidden" name="nbPagesNB" value="<?php echo htmlentities($nbPagesNB, ENT_QUOTES); ?>">
 				<input type="hidden" name="nbPagesC" value="<?php echo htmlentities($nbPagesC, ENT_QUOTES); ?>">
 				<input type="hidden" name="nbPages" value="<?php echo htmlentities($nbPages, ENT_QUOTES); ?>">
