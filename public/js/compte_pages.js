@@ -57,8 +57,9 @@ $(function () {
                     }
                 },
                 beforeSend: function () {
-                    $('#loading').html('<img src="/public/img/spinner.gif" alt="Chargement…">');
+                    $('#loading').html('<p></p><div class="text-center"><img src="/public/img/ajax-loader.gif" alt="Chargement…"></div>');
                     $('#file_description').hide();
+                    $('#detailPages').hide();
                 },
                 complete: function () {
                     $('#loading').empty();
@@ -244,6 +245,7 @@ $(function () {
             $('div.dos-color :radio').prop('checked', false);
         });
     });
+
 
 
     // ---------------------------- AUTO SELECTING OPTIONS ----------------------------
