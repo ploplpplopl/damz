@@ -51,8 +51,8 @@ $(function () {
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         $("input[name='nbPagesNB']").val(obj.NbPagesNB);
                         $('#loading').empty();
-                        // Make type of document available to choose when pdf is loaded.
-                        $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', false);
+                        // hide error message when pdf is loaded.
+                        $('#error-upload]').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
                         calculDevis(jsonData);
                     }
                 },
@@ -64,11 +64,10 @@ $(function () {
                     $('#loading').empty();
                 }
             });
-            //$("#erreur").hide();
         }
     });
 
-    // Single call to the database and storage of values in the jsonData variable.
+    // Single call to the database to store values in a json variable.
     var jsonData = {};
     $.ajax({
         url: 'models/getDossierData.php',
@@ -80,133 +79,253 @@ $(function () {
     });
 
     function resetOptions() {
-        $('#couvCouleurFC :radio, #dosCouleurFC :radio, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso, #couv_printable, #couv_unprintable, #dos_printable, #dos_unprintable, div.dos-color, div.couv-color').prop('checked', false).prop('disabled', true);
+        $('#btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
+        $('#quantity').val('1');
         $('div.dos-color, div.couv-color').show();
+        $('[id^=error-]').css('display', 'none');
+        $('[class^=error-]').css('display', 'none');
     }
-    // hide buttons that are not meant to be selectable
-    $('#dossier, #memoire, #these, #perso').prop('checked', false).prop('disabled', true);
     resetOptions();
-    //  and force the selection of options according to the type of document
-    $("#dossier").on('click', function () {
-        resetOptions();
-        // checked & disabled : FTCouv et FCDos
-        $('#btnFTCouv, #btnFCDos').prop('checked', true); // .prop('disabled', true);
 
-        $('#dos_unprintable').prop('checked', true); //.prop('disabled', true);
 
-        $('div.dos-color :radio').prop('disabled', false);
-        $('div.dos-unprintable-0').hide();
-        // solution 1 : tout est clicable et alerte si clic sur autre chose que couleur, puis si clic sur autre chose que reliure, puis....
-        /*$('#thermo, #spiplast, #spimetal').prop('disabled', false);
-        $('#thermo, #spiplast, #spimetal').click(function (event) {
-            event.preventDefault(); // empeche la selection du radio btn
-            if ($('div.dos-color :radio').not(':checked')) {
-                alert('Veuillez sélectionner une couleur pour le dos cartonné');
-            }
-            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-        });*/
-        // solution 2 : suivant selectionnable si précédent checked
-        $('div.dos-color :radio').on('click', function () {
-            $('#thermo, #spiplast, #spimetal').prop('disabled', false);
-        });
-        $('#thermo, #spiplast, #spimetal').on('click', function () {
-            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-        });
-        $('#reliureNoire, #reliureBlanche').on('click', function () {
-            $('#quantity, #rectoverso').prop('disabled', false);
-        });
+    // ---------------------------- REMOVE ALERT MESSAGES ----------------------------
+    // Remove the related alert message on any button click
+    $('#uploadPDF, #dossier, #memoire, #these, #perso, #btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso, #quantity').click(function () {
+        // Remove alert on upload PDF
+        if (
+            ($(this)[0] == $('#uploadPDF')[0]) &&
+            ($('span#error-upload').hasClass("bg-danger"))
+        ) {
+            $('span#error-upload').removeClass("d-block p-2 bg-danger text-white").css('display', 'none');
+        }
+        // Remove alert on doc type
+        if (
+            ($(this)[0] == $('#dossier')[0] ||
+                $(this)[0] == $('#memoire')[0] ||
+                $(this)[0] == $('#these')[0] ||
+                $(this)[0] == $('#perso')[0]) &&
+            $('.error-doctype').hasClass("bg-danger")
+        ) {
+            $('.error-doctype').removeClass('d-block p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on "imprimable / non imprimable"
+        if (
+            ($(this)[0] == $('input[name=couv-impr]')[0] ||
+                $(this)[0] == $('input[name=couv-impr]')[1]) &&
+            $('#error-couv-print').hasClass("bg-danger")
+        ) {
+            $('#error-couv-print').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on colors
+        if ($(this)[0].name == 'couv_color' &&
+            $('#error-couv-color').hasClass("bg-danger")
+        ) {
+            $('#error-couv-color').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on "imprimable / non imprimable"
+        if (($(this)[0] == $('input[name=dos-impr]')[0] ||
+                $(this)[0] == $('input[name=dos-impr]')[1]) &&
+            $('#error-dos-print').hasClass("bg-danger")
+        ) {
+            $('#error-dos-print').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on colors
+        if ($(this)[0].name == 'dos_color' &&
+            $('#error-dos-color').hasClass("bg-danger")
+        ) {
+            $('#error-dos-color').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on "Reliure" type
+        if (($(this)[0] == $('input[name=btnReliure]')[0] ||
+                $(this)[0] == $('input[name=btnReliure]')[1] ||
+                $(this)[0] == $('input[name=btnReliure]')[2]) &&
+            $('#error-reliure').hasClass("bg-danger")
+        ) {
+            $('#error-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
+        // Remove alert on "Reliure" color
+        if ($(this)[0].name == 'btnCoulReliure' &&
+            $('#error-color-reliure').hasClass("bg-danger")
+        ) {
+            $('#error-color-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+        }
     });
-    $("#memoire").on('click', function () {
+
+
+    // ---------------------------- FORCE SELECTED OPTIONS according to the document type ----------------------------
+    $("#dossier").click(function () {
+        // Reset form options and alert messages
         resetOptions();
-        $('#btnFTCouv, #btnFCCouv').prop('checked', true).prop('disabled', true);
-        $('#couv_printable').prop('checked', true); //.prop('disabled', true);
-        $('div.couv-color :radio').prop('disabled', false);
+        if (!$('span#error-upload').hasClass("bg-danger")) {
+            $('[id^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+            $('[class^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+        }
+        // Forced options
+        $('#btnFTCouv, #btnFCDos').prop('checked', true).prop('disabled', true);
+        $('#btnFCCouv, #btnFTDos').prop('disabled', true);
+        $('#dos_printable, #couv_printable, #couv_unprintable').prop('disabled', true);
+        $('#dos_unprintable').prop('checked', true).prop('disabled', true);
+        $('div.couv-color :radio').prop('disabled', true);
+        // Hide  non unprintable colors
+        $('div.dos-unprintable-0').hide();
+    });
+    $("#memoire").click(function () {
+        // Reset form options and alert messages
+        resetOptions();
+        if (!$('span#error-upload').hasClass("bg-danger")) {
+            $('[id^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+            $('[class^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+        }
+        // Forced options
+        $('#btnFTCouv, #btnFCCouv, #btnFCDos').prop('checked', true).prop('disabled', true);
+        $('#btnFTDos').prop('disabled', true);
+        $('#couv_printable').prop('checked', true).prop('disabled', true);
+        $('#couv_unprintable').prop('disabled', true);
         $('div.couv-printable-0').hide();
-
-        $('#btnFCDos').prop('checked', true).prop('disabled', true);
-        $('div.dos-color :radio').prop('disabled', false);
+        $('#dos_printable').prop('disabled', true);
+        $('#dos_unprintable').prop('checked', true).prop('disabled', true);
         $('div.dos-unprintable-0').hide();
-        $('#dos_unprintable').prop('checked', true); //.prop('disabled', true);
-
-        $('#thermo, #spiplast, #spimetal').prop('disabled', false);
-        $('#thermo, #spiplast, #spimetal').on('click', function () {
-            $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-        });
-        $('#reliureNoire, #reliureBlanche').on('click', function () {
-            $('#quantity, #rectoverso').prop('disabled', false);
-        });
     });
-    $("#these").on('click', function () {
+    $("#these").click(function () {
+        // Reset form options and alert messages
         resetOptions();
-        $('#btnFTCouv ,#btnFTDos').prop('disabled', false); //prop('checked', false).
-
+        if (!$('span#error-upload').hasClass("bg-danger")) {
+            $('[id^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+            $('[class^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+        }
+        // Forced options
         $('#btnFCCouv, #btnFCDos').prop('checked', true).prop('disabled', true);
-        $('#couv_printable, #dos_printable').prop('checked', true); //.prop('disabled', true);
-        $('div.couv-color :radio, div.dos-color :radio').prop('disabled', false);
+        $('#couv_printable, #dos_printable').prop('checked', true).prop('disabled', true);
+        $('#couv_unprintable, #dos_unprintable').prop('disabled', true);
         $('div.couv-printable-0, div.dos-printable-0').hide();
-
-        $('#thermo').prop('checked', true); //.prop('disabled', true);
-        $('#reliureNoire, #reliureBlanche').prop('disabled', false);
-
-        $('#reliureNoire, #reliureBlanche').on('click', function () {
-            $('#quantity, #rectoverso').prop('disabled', false);
-        });
+        $('#thermo').prop('checked', true).prop('disabled', true);
+        $('#spiplast, #spimetal').prop('disabled', true);
     });
-    $("#perso").on('click', function () {
+    $("#perso").click(function () {
+        // Reset form options and alert messages
         resetOptions();
-        $('#btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal').prop('checked', false).prop('disabled', false);
-
-        $('#btnFCCouv').on('click', function () {
-            if ($(this).is(':checked')) {
-                $('#couv_printable, #couv_unprintable').prop('checked', false).prop('disabled', false);
-            } else {
-                $('#couv_printable, #couv_unprintable').prop('checked', false).prop('disabled', true);
+        if (!$('span#error-upload').hasClass("bg-danger")) {
+            $('[id^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+            $('[class^=error-]').removeClass('d-block d-inline p-2 bg-danger text-white');
+        }
+        // Options logic
+        $('#btnFCCouv').click(function () {
+            if ($('#btnFCCouv').is(":not(:checked)")) {
+                $('#couv_printable, #couv_unprintable').prop('checked', false);
                 $('div.couv-color').show();
-                $('div.couv-color :radio').prop('checked', false).prop('disabled', true);
+                $('div.couv-color :radio').prop('checked', false);
             }
         });
-        $('#couv_printable').on('click', function () {
+        $('#couv_printable').click(function () {
             $('div.couv-color').show();
             $('div.couv-printable-0').hide();
-            $('div.couv-color :radio').prop('checked', false).prop('disabled', false);
+            $('div.couv-color :radio').prop('checked', false);
         });
-        $('#couv_unprintable').on('click', function () {
+        $('#couv_unprintable').click(function () {
             $('div.couv-color').show();
             $('div.couv-unprintable-0').hide();
-            $('div.couv-color :radio').prop('checked', false).prop('disabled', false);
+            $('div.couv-color :radio').prop('checked', false);
         });
-
         $('#btnFCDos').on('click', function () {
-            if ($(this).is(':checked')) {
-                $('#dos_printable, #dos_unprintable').prop('checked', false).prop('disabled', false);
-            } else {
-                $('#dos_printable, #dos_unprintable').prop('checked', false).prop('disabled', true);
+            if ($(this).is(":not(:checked)")) {
+                $('#dos_printable, #dos_unprintable').prop('checked', false);
                 $('div.dos-color').show();
-                $('div.dos-color :radio').prop('checked', false).prop('disabled', true);
+                $('div.dos-color :radio').prop('checked', false);
             }
         });
-        $('#dos_printable').on('click', function () {
+        $('#dos_printable').click(function () {
             $('div.dos-color').show();
             $('div.dos-printable-0').hide();
-            $('div.dos-color :radio').prop('checked', false).prop('disabled', false);
+            $('div.dos-color :radio').prop('checked', false);
         });
-        $('#dos_unprintable').on('click', function () {
+        $('#dos_unprintable').click(function () {
             $('div.dos-color').show();
             $('div.dos-unprintable-0').hide();
-            $('div.dos-color :radio').prop('checked', false).prop('disabled', false);
-        });
-
-        $('#thermo, #spiplast, #spimetal').on('click', function () {
-            $('#reliureNoire, #reliureBlanche').prop('checked', false).prop('disabled', false);
-        });
-        $('#reliureNoire, #reliureBlanche').on('click', function () {
-            $('#quantity, #rectoverso').prop('disabled', false);
+            $('div.dos-color :radio').prop('checked', false);
         });
     });
 
 
+    // ---------------------------- AUTO SELECTING OPTIONS ----------------------------
+    // Force uploading PDF before choosing options
+    $('#dossier, #memoire, #these, #perso, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso, #couvCouleurFC :radio, #dosCouleurFC :radio, div.dos-color, div.couv-color').click(function () {
+        items = $('#uploadPDF')[0].files;
+        if (typeof items == 'undefined' || items == null || items.length == 0) {
+            $('span#error-upload').addClass('d-block p-2 bg-danger text-white').click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
+            window.location.hash = 'uploadPDF';
+        }
+    });
+    // On any button click - other than uploadPDF and doctype -
+    $('#btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso, #couvCouleurFC :radio, #dosCouleurFC :radio, #couv_printable, #couv_unprintable, div.couv-color, #dos_printable, #dos_unprintable, div.dos-color').click(function () {
+        // Set 'perso' by default if an option is selected and no doctype is selected
+        if ($('#dossier').is(":not(:checked)") && $('#memoire').is(":not(:checked)") && $('#these').is(":not(:checked)") && $('#perso').is(":not(:checked)")) {
+            $('#perso').prop('checked', true);
+        }
+    });
+    // On click on FC options
+    $('#couv_printable, #couv_unprintable, div.couv-color').click(function () {
+        // select FC if it is not
+        if ($('#btnFCCouv').is(":not(:checked)")) {
+            $('#btnFCCouv').prop('checked', true);
+        }
+    });
+    // On click on FC options
+    $('#dos_printable, #dos_unprintable, div.dos-color').click(function () {
+        // select FC if it is not
+        if ($('#btnFCDos').is(":not(:checked)")) {
+            $('#btnFCDos').prop('checked', true);
+        }
+    });
+    // Option logic once $(#perso') is auto checked
+    $('#btnFCCouv').click(function () {
+        if ($("#perso").is(':checked') && $('#btnFCCouv').is(":not(:checked)")) {
+            $('#couv_printable, #couv_unprintable').prop('checked', false);
+            $('div.couv-color').show();
+            $('div.couv-color :radio').prop('checked', false);
+        }
+    });
+    $('#couv_printable').click(function () {
+        if ($("#perso").is(':checked')) {
+            $('div.couv-color').show();
+            $('div.couv-printable-0').hide();
+            $('div.couv-color :radio').prop('checked', false);
+        }
+    });
+    $('#couv_unprintable').click(function () {
+        if ($("#perso").is(':checked')) {
+            $('div.couv-color').show();
+            $('div.couv-unprintable-0').hide();
+            $('div.couv-color :radio').prop('checked', false);
+        }
+    });
+    $('#btnFCDos').on('click', function () {
+        if ($("#perso").is(':checked') && $(this).is(":not(:checked)")) {
+            $('#dos_printable, #dos_unprintable').prop('checked', false);
+            $('div.dos-color').show();
+            $('div.dos-color :radio').prop('checked', false);
+        }
+    });
+    $('#dos_printable').click(function () {
+        if ($("#perso").is(':checked')) {
+            $('div.dos-color').show();
+            $('div.dos-printable-0').hide();
+            $('div.dos-color :radio').prop('checked', false);
+        }
+    });
+    $('#dos_unprintable').click(function () {
+        if ($("#perso").is(':checked')) {
+            $('div.dos-color').show();
+            $('div.dos-unprintable-0').hide();
+            $('div.dos-color :radio').prop('checked', false);
+        }
+    });
+
+
+    // ---------------------------- QUOTE CALCULATION ----------------------------
     // Reload the quote calculation on click
-    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso, #perso, #these, #memoire, #dossier").on('click', function () {
+    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso, #perso, #these, #memoire, #dossier").click(function () {
         calculDevis(jsonData);
     });
 
@@ -402,80 +521,45 @@ $(function () {
         $("input[name='tva']").val(TVA.toFixed(2));
     }
 
-    // Re-populate fields at page loading.
-    /*let nomFichier = $("input[name='nomFichier']").val(),
-        nbPages = $("input[name='nbPages']").val(),
-        nbPagesC = $("input[name='nbPagesC']").val(),
-        nbPagesNB = $("input[name='nbPagesNB']").val();
-    if (nomFichier && nbPages && nbPagesC && nbPagesNB) {
-        if (nbPagesNB == nbPages) {
-            var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en noir et blanc. <br>";
-        } else if (nbPagesC == nbPages) {
-            var paragInfo = "Ce document comporte " + nbPages + " pages, toutes en couleur.<br>";
-        } else {
-            var paragInfo = "Ce document comporte " + nbPages + " pages, dont " + nbPagesC + " en couleurs et " + nbPagesNB + " en noir et blanc.<br>";
-        }
-        $("#file_description, #detailPages").show();
-        $("#file_description").html(paragInfo);
-        $("#nomFichier").html(nomFichier);
-        $("#nbPages").html(nbPages);
-        $("#nbPagesC").html(nbPagesC);
-        $("#nbPagesNB").html(nbPagesNB);
-    }*/
 
-    // Check form before validation
-    /*var form = $("#formDossier");
-    form.addEventListener("submit", function (event) {
-        // Chaque fois que l'utilisateur tente d'envoyer les données
-        // on vérifie que le champ email est valide.
-        // if (!email.validity.valid) {
-        if (document.getElementById('dossier').checked) {
-            alert('ok');
-        } else {
-            alert('KO');
-        }
-        // S'il est invalide, on affiche un message d'erreur personnalisé
-        //   error.innerHTML = "J'attends une adresse e-mail correcte, mon cher !";
-        //   error.className = "error active";
-        // Et on empêche l'envoi des données du formulaire
-        //   event.preventDefault();
-        //}
-    }, false);*/
-
-
-    var btnDOM0 = document.getElementById('submit');
-    btnDOM0.onclick = function () {
+    // ---------------------------- CHECK FORM VALIDITY ----------------------------
+    $('#submit').click(function () {
         return validateForm();
-    };
-
-    $('[id^=error-]').css('display', 'none');
-    $('[class^=error-]').css('display', 'none');
+    });
 
     function validateForm() {
         // check if PDF is uploaded
         items = $('#uploadPDF')[0].files;
         if (typeof items == 'undefined' || items == null || items.length == 0) {
             // console.log('items is empty array.');
-            $('span#error-upload').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('span#error-upload').addClass("d-block p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'uploadPDF';
             return false;
         }
         // check if doc type is selected
         if (!$('#dossier').prop('checked') && !$('#memoire').prop('checked') && !$('#these').prop('checked') && !$('#perso').prop('checked')) {
-            $('.error-doctype').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('.error-doctype').addClass("d-block p-2 bg-danger text-white").click(function () {
+                $('.error-doctype').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'legend_doctype';
             return false;
         }
         // FIRST PAGE
         // when FIRST page is selected, check if (un)printable option is set
         if ($('#btnFCCouv').prop('checked') && (!$('input[name=couv-impr]')[0].checked && !$('input[name=couv-impr]')[1].checked)) {
-            $('#error-couv-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-couv-print').addClass("d-inline p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'couvCouleurFC';
             return false;
         }
         // when (un)printable option is set for the FIRST page of the document, check if color is selected
         if (($('input[name=couv-impr]')[0].checked || $('input[name=couv-impr]')[1].checked) && $('input[name="couv_color"]:checked').val() == null) {
-            $('#error-couv-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-couv-color').addClass("d-inline p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'couvCouleurFC';
             return false;
         }
@@ -483,13 +567,17 @@ $(function () {
         // LAST PAGE
         // when LAST page is selected, check if (un)printable option is set
         if ($('#btnFCDos').prop('checked') && (!$('input[name=dos-impr]')[0].checked && !$('input[name=dos-impr]')[1].checked)) {
-            $('#error-dos-print').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-dos-print').addClass("d-block p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'dosCouleurFC';
             return false;
         }
         // when (un)printable option is set for the LAST page of the document, check if color is selected
         if (($('input[name=dos-impr]')[0].checked || $('input[name=dos-impr]')[1].checked) && $('input[name="dos_color"]:checked').val() == null) {
-            $('#error-dos-color').css("display", "inline").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-dos-color').addClass("d-inline p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'dosCouleurFC';
             return false;
         }
@@ -497,13 +585,17 @@ $(function () {
         // RELIURE
         // check if reliure type is selected
         if (!$('input[name=btnReliure]')[0].checked && !$('input[name=btnReliure]')[1].checked && !$('input[name=btnReliure]')[2].checked) {
-            $('#error-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-reliure').addClass("d-block p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'type_reliure';
             return false;
         }
         // when type of reliure is selected, check if color is selected
         if (($('input[name=btnReliure]')[0].checked || $('input[name=btnReliure]')[1].checked || $('input[name=btnReliure]')[2].checked) && $('input[name="btnCoulReliure"]:checked').val() == null) {
-            $('#error-color-reliure').css("display", "block").css("background-color", "#f44336").css("color", "white").fadeOut(3000);
+            $('#error-color-reliure').addClass("d-block p-2 bg-danger text-white").click(function () {
+                $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+            });
             window.location.hash = 'type_reliure';
             return false;
         }
