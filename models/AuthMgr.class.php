@@ -275,17 +275,19 @@ class AuthMgr
         string $user_pseudo,
         string $user_password,
         string $user_user_type,
-        string $token,
-        string $dateAdd
+        string $token
         ): array {
         $dbh = DbConnection::getConnection('administrateur');
 		$query = 'INSERT INTO user (email, pseudo, password, user_type, secure_key, date_add) VALUES (:email, :pseudo, :password, :user_type, :secure_key, :date_add)';
 		$stmt = $dbh->prepare($query);
 		$stmt->bindParam(':email', $user_email, PDO::PARAM_STR);
         $stmt->bindParam(':pseudo', $user_pseudo, PDO::PARAM_STR);
+        $user_password = password_hash($user_password, PASSWORD_DEFAULT);
         $stmt->bindParam(':password', $user_password, PDO::PARAM_STR);
 		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
         $stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
+        date_default_timezone_set('Europe/Paris');
+		$dateAdd = date("Y-m-d H:i:s");
         $stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
 		$result = $stmt->execute();
 		$stmt->closeCursor();

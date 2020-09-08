@@ -258,10 +258,7 @@ if (isset($_POST['add-user-btn'])) {
 	}
 
 	if (empty($errors)) {
-		$user_password = password_hash($user_password, PASSWORD_DEFAULT);
-		date_default_timezone_set('Europe/Paris');
-		$dateAdd = date("Y-m-d H:i:s");
-		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $user_user_type, $token, $dateAdd);
+		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $user_user_type, $token);
 
 		if (!$result) {
 			$_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
