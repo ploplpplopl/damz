@@ -200,12 +200,8 @@ class AdminGestionMgr
         return $result;
     }
 
-
-    // -----------------------------------------
-    // ----------------- USERS -----------------
-    // -----------------------------------------
     /**
-     * Getting users.
+     * Getting users who have orders.
      *
      * @param array $params The request parameters.
      * @param string $where The WHERE part of the request.
@@ -215,7 +211,7 @@ class AdminGestionMgr
      * @param int $limitTo (optional) The second parameter of the LIMIT part of the request.
      * @return array The result set.
      */
-    public static function getUsers(array $params, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
+    public static function getUsersWithOrders(array $params, string $where, string $order, string $way, $limitFrom = FALSE, $limitTo = FALSE): array
     {
         $query = '
 			SELECT *, (
@@ -257,7 +253,13 @@ class AdminGestionMgr
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getColorsByID($id): array
+    /**
+     * get colors related to an id
+     *
+     * @param integer $id
+     * @return array
+     */
+    public static function getColorsByID(int $id): array
     {
         $stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM dossier_color WHERE id_dossier_color = :id');
         $stmt->bindParam(':id', $id);
