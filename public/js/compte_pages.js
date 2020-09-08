@@ -52,8 +52,7 @@ $(function () {
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         $("input[name='nbPagesNB']").val(obj.NbPagesNB);
                         $('#loading').empty();
-                        // hide error message when pdf is loaded.
-                        $('#error-upload]').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+
                         calculDevis(jsonData);
                     }
                 },
@@ -88,6 +87,7 @@ $(function () {
         $('[class^=error-]').css('display', 'none');
     }
     resetOptions();
+
 
 
     // ---------------------------- REMOVE ALERT MESSAGES ----------------------------
@@ -152,6 +152,7 @@ $(function () {
             $('#error-color-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
         }
     });
+
 
 
     // ---------------------------- FORCE SELECTED OPTIONS according to the document type ----------------------------
@@ -324,6 +325,7 @@ $(function () {
             $('div.dos-color :radio').prop('checked', false);
         }
     });
+
 
 
     // ---------------------------- QUOTE CALCULATION ----------------------------
@@ -523,6 +525,7 @@ $(function () {
         $("#devisTVA").html(TVA.toFixed(2));
         $("input[name='tva']").val(TVA.toFixed(2));
     }
+
 
 
     // ---------------------------- CHECK FORM VALIDITY ----------------------------
