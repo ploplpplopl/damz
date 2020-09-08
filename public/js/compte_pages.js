@@ -334,13 +334,6 @@ $(function () {
         calculDevis(jsonData);
     });
 
-    // Prevent form validation
-    $("body").keypress(function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-        }
-    });
-
     // Quote calculation
     function calculDevis(jsonData) {
         let quantity = $("#quantity").val();
@@ -608,5 +601,12 @@ $(function () {
 
         return true;
     }
+
+    // Prevent form validation
+    // $("body").keypress(function (e) {
+    //     if (e.keyCode == 13) {
+    //         e.preventDefault();
+    //     }
+    // });
 
 });
