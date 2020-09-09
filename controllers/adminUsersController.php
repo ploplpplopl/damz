@@ -148,6 +148,11 @@ $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
 	$result = AuthMgr::getUserByID($_GET['edit']);
+	// $result = AuthMgr::getUser((int) $_GET['edit']);
+	if (!$result) {
+		header('location: /index.php?action=adminUsers');
+		exit;
+	}
 	$id = $result['id_user'];
 	$user_email = $result['email'];
 	$user_user_type = $result['user_type'];
@@ -159,15 +164,20 @@ if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 if (!empty($_GET['resend-confirmation-link'])) {
 	$id = intval($_GET['resend-confirmation-link']);
 	$tUser = AuthMgr::getUserByID($id);
+	
+	// $tUser = AuthMgr::getUser($id);
+	if (!$tUser) {
+		header('location: /index.php?action=adminUsers');
+		exit;
+	}
 
 	sendMail('signup.html', [
-		'{site_url}' => $settings['site_url'],
-		'{token}' => $tUser['token'],
+		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'],
 	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
 
 	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';
 
-	header('location: index.php?action=adminUsers');
+	header('location: /index.php?action=adminUsers');
 	exit;
 }
 
@@ -199,7 +209,7 @@ if (isset($_POST['upd-user-btn'])) {
 		} else {
 			// Send confirmation email to user.
 			$emailSent = sendMail('user-upd.html', [
-				'{user_type}' => $user_user_type,
+				'{user_type}' => $settings['accounts'][$user_user_type],
 				'{first_name}' => $user_first_name,
 				'{last_name}' => $user_last_name,
 				'{phone}' => $user_phone,
@@ -265,8 +275,7 @@ if (isset($_POST['add-user-btn'])) {
 		} else {
 			// Send confirmation email to user.
 			$emailSent = sendMail('user-add.html', [
-				'{site_url}' => $settings['site_url'],
-				'{token}' => $token,
+				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token . '&amp;back=' . urlencode('/mot-de-passe-oublie'),
 			], 'Inscription sur ' . $settings['site_name'], $user_email);
 
 			if (!$emailSent) {
@@ -283,4 +292,11 @@ if (isset($_POST['add-user-btn'])) {
 			}
 		}
 	}
+}
+
+if (!empty($_GET['del'])) {
+	AuthMgr::deleteUser(intval($_GET['del']));
+	$_SESSION['message_status'][] = 'Utilisateur supprimé';
+	header('location: /index.php?action=adminUsers');
+	exit;
 }

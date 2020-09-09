@@ -69,8 +69,7 @@ if (isset($_POST['signup-btn'])) {
 		else {
             // Send confirmation email to user.
 			$emailSent = sendMail('signup.html', [
-				'{site_url}' => $settings['site_url'],
-				'{token}' => $token,
+				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token,
 			], 'Inscription sur ' . $settings['site_name'], $email);
 			
             if (!$emailSent) {
@@ -120,7 +119,7 @@ if (isset($_POST['login-btn'])) {
 						
 					case 'user':
 					default:
-						$redirect = '/impression';
+						$redirect = '/mon-compte';
 						// Redirection si la connexion se fait durant le tunnel de paiement.
 						if (!empty($_SESSION['tunnel'])) {
 							$redirect = $_SESSION['tunnel'];
@@ -159,9 +158,7 @@ if (isset($_POST['forgot-password-btn'])) {
 		}
 		else {
 			$emailSent = sendMail('forgot-password.html', [
-				'{site_url}' => $settings['site_url'],
-				'{token}' => $checkAuth['secure_key'],
-				'{email}' => $email,
+				'{link_initialize}' => $settings['site_url'] . '/reinitialiser-mot-de-passe?token=' . $checkAuth['secure_key'] . '&amp;email=' . $email,
 			], 'Récupération de mot de passe sur ' . $settings['site_name'], $email);
 			
             if (!$emailSent) {

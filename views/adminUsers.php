@@ -28,6 +28,8 @@ require_once 'views/head.php';
 	</div>
 </div>
 
+<!-- Tabs with 'deleted users'? -->
+
 <div class="row">
 	<div class="col-12">
 <?php if (isset($_GET['edit']) && empty($_GET['edit'])): // add ?>
@@ -37,9 +39,9 @@ require_once 'views/head.php';
 				<label for="signup-user_type">Type de compte</label>
 				<select id="signup-user_type" name="user_type" class="form-control">
 					<option value="">-- Sélectionner --</option>
-					<option value="admin"<?php echo ('admin' == $user_user_type ? ' selected' : ''); ?>>Administrateur</option>
-					<option value="admprinter"<?php echo ('admprinter' == $user_user_type ? ' selected' : ''); ?>>Imprimeur</option>
-					<option value="user"<?php echo ('user' == $user_user_type ? ' selected' : ''); ?>>Utilisateur</option>
+					<?php foreach ($settings['accounts'] as $accountType => $accountName): ?>
+					<option value="<?php echo $accountType; ?>"<?php echo ($accountType == $user_user_type ? ' selected' : ''); ?>><?php echo $accountName; ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 			<div class="form-group">
@@ -72,9 +74,9 @@ require_once 'views/head.php';
 				<label for="signup-user_type">Type de compte</label>
 				<select id="signup-user_type" name="user_type" class="form-control">
 					<option value="">-- Sélectionner --</option>
-					<option value="admin"<?php echo ('admin' == $user_user_type ? ' selected' : ''); ?>>Administrateur</option>
-					<option value="admprinter"<?php echo ('admprinter' == $user_user_type ? ' selected' : ''); ?>>Imprimeur</option>
-					<option value="user"<?php echo ('user' == $user_user_type ? ' selected' : ''); ?>>Utilisateur</option>
+					<?php foreach ($settings['accounts'] as $accountType => $accountName): ?>
+					<option value="<?php echo $accountType; ?>"<?php echo ($accountType == $user_user_type ? ' selected' : ''); ?>><?php echo $accountName; ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 			<div class="form-group">
@@ -136,9 +138,9 @@ require_once 'views/head.php';
 						</th>
 						<th class="align-top">
 							<select name="user_type[]" multiple style="min-width:5em;height:4em;">
-								<option value="admin"<?php echo (in_array('admin', $userType) ? ' selected' : ''); ?>>Admin</option>
-								<option value="admprinter"<?php echo (in_array('admprinter', $userType) ? ' selected' : ''); ?>>Printer</option>
-								<option value="user"<?php echo (in_array('user', $userType) ? ' selected' : ''); ?>>User</option>
+								<?php foreach ($settings['accounts'] as $accountType => $accountName): ?>
+								<option value="<?php echo $accountType; ?>"<?php echo (in_array($accountType, $userType) ? ' selected' : ''); ?>><?php echo $accountName; ?></option>
+								<?php endforeach; ?>
 							</select>
 						</th>
 						<th class="align-top">
@@ -166,10 +168,10 @@ require_once 'views/head.php';
 							<?php echo $user['phone']; ?><br>
 						</td>
 						<td>
-							<?php echo $user['subscr_confirmed']; ?><br>
+							<?php echo $user['subscr_confirmed'] ? '✔️' : '❌'; ?><br>
 						</td>
 						<td>
-							<?php echo $user['user_type']; ?><br>
+							<?php echo $settings['accounts'][$user['user_type']]; ?><br>
 						</td>
 						<td>
 							<?php echo $user['num_orders']; ?><br>
@@ -177,7 +179,7 @@ require_once 'views/head.php';
 						<td>
 							<a href="/index.php?action=adminUsers&amp;edit=<?php echo $user['id_user']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
 							<a href="?action=adminUsers&amp;del=<?php echo $user['id_user']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
-						<?php if (!empty($user['subscr_confirmed'])): ?>
+						<?php if (empty($user['subscr_confirmed'])): ?>
 							<br><a href="/index.php?action=adminUsers&amp;resend-confirmation-link=<?php echo $user['id_user']; ?>" onclick="return confirm('Voulez-vous vraiment renvoyer le lien de confirmation à cet utilisateur ?')" title="Renvoyer le lien de confirmation"><i class="fas fa-check-square"></i></a>
 						<?php endif; ?>
 						</td>

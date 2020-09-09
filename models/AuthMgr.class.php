@@ -4,6 +4,24 @@ require_once("dao/DbConnection.class.php");
 
 class AuthMgr
 {
+	
+	/**
+	 * Get any user's data.
+	 *
+	 * @param int $id The user id.
+	 * @return array|null
+	 */
+	public static function getUser(int $id): ?array {
+        $dbh = DbConnection::getConnection('administrateur');
+		$stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id');
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		DbConnection::disconnect();
+        return $result ?: NULL;
+	}
+
     /**
      * Checks if email exists in database
      * returns true if exists
@@ -348,4 +366,20 @@ class AuthMgr
             echo $e->getMessage();
         }
     }
+	
+	/**
+	 * User deletion.
+	 *
+	 * @param int $id_user
+	 */
+	public static function deleteUser(int $id_user) {
+		$dbh = DbConnection::getConnection('administrateur');
+		$query = "UPDATE user SET deleted = \'1\' WHERE id_user = :id_user";
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':id_user', $id_user);
+		$result = $stmt->execute();
+		$stmt->closeCursor();
+		DbConnection::disconnect();
+		return $result;
+	}
 }

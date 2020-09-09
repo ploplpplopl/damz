@@ -8,10 +8,10 @@ if (!isset($_GET['token'])) {
 else {
     switch (AuthMgr::verifyEmail($_GET['token'])) {
         case 'already_confirmed':
-			$_SESSION['message_warning'][] = (!empty($_GET['back']) && 'forgotPassword' == $_GET['back']) ? 'Votre compte est déjà activé, vous pouvez réinitialiser votre mot de passe' : 'Votre compte est déjà activé, vous pouvez vous connecter';
+			$_SESSION['message_warning'][] = (!empty($_GET['back']) && '/mot-de-passe-oublie' == $_GET['back']) ? 'Votre compte est déjà activé, vous pouvez réinitialiser votre mot de passe' : 'Votre compte est déjà activé, vous pouvez vous connecter';
 			break;
         case 'confirmed':
-			$_SESSION['message_status'][] = (!empty($_GET['back']) && 'forgotPassword' == $_GET['back']) ? 'Votre compte est activé, vous pouvez réinitialiser votre mot de passe' : 'Votre compte est activé, vous pouvez vous connecter';
+			$_SESSION['message_status'][] = (!empty($_GET['back']) && '/mot-de-passe-oublie' == $_GET['back']) ? 'Votre compte est activé, vous pouvez réinitialiser votre mot de passe' : 'Votre compte est activé, vous pouvez vous connecter';
 			break;
         case 'error':
 		default:
@@ -20,7 +20,7 @@ else {
     }
 	
 	if (!empty($_GET['back'])) {
-		header('location: index.php?action=' . $_GET['back']);
+		header('location: ' . $_GET['back']);
 		exit;
 	}
 	
