@@ -8,11 +8,11 @@ require_once 'views/head.php';
 <div class="row">
 	<div class="col-12">
 		<h1>Contact</h1>
+		<?php echo displayMessage($errors); ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-12 form-wrapper auth">
-		<?php echo displayMessage($errors); ?>
 		<form id="contact-form" action="" method="post">
 			<div class="form-group">
 				<label for="contact-email">Adresse e-mail (pour vous répondre)</label>

@@ -603,10 +603,10 @@ $(function () {
     }
 
     // Prevent form validation
-    // $("body").keypress(function (e) {
-    //     if (e.keyCode == 13) {
-    //         e.preventDefault();
-    //     }
-    // });
+    $("body").keypress(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+        }
+    });
 
 });

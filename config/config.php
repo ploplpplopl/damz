@@ -18,6 +18,8 @@ ini_set('memory_limit', '64M');
 header('Content-Type: text/html; charset=utf-8');
 header('P3P: CP="CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR"');
 
+date_default_timezone_set('Europe/Paris');
+
 
 // Constantes.
 define ('_ROOT_DIR_', __DIR__ . '/..');

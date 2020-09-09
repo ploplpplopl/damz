@@ -13,11 +13,11 @@ $(function () {
 		return confirm('Voulez-vous vraiment supprimer cette adresse ?');
 	});
 
-	// Prevent form validation
-	$("body").keypress(function (e) {
-		if (e.keyCode == 13) {
-			e.preventDefault();
-		}
-	});
+	// // Prevent form validation
+	// $("form").keypress(function (e) {
+	// 	if (e.keyCode == 13) {
+	// 		e.preventDefault();
+	// 	}
+	// });
 
 });

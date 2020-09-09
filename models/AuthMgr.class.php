@@ -96,7 +96,7 @@ class AuthMgr
             $password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
             $stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
-            date_default_timezone_set('Europe/Paris');
+            // date_default_timezone_set('Europe/Paris');
             $dateAdd = date("Y-m-d H:i:s");
             $stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
             $result = $stmt->execute();
@@ -286,7 +286,7 @@ class AuthMgr
         $stmt->bindParam(':password', $user_password, PDO::PARAM_STR);
 		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
         $stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
-        date_default_timezone_set('Europe/Paris');
+        // date_default_timezone_set('Europe/Paris');
 		$dateAdd = date("Y-m-d H:i:s");
         $stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
 		$result = $stmt->execute();

@@ -25,6 +25,9 @@ $settings['port'] = 465;
 $settings['ssl'] = 'ssl';
 // E-mail : username.
 $settings['mail-username'] = 'copifac.test@gmail.com';
+// Adresse e-mail où seront envoyés les messages du formulaire de contact
+// TODO modifier en prod, ex: contact@dossier-rapide.fr. 
+$settings['mail-contact-form'] = 'copifac.test@gmail.com';
 // E-mail : password.
 $settings['mail-password'] = 'AzE-46KmL7_PtG';
 
