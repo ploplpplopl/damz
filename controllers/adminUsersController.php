@@ -148,7 +148,7 @@ $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
 	$result = AuthMgr::getUserByID($_GET['edit']);
-	// $result = AuthMgr::getUser((int) $_GET['edit']);
+
 	if (!$result) {
 		header('location: /index.php?action=adminUsers');
 		exit;
@@ -164,8 +164,7 @@ if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 if (!empty($_GET['resend-confirmation-link'])) {
 	$id = intval($_GET['resend-confirmation-link']);
 	$tUser = AuthMgr::getUserByID($id);
-	
-	// $tUser = AuthMgr::getUser($id);
+
 	if (!$tUser) {
 		header('location: /index.php?action=adminUsers');
 		exit;

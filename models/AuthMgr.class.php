@@ -4,23 +4,24 @@ require_once("dao/DbConnection.class.php");
 
 class AuthMgr
 {
-	
-	/**
-	 * Get any user's data.
-	 *
-	 * @param int $id The user id.
-	 * @return array|null
-	 */
-	public static function getUser(int $id): ?array {
+
+    /**
+     * Get any user's data.
+     *
+     * @param int $id The user id.
+     * @return array|null
+     */
+    public static function getUserByID(int $id): ?array
+    {
         $dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id');
-		$stmt->bindParam(':id', $id);
-		$stmt->execute();
-		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		$stmt->closeCursor();
-		DbConnection::disconnect();
+        $stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
         return $result ?: NULL;
-	}
+    }
 
     /**
      * Checks if email exists in database
@@ -88,45 +89,42 @@ class AuthMgr
     }
 
     /**
-     * Registers a new user
+     * Create a user.
      *
-     * @param string $firstname
-     * @param string $lastname
-     * @param string $email
-     * @param string $phone
-     * @param string $pseudo
-     * @param string $password
+     * @param string $user_email
+     * @param string $user_pseudo
+     * @param string $user_password
+     * @param string $user_user_type
      * @param string $token
-     * @return boolean
+     * @return array
      */
-    public static function signup(
-        string $email,
-        string $pseudo,
-        string $password,
-        string $token
-    ) {
+    public static function setUser(
+        string $user_email,
+        string $user_pseudo,
+        string $user_password,
+        string $token,
+        string $user_user_type = ''
+    ): bool {
         try {
+            if (empty($user_user_type)) {
+                $user_user_type = 'user';
+            }
             $dbh = DbConnection::getConnection('administrateur');
-            $query = 'INSERT INTO user (email, pseudo, password, secure_key, date_add) VALUES (:email, :pseudo, :password, :secure_key, :date_add)';
+            $query = 'INSERT INTO user (email, pseudo, password, user_type, secure_key, date_add) VALUES (:email, :pseudo, :password, :user_type, :secure_key, :date_add)';
             $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-            $password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $user_email, PDO::PARAM_STR);
+            $stmt->bindParam(':pseudo', $user_pseudo, PDO::PARAM_STR);
+            $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+            $stmt->bindParam(':password', $user_password, PDO::PARAM_STR);
+            $stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
             $stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
             // date_default_timezone_set('Europe/Paris');
             $dateAdd = date("Y-m-d H:i:s");
             $stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
             $result = $stmt->execute();
-
-            if (!$result) {
-                $success = false;
-            } else {
-                $success = true;
-            }
-            // fermeture de la connexion
+            $stmt->closeCursor();
             DbConnection::disconnect();
-            return $success;
+            return $result;
         } catch (Exception $e) {
             // TODO log error in DB rather than display an ugly message.
             echo $e->getMessage();
@@ -239,23 +237,15 @@ class AuthMgr
     }
 
     /**
-     * Get a user info
+     * Modify a user.
      *
+     * @param string $user_user_type
+     * @param string $user_first_name
+     * @param string $user_last_name
+     * @param string $user_phone
      * @param integer $id
      * @return array
      */
-    public static function getUserByID(int $id): array
-    {
-        $stmt = DbConnection::getConnection('administrateur');
-        $stmt->prepare('SELECT * FROM user WHERE id_user = :id');
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        DbConnection::disconnect();
-        return $result;
-    }
-
     public static function updateUserByID(
         string $user_user_type,
         string $user_first_name,
@@ -278,43 +268,7 @@ class AuthMgr
     }
 
     /**
-     * Insert user in database.
-     *
-     * @param string $user_user_type
-     * @param string $user_email
-     * @param string $user_pseudo
-     * @param string $user_password
-     * @param string $token
-     * @param string $dateAdd
-     * @return array
-     */
-    public static function setUser(
-        string $user_email,
-        string $user_pseudo,
-        string $user_password,
-        string $user_user_type,
-        string $token
-        ): array {
-        $dbh = DbConnection::getConnection('administrateur');
-		$query = 'INSERT INTO user (email, pseudo, password, user_type, secure_key, date_add) VALUES (:email, :pseudo, :password, :user_type, :secure_key, :date_add)';
-		$stmt = $dbh->prepare($query);
-		$stmt->bindParam(':email', $user_email, PDO::PARAM_STR);
-        $stmt->bindParam(':pseudo', $user_pseudo, PDO::PARAM_STR);
-        $user_password = password_hash($user_password, PASSWORD_DEFAULT);
-        $stmt->bindParam(':password', $user_password, PDO::PARAM_STR);
-		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
-        $stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
-        // date_default_timezone_set('Europe/Paris');
-		$dateAdd = date("Y-m-d H:i:s");
-        $stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
-        return $result;
-        }
-
-    /**
-     * Détruit la session
+     * Destroy the session
      *
      * @param none
      * @return none
@@ -366,20 +320,21 @@ class AuthMgr
             echo $e->getMessage();
         }
     }
-	
-	/**
-	 * User deletion.
-	 *
-	 * @param int $id_user
-	 */
-	public static function deleteUser(int $id_user) {
-		$dbh = DbConnection::getConnection('administrateur');
-		$query = "UPDATE user SET deleted = \'1\' WHERE id_user = :id_user";
-		$stmt = $dbh->prepare($query);
-		$stmt->bindParam(':id_user', $id_user);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
-		return $result;
-	}
+
+    /**
+     * User deletion.
+     *
+     * @param int $id_user
+     */
+    public static function deleteUser(int $id_user)
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $query = "UPDATE user SET deleted = \'1\' WHERE id_user = :id_user";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':id_user', $id_user);
+        $result = $stmt->execute();
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
 }
