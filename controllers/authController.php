@@ -35,6 +35,7 @@ if (isset($_POST['signup-btn'])) {
 		$errors[] = 'E-mail invalide';
 	}
 	elseif (AuthMgr::emailExists($email)) {
+		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle) + modal BS4
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
     if (empty($pseudo)) {
@@ -44,7 +45,7 @@ if (isset($_POST['signup-btn'])) {
         $errors[] = 'Votre pseudo contient des caractères invalides';
     }
 	elseif (AuthMgr::pseudoExists($pseudo)) {
-		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
+		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle) + modal BS4
 		$errors[] = 'Un compte avec ce pseudo existe déjà';
 	}
     if (empty($password)) {
@@ -62,7 +63,7 @@ if (isset($_POST['signup-btn'])) {
 
     // Insert user into DB
     if (empty($errors)) {
-        if (!AuthMgr::signup($email, $pseudo, $password, $token)) {
+        if (!AuthMgr::setUser($email, $pseudo, $password, $token)) {
             $_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
         }
 		else {

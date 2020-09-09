@@ -20,7 +20,7 @@
         <header>
 			<div class="bandeau">
 				<a href="/">
-                    <img src="public/img/logo.png" alt="Copifac" id="imgcopifac">
+                    <img src="/public/img/logo.png" alt="Copifac" id="imgcopifac">
 				</a>
 			</div>
         </header>

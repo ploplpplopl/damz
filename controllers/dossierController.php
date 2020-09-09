@@ -44,6 +44,7 @@ $errors = [];
 
 if (isset($_POST['dossier-btn'])) {
 	$nomFichier = $_POST['nomFichier'];
+	$nomFichier_client = $_POST['nomFichier_client'];
 	$nbPagesNB = $_POST['nbPagesNB'];
 	$nbPagesC = $_POST['nbPagesC'];
 	$nbPages = $_POST['nbPages'];
@@ -149,6 +150,7 @@ if (isset($_POST['dossier-btn'])) {
 		// Mise en session des caractéristiques du PDF à imprimer.
 		$_SESSION['file_to_print'] = [
 			'nom_fichier' => $nomFichier,
+			'nom_fichier_client' => $nomFichier_client,
 			'nb_page' => $nbPages,
 			'nb_page_nb' => $nbPagesNB,
 			'nb_page_c' => $nbPagesC,

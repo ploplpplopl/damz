@@ -42,8 +42,9 @@ $(function () {
                         }
                         $("#detailPages").show();
                         $("#file_description").show().html(paragInfo);
-                        $("#nomFichier").html(obj.filename);
+                        $("#nomFichier").html(obj.filename_client);
                         $("input[name='nomFichier']").val(obj.filename);
+                        $("input[name='nomFichier_client']").val(obj.filename_client);
                         $("#nbPages").html(obj.NbPages);
                         $("input[name='nbPages']").val(obj.NbPages);
                         $("#nbPagesC").html(obj.NbPagesC);
@@ -51,14 +52,14 @@ $(function () {
                         $("#nbPagesNB").html(obj.NbPagesNB);
                         $("input[name='nbPagesNB']").val(obj.NbPagesNB);
                         $('#loading').empty();
-                        // hide error message when pdf is loaded.
-                        $('#error-upload]').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
+
                         calculDevis(jsonData);
                     }
                 },
                 beforeSend: function () {
-                    $('#loading').html('<img src="/public/img/spinner.gif" alt="Chargement…">');
+                    $('#loading').html('<p></p><div class="text-center"><img src="/public/img/ajax-loader.gif" alt="Chargement…"></div>');
                     $('#file_description').hide();
+                    $('#detailPages').hide();
                 },
                 complete: function () {
                     $('#loading').empty();
@@ -86,6 +87,7 @@ $(function () {
         $('[class^=error-]').css('display', 'none');
     }
     resetOptions();
+
 
 
     // ---------------------------- REMOVE ALERT MESSAGES ----------------------------
@@ -150,6 +152,7 @@ $(function () {
             $('#error-color-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
         }
     });
+
 
 
     // ---------------------------- FORCE SELECTED OPTIONS according to the document type ----------------------------
@@ -246,6 +249,7 @@ $(function () {
     });
 
 
+
     // ---------------------------- AUTO SELECTING OPTIONS ----------------------------
     // Force uploading PDF before choosing options
     $('#dossier, #memoire, #these, #perso, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #quantity, #rectoverso, #couvCouleurFC :radio, #dosCouleurFC :radio, div.dos-color, div.couv-color').click(function () {
@@ -323,17 +327,11 @@ $(function () {
     });
 
 
+
     // ---------------------------- QUOTE CALCULATION ----------------------------
     // Reload the quote calculation on click
     $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso, #perso, #these, #memoire, #dossier").click(function () {
         calculDevis(jsonData);
-    });
-
-    // Prevent form validation
-    $("body").keypress(function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-        }
     });
 
     // Quote calculation
@@ -522,6 +520,7 @@ $(function () {
     }
 
 
+
     // ---------------------------- CHECK FORM VALIDITY ----------------------------
     $('#submit').click(function () {
         return validateForm();
@@ -602,5 +601,12 @@ $(function () {
 
         return true;
     }
+
+    // Prevent form validation
+    $("body").keypress(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+        }
+    });
 
 });

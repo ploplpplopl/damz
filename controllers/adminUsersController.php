@@ -58,7 +58,7 @@ if (isset($_GET['filter'])) {
 	$numOrders = !empty($_GET['num_orders']) || (isset($_GET['num_orders']) && $_GET['num_orders'] === '0') ? $_GET['num_orders'] : '';
 
 	// TODO Add controls.
-	
+
 	if (!empty($date_from)) {
 		$where .= ' AND u.`date_add` > :date_from';
 		$params[':date_from'] = $date_from;
@@ -110,7 +110,7 @@ if (isset($_GET['filter'])) {
 	}
 }
 
-$users = AdminGestionMgr::getUsers($params, $where, $order, $way);
+$users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way);
 $numUsers = count($users);
 
 // Pagination.
@@ -133,8 +133,7 @@ if ($limitTo > $numUsers) {
 	$limitTo = $numUsers;
 }
 
-// TODO $users non utilisé :
-$users = AdminGestionMgr::getUsers($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
+$users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
 
 // Edit user.
 $id = '';
@@ -148,7 +147,8 @@ $errors = [];
 $addUpd = 'add';
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
-	$result = AuthMgr::getUser((int) $_GET['edit']);
+	$result = AuthMgr::getUserByID($_GET['edit']);
+
 	if (!$result) {
 		header('location: /index.php?action=adminUsers');
 		exit;
@@ -163,8 +163,8 @@ if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 
 if (!empty($_GET['resend-confirmation-link'])) {
 	$id = intval($_GET['resend-confirmation-link']);
-	
-	$tUser = AuthMgr::getUser($id);
+	$tUser = AuthMgr::getUserByID($id);
+
 	if (!$tUser) {
 		header('location: /index.php?action=adminUsers');
 		exit;
@@ -173,7 +173,7 @@ if (!empty($_GET['resend-confirmation-link'])) {
 	sendMail('signup.html', [
 		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'],
 	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
-	
+
 	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';
 
 	header('location: /index.php?action=adminUsers');
@@ -187,36 +187,25 @@ if (isset($_POST['upd-user-btn'])) {
 	$user_phone = trim($_POST['phone']);
 	$id = intval($_POST['id_user']);
 
-    if (empty($user_user_type)) {
-        $errors[] = 'Type de compte requis';
-    }
-    if (!empty($user_first_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_first_name)) {
-        $errors[] = 'Le prénom contient des caractères invalides';
-    }
-    if (!empty($user_last_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_last_name)) {
-        $errors[] = 'Le nom contient des caractères invalides';
-    }
-    if (!empty($user_phone) && !preg_match('/^[+0-9. ()-]*$/i', $user_phone)) {
-        $errors[] = 'Le numéro de téléphone n\'est pas valide';
-    }
+	if (empty($user_user_type)) {
+		$errors[] = 'Type de compte requis';
+	}
+	if (!empty($user_first_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_first_name)) {
+		$errors[] = 'Le prénom contient des caractères invalides';
+	}
+	if (!empty($user_last_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_last_name)) {
+		$errors[] = 'Le nom contient des caractères invalides';
+	}
+	if (!empty($user_phone) && !preg_match('/^[+0-9. ()-]*$/i', $user_phone)) {
+		$errors[] = 'Le numéro de téléphone n\'est pas valide';
+	}
 
-    if (empty($errors)) {
-		$dbh = DbConnection::getConnection('administrateur');
-		$query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
-		$stmt = $dbh->prepare($query);
-		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
-		$stmt->bindParam(':first_name', $user_first_name, PDO::PARAM_STR);
-		$stmt->bindParam(':last_name', $user_last_name, PDO::PARAM_STR);
-		$stmt->bindParam(':phone', $user_phone, PDO::PARAM_STR);
-		$stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
-		
-        if (!$result) {
-            $_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';
-        }
-		else {
+	if (empty($errors)) {
+		$result = AuthMgr::updateUserByID($user_user_type, $user_first_name, $user_last_name, $user_phone, $id);
+
+		if (!$result) {
+			$_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';
+		} else {
 			// Send confirmation email to user.
 			$emailSent = sendMail('user-upd.html', [
 				'{user_type}' => $settings['accounts'][$user_user_type],
@@ -227,10 +216,10 @@ if (isset($_POST['upd-user-btn'])) {
 
 			$_SESSION['message_status'][] = 'Le compte <em>' . $user_email . '</em> a été mis à jour';
 
-            header('location: index.php?action=adminUsers');
+			header('location: index.php?action=adminUsers');
 			exit;
-        }
-    }
+		}
+	}
 }
 
 if (isset($_POST['add-user-btn'])) {
@@ -239,7 +228,7 @@ if (isset($_POST['add-user-btn'])) {
 	$user_pseudo = trim($_POST['pseudo']);
 	$user_password = trim($_POST['password']);
 	$user_passwordConf = trim($_POST['passwordConf']);
-    $token = bin2hex(random_bytes(50));
+	$token = bin2hex(random_bytes(50));
 
 	$validator = new EmailValidator();
 
@@ -249,82 +238,59 @@ if (isset($_POST['add-user-btn'])) {
 	$pwNumber = preg_match('/[0-9]/', $user_password);
 	$pwSpecialchar = preg_match('/[' . preg_quote('-_"%\'*;<>?^`{|}~/\\#=&', '/') . ']/', $user_password);
 
-    if (empty($user_user_type)) {
-        $errors[] = 'Type de compte requis';
-    }
-    if (empty($user_email)) {
-        $errors[] = 'E-mail requis';
-    }
-	elseif (!$validator->isValid($user_email, new RFCValidation())) {
-		$errors[] = 'E-mail invalide';
+	if (empty($user_user_type)) {
+		$errors[] = 'Type de compte requis';
 	}
-	elseif (AuthMgr::emailExists($user_email)) {
+	if (empty($user_email)) {
+		$errors[] = 'E-mail requis';
+	} elseif (!$validator->isValid($user_email, new RFCValidation())) {
+		$errors[] = 'E-mail invalide';
+	} elseif (AuthMgr::emailExists($user_email)) {
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
-    if (empty($user_pseudo)) {
-        $errors[] = 'Pseudo requis';
-    }
-	elseif (!preg_match('/^[a-z0-9!#$%&\'*+\/=?_-]{1,50}$/i', $user_pseudo)) {
-        $errors[] = 'Le pseudo contient des caractères invalides';
-    }
-	elseif (AuthMgr::pseudoExists($user_pseudo)) {
+	if (empty($user_pseudo)) {
+		$errors[] = 'Pseudo requis';
+	} elseif (!preg_match('/^[a-z0-9!#$%&\'*+\/=?_-]{1,50}$/i', $user_pseudo)) {
+		$errors[] = 'Le pseudo contient des caractères invalides';
+	} elseif (AuthMgr::pseudoExists($user_pseudo)) {
 		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
 		$errors[] = 'Un compte avec ce pseudo existe déjà';
 	}
-    if (empty($user_password)) {
-        $errors[] = 'Mot de passe requis';
-    }
-    elseif (!$pwLength || !$pwLowercase || !$pwUppercase || !$pwNumber || !$pwSpecialchar) {
-        $errors[] = 'Le mot de passe ne satisfait pas les conditions (8 caractères et AU MOINS 1 minuscule, 1 majuscule, 1 chiffre, 1 caractère spécial)';
-    }
-    elseif (empty($user_passwordConf)) {
-        $errors[] = 'Confirmation du mot de passe requise';
-    }
-    elseif (strcmp($user_password, $user_passwordConf) !== 0) {
-        $errors[] = 'Les mots de passe ne correspondent pas';
-    }
+	if (empty($user_password)) {
+		$errors[] = 'Mot de passe requis';
+	} elseif (!$pwLength || !$pwLowercase || !$pwUppercase || !$pwNumber || !$pwSpecialchar) {
+		$errors[] = 'Le mot de passe ne satisfait pas les conditions (8 caractères et AU MOINS 1 minuscule, 1 majuscule, 1 chiffre, 1 caractère spécial)';
+	} elseif (empty($user_passwordConf)) {
+		$errors[] = 'Confirmation du mot de passe requise';
+	} elseif (strcmp($user_password, $user_passwordConf) !== 0) {
+		$errors[] = 'Les mots de passe ne correspondent pas';
+	}
 
-    if (empty($errors)) {
-		$dbh = DbConnection::getConnection('administrateur');
-		$query = 'INSERT INTO user (email, pseudo, password, user_type, secure_key, date_add) VALUES (:email, :pseudo, :password, :user_type, :secure_key, :date_add)';
-		$stmt = $dbh->prepare($query);
-		$stmt->bindParam(':email', $user_email, PDO::PARAM_STR);
-		$stmt->bindParam(':pseudo', $user_pseudo, PDO::PARAM_STR);
-		$user_password = password_hash($user_password, PASSWORD_DEFAULT);
-		$stmt->bindParam(':password', $user_password, PDO::PARAM_STR);
-		$stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
-		$stmt->bindParam(':secure_key', $token, PDO::PARAM_STR);
-		date_default_timezone_set('Europe/Paris');
-		$dateAdd = date("Y-m-d H:i:s");
-		$stmt->bindParam(':date_add', $dateAdd, PDO::PARAM_STR);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
-		
-        if (!$result) {
-            $_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
-        }
-		else {
+	if (empty($errors)) {
+		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $user_user_type, $token);
+
+		if (!$result) {
+			$_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
+		} else {
 			// Send confirmation email to user.
 			$emailSent = sendMail('user-add.html', [
 				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token . '&amp;back=' . urlencode('/mot-de-passe-oublie'),
 			], 'Inscription sur ' . $settings['site_name'], $user_email);
-			
-            if (!$emailSent) {
-                $_SESSION['message_status'][] = 'L\'inscription de l\'utilisateur est prise en compte';
-                $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '&amp;back=' . urlencode('/index.php?action=adminUsers') . '">renvoyer l\'e-mail</a>';
-				
-                header('location: /connexion');
+
+			if (!$emailSent) {
+				$_SESSION['message_status'][] = 'L\'inscription de l\'utilisateur est prise en compte';
+				$_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '&amp;back=' . urlencode('/index.php?action=adminUsers') . '">renvoyer l\'e-mail</a>';
+
+				header('location: /connexion');
 				exit;
-            }
-			else {
+			} else {
 				$_SESSION['message_status'][] = 'Un lien de confirmation a été adressé à <em>' . $user_email . '</em> pour finaliser son inscription';
 
-                header('location: index.php?action=adminUsers');
+				header('location: index.php?action=adminUsers');
 				exit;
-            }
-        }
-    }
+			}
+		}
+	}
 }
 
 if (!empty($_GET['del'])) {
