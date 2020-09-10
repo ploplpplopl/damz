@@ -22,6 +22,8 @@ require_once 'views/head.php';
     <div class="col-12">
         <?php
         switch ($_page) {
+            case 'NB': echo '<h1>Paliers N&B</h1>'; break;
+            case 'Couleur': echo '<h1>Paliers couleur</h1>'; break;
 			case 'spiplast': echo '<h1>Paliers spirales plastique</h1>'; break;
 			case 'spimetal': echo '<h1>Paliers spirales métalliques</h1>'; break;
 			case 'thermo': echo '<h1>Paliers reliures thermocollées</h1>'; break;
@@ -35,7 +37,7 @@ require_once 'views/head.php';
 ?>
 <div class="row">
 	<div class="col-12">
-		<p><a href="?action=admin<?php echo ucfirst($_page); ?>"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
+		<p><a href="?action=adminPaliers<?php echo ucfirst($_page); ?>"><i class="fas fa-long-arrow-alt-left"></i> Annuler</a></p>
 	</div>
 </div>
 <form action="" method="post">
@@ -63,7 +65,7 @@ require_once 'views/head.php';
 <?php } else { ?>
 <div class="row">
 	<div class="col-12">
-		<p><a href="?action=admin<?php echo ucfirst($_page); ?>&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
+		<p><a href="?action=adminPaliers<?php echo ucfirst($_page); ?>&amp;edit"><i class="fas fa-plus-circle"></i> Ajouter un palier</a></p>
 	</div>
 </div>
 <?php } ?>
@@ -88,8 +90,8 @@ require_once 'views/head.php';
                             <span class="section"><?php echo $data['palier']; ?></span>
                             <span class="section"><?php echo $data['prix']; ?>&nbsp;€</span>
                             <div class="actions">
-                                <a href="?action=admin<?php echo ucfirst($_page); ?>&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
-                                <a href="?action=admin<?php echo ucfirst($_page); ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
+                                <a href="?action=adminPaliers<?php echo ucfirst($_page); ?>&amp;edit=<?php echo $data['id']; ?>" title="Modifier"><i class="fas fa-pen"></i></a>
+                                <a href="?action=adminPaliers<?php echo ucfirst($_page); ?>&amp;del=<?php echo $data['id']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?')" title="Supprimer"><i class="fas fa-trash"></i></a>
                             </div>
                         </li>
                     <?php

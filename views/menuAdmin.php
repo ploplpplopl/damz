@@ -18,27 +18,27 @@ $menuItems = [
 		'name' => '<i class="fas fa-cog"></i> Gestion',
 		'items' => [
 			[
-				'url' => 'adminPaliersNB',
-				'name' => 'Paliers pages N&amp;B',
-			],
-			[
-				'url' => 'adminPaliersC',
-				'name' => 'Paliers pages couleur',
-			],
-			[
 				'url' => 'adminCouleurs',
 				'name' => 'Couleurs feuilles cartonnées',
 			],
 			[
-				'url' => 'adminSpiplast',
+				'url' => 'adminPaliersNB',
+				'name' => 'Paliers pages N&amp;B',
+			],
+			[
+				'url' => 'adminPaliersCouleur',
+				'name' => 'Paliers pages couleur',
+			],
+			[
+				'url' => 'adminPaliersSpiplast',
 				'name' => 'Paliers reliures plastiques',
 			],
 			[
-				'url' => 'adminSpimetal',
+				'url' => 'adminPaliersSpimetal',
 				'name' => 'Paliers reliures métalliques',
 			],
 			[
-				'url' => 'adminThermo',
+				'url' => 'adminPaliersThermo',
 				'name' => 'Paliers reliures thermocollées',
 			],
 
