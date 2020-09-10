@@ -43,7 +43,7 @@ $(function () {
 						pseudo: pseudo
 					})
 					.done(function (data) {
-						$("#pseudo_response").html(data);
+						$("#message_pseudo_doublon").html(data);
 					});
 			}
 		}, 500));
@@ -57,7 +57,7 @@ $(function () {
 						email: email
 					})
 					.done(function (data) {
-						$("#email_response").html(data);
+						$("#message_email_doublon").html(data);
 					});
 			}
 		}, 500));
