@@ -48,15 +48,6 @@ if ($id_dos_color) {
 	$dos_fc_color = $result['text']; // => "orange foncé"
 }
 $reliure_type = $settings['mapping'][$orders[0]["reliure_type"]]; // => "thermo"
-// if ($reliure_type == 'spiplast') {
-// 	$reliure_type = 'Spirale plastique';
-// }
-// if ($reliure_type == 'spimetal') {
-// 	$reliure_type = 'Spirale métallique';
-// }
-// if ($reliure_type == 'thermo') {
-// 	$reliure_type = 'Thermocollée';
-// }
 $reliure_color = $orders[0]["reliure_color"]; // => "Blanche"
 $quantity = $orders[0]["quantity"]; // => "1"
 $rectoverso = $orders[0]["rectoverso"]; // => "0"
@@ -74,8 +65,6 @@ $address2 = $orders[0]["address2"]; // => "complement"
 $zip_code = $orders[0]["zip_code"]; // => "45000"
 $city = $orders[0]["city"]; // => "huit"
 $country_name = $orders[0]["country_name"]; // => "France"
-// vd($orders[0]);
-// exit;
 
 // Download PDF.
 ob_start();

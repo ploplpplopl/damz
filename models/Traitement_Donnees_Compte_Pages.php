@@ -21,7 +21,8 @@ if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'tooHeavy';
 	exit;
 }
-
+// TODO pourquoi un try ? pas de connexion bdd
+// TODO exit à la fin de chaque fichier php?
 try {
 	//Si dossier d'upload n'existe pas, le crée; déplace le fichier uploadé vers le dossier d'uploads
 	if (!file_exists('../uploads')) {
@@ -73,8 +74,7 @@ try {
 	//Nombre de pages noir et blanc
 	$nbPagesNB = $nbPages - count($tabPagesCouleurs);
 
-	//Création d'un tableau avec clés, puis transformation en JSON renvoyé à la page formulairePDF.ph pour affichage
-	// TODO envoyer aussi original-filename pour l'affichage uniquement
+	//Création d'un tableau avec clés, puis transformation en JSON renvoyé au compte_pages.js de dossier.php pour affichage
 	$tabFinal = [
 		'filename' => $filename,
 		'filename_client' => $filename_client,
