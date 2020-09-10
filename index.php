@@ -11,13 +11,8 @@ $tParam = parse_ini_file("config/param.ini");
 $file = $tParam['chemin'] . $tParam['fichierClient'];
 $DEBUG = $tParam['debug'];
 
-// debug($_GET, $DEBUG);
-// if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'printer')) $action = 'admprint';
-// if (isset($_SESSION['pseudo']) && ($_SESSION['pseudo'] == 'admin')) $action = 'admAccueil';  // TODO page avec lien vers admprint et admin
-
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
-// debug('action: '.$action,$DEBUG);
 // Etapes et traitements
 switch ($action) {
 

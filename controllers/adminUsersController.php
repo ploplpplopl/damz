@@ -222,6 +222,7 @@ if (isset($_POST['upd-user-btn'])) {
 	}
 }
 
+// TODO à revoir. champs en base pas dans le bon ordre et cheminement trop long (trop de mails)
 if (isset($_POST['add-user-btn'])) {
 	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
 	$user_email = trim($_POST['email']);
@@ -246,7 +247,6 @@ if (isset($_POST['add-user-btn'])) {
 	} elseif (!$validator->isValid($user_email, new RFCValidation())) {
 		$errors[] = 'E-mail invalide';
 	} elseif (AuthMgr::emailExists($user_email)) {
-		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
 	if (empty($user_pseudo)) {
@@ -254,7 +254,6 @@ if (isset($_POST['add-user-btn'])) {
 	} elseif (!preg_match('/^[a-z0-9!#$%&\'*+\/=?_-]{1,50}$/i', $user_pseudo)) {
 		$errors[] = 'Le pseudo contient des caractères invalides';
 	} elseif (AuthMgr::pseudoExists($user_pseudo)) {
-		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
 		$errors[] = 'Un compte avec ce pseudo existe déjà';
 	}
 	if (empty($user_password)) {
