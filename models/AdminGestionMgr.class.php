@@ -18,6 +18,13 @@ class AdminGestionMgr
         $stmt = $dbh->query('SELECT * FROM ' . $db);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Format d'affichage des prix avec virgule et minimum 2 chiffres après la virgule
+        foreach ($result as $k => $v) {
+            $v['prix'] = strval($v['prix']); // Pas obligatoire: stocké sous forme de string en bdd
+            $tDecimales = explode('.', $v['prix']);
+            $nbDecimales = isset($tDecimales[1]) ? strlen($tDecimales[1]) : 0;
+            $result[$k]['prix'] = $nbDecimales > 2 ? number_format($v['prix'], $nbDecimales, ',', ' ') : number_format($v['prix'], 2, ',', ' ');
+        }
         // fermeture de la connexion
         DbConnection::disconnect();
         return $result;

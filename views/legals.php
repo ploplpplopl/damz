@@ -33,7 +33,7 @@ require_once 'views/head.php';
 		<p>SARL au capital de XXXX&nbsp;€</p>
 		<p>RCS&nbsp;: Caen XXX XXX XXX</p>
 		<p>Directeur de la publication&nbsp;:<br>
-		Dominique XXXXXXX</p>
+		Dominique Pinho</p>
 		<p>Déclaration CNIL № XXXXXXX</p>
 		<p>Conception du site&nbsp;:<br />
 		<a target="_blank" href="https://thoorens.fr/">Damz</a></p>

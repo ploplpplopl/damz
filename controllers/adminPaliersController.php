@@ -8,14 +8,15 @@ $prix = '';
 $errors = [];
 
 // Récupération des paliers des spirales plastiques.
-$paliers = AdminGestionMgr::getPaliers('paliers_' . $_page);
+$paliers = AdminGestionMgr::getPaliers('paliers_' . strtolower($_page));
 
 
 
 $addUpd = 'add';
+// Update palier
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
     $addUpd = 'upd';
-    $result = AdminGestionMgr::getPalierById('paliers_' . $_page, $_GET['edit']);
+    $result = AdminGestionMgr::getPalierById('paliers_' . strtolower($_page), $_GET['edit']);
     $id = $result['id'];
     $palier = $result['palier'];
     $prix = $result['prix'];
@@ -38,22 +39,22 @@ if (isset($_POST['edit-btn'])) {
 
     if (empty($errors)) {
         if ('add' == $addUpd) {
-            $max = AdminGestionMgr::getPalierPositionMax('paliers_' . $_page);
-            $result = AdminGestionMgr::setNewPalier('paliers_' . $_page, $palier, $prix, $max['pos']);
+            $max = AdminGestionMgr::getPalierPositionMax('paliers_' . strtolower($_page));
+            $result = AdminGestionMgr::setNewPalier('paliers_' . strtolower($_page), $palier, $prix, $max['pos']);
         } else {  // update : $addUpd = 'upd'
-            $result = AdminGestionMgr::updatePalier('paliers_' . $_page, $palier, $prix, $id);
+            $result = AdminGestionMgr::updatePalier('paliers_' . strtolower($_page), $palier, $prix, $id);
         }
         if ($result) {
             $_SESSION['message_status'][] = 'add' == $addUpd ? 'Palier ajouté' : 'Palier modifié';
         }
-        header('location: index.php?action=admin' . ucfirst($_page));
+        header('location: index.php?action=adminPaliers' . ucfirst($_page));
         exit;
     }
 }
 
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-    AdminGestionMgr::delPalier('paliers_' . $_page, intval($_GET['del']));
+    AdminGestionMgr::delPalier('paliers_' . strtolower($_page), intval($_GET['del']));
     $_SESSION['message_status'][] = 'Palier supprimé';
-    header('location: index.php?action=admin' . ucfirst($_page));
+    header('location: index.php?action=adminPaliers' . ucfirst($_page));
     exit;
 }
