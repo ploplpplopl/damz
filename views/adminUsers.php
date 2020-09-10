@@ -46,12 +46,12 @@ require_once 'views/head.php';
 			</div>
 			<div class="form-group">
 				<label for="signup-email">Adresse e-mail</label>
-				<div id="email_response"></div>
+				<div id="message_email_doublon"></div>
 				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($user_email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
 			</div>
 			<div class="form-group">
 				<label for="signup-pseudo">Pseudo (pour la connexion)</label>
-				<div id="pseudo_response"></div>
+				<div id="message_pseudo_doublon"></div>
 				<input type="text" id="signup-pseudo" name="pseudo" class="form-control" value="<?php echo htmlentities($user_pseudo, ENT_QUOTES); ?>" required="required">
 			</div>
 			<div class="form-group">
