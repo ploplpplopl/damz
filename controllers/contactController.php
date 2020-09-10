@@ -1,6 +1,6 @@
 <?php
 
-// TODO regrouper les use dans Validate en instanciant la classe EmailValidator
+// TODO regrouper les use dans la classe Validate en instanciant la classe EmailValidator
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
 
