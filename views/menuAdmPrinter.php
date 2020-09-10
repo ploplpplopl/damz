@@ -18,7 +18,7 @@ $menuItems = [
 				'name' => 'Paliers N&amp;B',
 			],
 			[
-				'url' => 'adminPaliersC',
+				'url' => 'adminPaliersCouleur',
 				'name' => 'Paliers couleur',
 			],
 			[

@@ -105,29 +105,31 @@ switch ($action) {
 	case 'adminGetInvoice':
 		require('controllers/adminGetInvoiceController.php');
 		break;
-	case 'adminPaliersNB':
-		$sTitre = 'Administration';
-		require('views/adminPaliersNB.php');
-		break;
-	case 'adminPaliersC':
-		$sTitre = 'Administration';
-		require('views/adminPaliersC.php');
-		break;
 	case 'adminCouleurs':
 		$sTitre = 'Administration';
 		require('views/adminCouleurs.php');
 		break;
-	case 'adminSpiplast':
+	case 'adminPaliersNB':
+		$sTitre = 'Administration';
+		$_page = 'NB';
+		require('views/adminPaliers.php');
+		break;
+	case 'adminPaliersCouleur':
+		$sTitre = 'Administration';
+		$_page = 'Couleur';
+		require('views/adminPaliers.php');
+		break;
+	case 'adminPaliersSpiplast':
 		$sTitre = 'Administration';
 		$_page = 'spiplast';
 		require('views/adminPaliers.php');
 		break;
-	case 'adminSpimetal':
+	case 'adminPaliersSpimetal':
 		$sTitre = 'Administration';
 		$_page = 'spimetal';
 		require('views/adminPaliers.php');
 		break;
-	case 'adminThermo':
+	case 'adminPaliersThermo':
 		$sTitre = 'Administration';
 		$_page = 'thermo';
 		require('views/adminPaliers.php');
