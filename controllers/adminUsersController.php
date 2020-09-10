@@ -246,6 +246,7 @@ if (isset($_POST['add-user-btn'])) {
 	} elseif (!$validator->isValid($user_email, new RFCValidation())) {
 		$errors[] = 'E-mail invalide';
 	} elseif (AuthMgr::emailExists($user_email)) {
+		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle)
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
 	if (empty($user_pseudo)) {
