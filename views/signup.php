@@ -1,7 +1,8 @@
 <?php
 
-require_once 'controllers/authController.php';
+$css = '<link rel="stylesheet" href="/public/css/password.css">';
 
+require_once 'controllers/authController.php';
 require_once 'views/head.php';
 ?>
 
@@ -27,6 +28,14 @@ require_once 'views/head.php';
 			<div class="form-group">
 				<label for="signup-passwordC">Confirmation du mot de passe</label>
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
+			</div>
+			<div id="message">
+				<p><b>Le mot de passe doit contenir :</b></p>
+				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
+				<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
+				<p id="number" class="invalid">Un <b>nombre</b></p>
+				<p id="specialchar" class="invalid">Un <b>caractère spécial</b></p>
+				<p id="length" class="invalid">Au moins <b>8 caractères</b></p>
 			</div>
 			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Inscription</button>
 		</form>
