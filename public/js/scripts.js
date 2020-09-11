@@ -63,96 +63,98 @@ $(function () {
 		}, 500));
 
 
-	// Password validation
-	var password = $("input[type='password'][name='password']")[0];
-	var passwordConf = $("input[type='password'][name='passwordConf']")[0];
-	var letter = $("#letter")[0];
-	var capital = $("#capital")[0];
-	var number = $("#number")[0];
-	var specialchar = $("#specialchar")[0];
-	var length = $("#length")[0];
+	// Password setting validation
+	items = $("input[type='password'][name='passwordConf']");
+	if (typeof items != 'undefined' && items != null && items.length != 0) {
+		var password = $("input[type='password'][name='password']")[0];
+		var passwordConf = $("input[type='password'][name='passwordConf']")[0];
+		var letter = $("#letter")[0];
+		var capital = $("#capital")[0];
+		var number = $("#number")[0];
+		var specialchar = $("#specialchar")[0];
+		var length = $("#length")[0];
 
-	var submit = $("input[type='submit']")[0];
+		var submit = $("input[type='submit']")[0];
 
-	// When the user clicks on the password field, show the message box
-	password.onfocus = function () {
-		$("#message").css("display", "block").show();
-	}
-
-	// When the user clicks outside of the password field, hide the message box
-	password.onblur = function () {
-		$("#message").hide();
-	}
-
-	// When the user starts to type something inside the password field
-	"keyup change input mouseenter".split(" ").forEach(function (e) {
-		password.addEventListener(e, function () {
-			// Validate lowercase letters
-			var lowerCaseLetters = /[a-z]/g;
-			if (password.value.match(lowerCaseLetters)) {
-				letter.classList.remove("invalid");
-				letter.classList.add("valid");
-			} else {
-				letter.classList.remove("valid");
-				letter.classList.add("invalid");
-			}
-
-			// Validate capital letters
-			var upperCaseLetters = /[A-Z]/g;
-			if (password.value.match(upperCaseLetters)) {
-				capital.classList.remove("invalid");
-				capital.classList.add("valid");
-			} else {
-				capital.classList.remove("valid");
-				capital.classList.add("invalid");
-			}
-
-			// Validate numbers
-			var numbers = /[0-9]/g;
-			if (password.value.match(numbers)) {
-				number.classList.remove("invalid");
-				number.classList.add("valid");
-			} else {
-				number.classList.remove("valid");
-				number.classList.add("invalid");
-			}
-
-			// Validate special char
-			var specialchars = /\W|_/g;
-			if (password.value.match(specialchars)) {
-				specialchar.classList.remove("invalid");
-				specialchar.classList.add("valid");
-			} else {
-				specialchar.classList.remove("valid");
-				specialchar.classList.add("invalid");
-			}
-
-			// Validate length
-			if (password.value.length >= 8) {
-				length.classList.remove("invalid");
-				length.classList.add("valid");
-			} else {
-				length.classList.remove("valid");
-				length.classList.add("invalid");
-			}
-			console.log(password.value);
-			// validatePassword;
-		}, false);
-	});
-	// "keyup change input mouseenter".split(" ").forEach(function (e) {
-	// 	passwordConf.addEventListener(e, function () {
-	// 		validatePassword;
-	// 	}, false);
-	function validatePassword() {
-		if (password.value != passwordConf.value) {
-			passwordConf.checkValidity("Les mots de passe ne sont pas identiques");
-			submit.click();
-		} else {
-			passwordConf.setCustomValidity('');
+		// When the user clicks on the password field, show the message box
+		password.onfocus = function () {
+			$("#message").css("display", "block").show();
 		}
-	}
-	
-	// password.onchange = validatePassword;
-	passwordConf.onkeyup = validatePassword();
 
+		// When the user clicks outside of the password field, hide the message box
+		password.onblur = function () {
+			$("#message").hide();
+		}
+
+		// When the user starts to type something inside the password field
+		"keyup change input mouseenter".split(" ").forEach(function (e) {
+			password.addEventListener(e, function () {
+				// Validate lowercase letters
+				var lowerCaseLetters = /[a-z]/g;
+				if (password.value.match(lowerCaseLetters)) {
+					letter.classList.remove("invalid");
+					letter.classList.add("valid");
+				} else {
+					letter.classList.remove("valid");
+					letter.classList.add("invalid");
+				}
+
+				// Validate capital letters
+				var upperCaseLetters = /[A-Z]/g;
+				if (password.value.match(upperCaseLetters)) {
+					capital.classList.remove("invalid");
+					capital.classList.add("valid");
+				} else {
+					capital.classList.remove("valid");
+					capital.classList.add("invalid");
+				}
+
+				// Validate numbers
+				var numbers = /[0-9]/g;
+				if (password.value.match(numbers)) {
+					number.classList.remove("invalid");
+					number.classList.add("valid");
+				} else {
+					number.classList.remove("valid");
+					number.classList.add("invalid");
+				}
+
+				// Validate special char
+				var specialchars = /\W|_/g;
+				if (password.value.match(specialchars)) {
+					specialchar.classList.remove("invalid");
+					specialchar.classList.add("valid");
+				} else {
+					specialchar.classList.remove("valid");
+					specialchar.classList.add("invalid");
+				}
+
+				// Validate length
+				if (password.value.length >= 8) {
+					length.classList.remove("invalid");
+					length.classList.add("valid");
+				} else {
+					length.classList.remove("valid");
+					length.classList.add("invalid");
+				}
+				console.log(password.value);
+				// validatePassword;
+			}, false);
+		});
+		// "keyup change input mouseenter".split(" ").forEach(function (e) {
+		// 	passwordConf.addEventListener(e, function () {
+		// 		validatePassword;
+		// 	}, false);
+		function validatePassword() {
+			if (password.value != passwordConf.value) {
+				passwordConf.checkValidity("Les mots de passe ne sont pas identiques");
+				submit.click();
+			} else {
+				passwordConf.setCustomValidity('');
+			}
+		}
+
+		// password.onchange = validatePassword;
+		passwordConf.onkeyup = validatePassword();
+	}
 });
