@@ -197,7 +197,12 @@ if (isset($_POST['reset-password-btn'])) {
 
     if (empty($errors)) {
 		$checkAuth = AuthMgr::resetPassword($password, $_GET['token'], $_GET['email']);
-		
+		// if coming from "admin : create user"
+		// TODO varirabliser $_GET['sc']
+		if (isset($_GET['sc']) && $_GET['sc'] == 'Tl-BfTxzHhr1n4.Q') {
+			AuthMgr::verifyEmail($_GET['token']);
+		}
+
 		switch ($checkAuth) {
 			case 'db_connection_failed':
 				$errors[] = 'La connexion a échoué, veuillez réessayer ultérieurement';
@@ -209,6 +214,7 @@ if (isset($_POST['reset-password-btn'])) {
 				
 			case 'password_updated':
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
+				$_SESSION['user']['email_value'] = $_GET['email'];
 				header('location: /connexion');
 				exit;
 				break;

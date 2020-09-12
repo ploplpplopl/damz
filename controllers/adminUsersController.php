@@ -222,7 +222,6 @@ if (isset($_POST['upd-user-btn'])) {
 	}
 }
 
-// TODO à revoir. champs en base pas dans le bon ordre et cheminement trop long (trop de mails)
 if (isset($_POST['add-user-btn'])) {
 	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
 	$user_email = trim($_POST['email']);
@@ -230,6 +229,8 @@ if (isset($_POST['add-user-btn'])) {
 	$user_password = trim($_POST['password']);
 	$user_passwordConf = trim($_POST['passwordConf']);
 	$token = bin2hex(random_bytes(50));
+	// TODO varirabliser $_GET['sc']
+	$sc = 'Tl-BfTxzHhr1n4.Q';
 
 	$validator = new EmailValidator();
 
@@ -267,14 +268,14 @@ if (isset($_POST['add-user-btn'])) {
 	}
 
 	if (empty($errors)) {
-		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $user_user_type, $token);
+		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $token, $user_user_type);
 
 		if (!$result) {
 			$_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
 		} else {
 			// Send confirmation email to user.
 			$emailSent = sendMail('user-add.html', [
-				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token . '&amp;back=' . urlencode('/mot-de-passe-oublie'),
+				'{link_confirm}' => $settings['site_url'] . '/reinitialiser-mot-de-passe?token=' . $token . '&amp;email=' . $user_email . '&amp;sc=' . $sc . '&amp;back=' . urlencode('/mot-de-passe-oublie'),
 			], 'Inscription sur ' . $settings['site_name'], $user_email);
 
 			if (!$emailSent) {
