@@ -1,7 +1,8 @@
 <?php
 
-require_once 'controllers/authController.php';
+$css = '<link rel="stylesheet" href="/public/css/password.css">';
 
+require_once 'controllers/authController.php';
 require_once 'views/head.php';
 ?>
 
@@ -12,10 +13,12 @@ require_once 'views/head.php';
 		<form id="signup-form" action="" method="post">
 			<div class="form-group">
 				<label for="signup-email">Adresse e-mail</label>
+				<div id="message_email_doublon"></div>
 				<input type="email" id="signup-email" name="email" class="form-control" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
 			</div>
 			<div class="form-group">
 				<label for="signup-pseudo">Pseudo (pour la connexion)</label>
+				<div id="message_pseudo_doublon"></div>
 				<input type="text" id="signup-pseudo" name="pseudo" class="form-control" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required="required">
 			</div>
 			<div class="form-group">
@@ -25,6 +28,14 @@ require_once 'views/head.php';
 			<div class="form-group">
 				<label for="signup-passwordC">Confirmation du mot de passe</label>
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
+			</div>
+			<div id="message">
+				<p><b>Le mot de passe doit contenir :</b></p>
+				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
+				<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
+				<p id="number" class="invalid">Un <b>nombre</b></p>
+				<p id="specialchar" class="invalid">Un <b>caractère spécial</b></p>
+				<p id="length" class="invalid">Au moins <b>8 caractères</b></p>
 			</div>
 			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Inscription</button>
 		</form>

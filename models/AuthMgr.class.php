@@ -329,7 +329,7 @@ class AuthMgr
     public static function deleteUser(int $id_user)
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = "UPDATE user SET deleted = \'1\' WHERE id_user = :id_user";
+        $query = "UPDATE user SET deleted=1 WHERE id_user = :id_user";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':id_user', $id_user);
         $result = $stmt->execute();

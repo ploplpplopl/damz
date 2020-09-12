@@ -21,7 +21,8 @@ if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'tooHeavy';
 	exit;
 }
-
+// TODO pourquoi un try ? pas de connexion bdd
+// TODO exit à la fin de chaque fichier php?
 try {
 	//Si dossier d'upload n'existe pas, le crée; déplace le fichier uploadé vers le dossier d'uploads
 	if (!file_exists('../uploads')) {
@@ -33,6 +34,7 @@ try {
 	$filename_client = $_FILES['file']['name'];
 	chmod($_SERVER['DOCUMENT_ROOT'] . '/uploads', 0777);
 	move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $filename);
+	chmod($_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $filename, 0777);
 
 	//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où 0 est bien, et tout autre chiffre indique problème
 	exec("../vendor/Ghostscript/gs-950 -o - -sDEVICE=inkcov ../uploads/$filename 2>&1", $outputs, $retour);
@@ -73,8 +75,7 @@ try {
 	//Nombre de pages noir et blanc
 	$nbPagesNB = $nbPages - count($tabPagesCouleurs);
 
-	//Création d'un tableau avec clés, puis transformation en JSON renvoyé à la page formulairePDF.ph pour affichage
-	// TODO envoyer aussi original-filename pour l'affichage uniquement
+	//Création d'un tableau avec clés, puis transformation en JSON renvoyé au compte_pages.js de dossier.php pour affichage
 	$tabFinal = [
 		'filename' => $filename,
 		'filename_client' => $filename_client,

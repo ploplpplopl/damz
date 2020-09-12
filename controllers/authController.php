@@ -35,7 +35,6 @@ if (isset($_POST['signup-btn'])) {
 		$errors[] = 'E-mail invalide';
 	}
 	elseif (AuthMgr::emailExists($email)) {
-		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle) + modal BS4
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
     if (empty($pseudo)) {
@@ -45,7 +44,6 @@ if (isset($_POST['signup-btn'])) {
         $errors[] = 'Votre pseudo contient des caractères invalides';
     }
 	elseif (AuthMgr::pseudoExists($pseudo)) {
-		// TODO : AJAX pour vérifier avant validation du form (onkeyup with debounce/throttle) + modal BS4
 		$errors[] = 'Un compte avec ce pseudo existe déjà';
 	}
     if (empty($password)) {
@@ -97,7 +95,7 @@ if (isset($_POST['login-btn'])) {
     if (empty($_POST['password'])) {
         $errors[] = 'Mot de passe requis';
     }
-
+// TODO ajouter check user deleted
     if (empty($errors)) {
 		$checkLogin = AuthMgr::checkLogin($_POST['pseudo'], $_POST['password']);
 		
@@ -199,7 +197,12 @@ if (isset($_POST['reset-password-btn'])) {
 
     if (empty($errors)) {
 		$checkAuth = AuthMgr::resetPassword($password, $_GET['token'], $_GET['email']);
-		
+		// if coming from "admin : create user"
+		// TODO varirabliser $_GET['sc']
+		if (isset($_GET['sc']) && $_GET['sc'] == 'Tl-BfTxzHhr1n4.Q') {
+			AuthMgr::verifyEmail($_GET['token']);
+		}
+
 		switch ($checkAuth) {
 			case 'db_connection_failed':
 				$errors[] = 'La connexion a échoué, veuillez réessayer ultérieurement';
@@ -211,6 +214,7 @@ if (isset($_POST['reset-password-btn'])) {
 				
 			case 'password_updated':
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
+				$_SESSION['user']['email_value'] = $_GET['email'];
 				header('location: /connexion');
 				exit;
 				break;
