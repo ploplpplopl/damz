@@ -16,7 +16,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 // Etapes et traitements
 switch ($action) {
 
-		// Pages publiques.
+	// Pages publiques.
 	case 'home':
 		$sTitre = 'Impression de documents à Caen';
 		require('views/home.php');
@@ -42,7 +42,7 @@ switch ($action) {
 		require('views/legals.php');
 		break;
 
-		// Connexion.
+	// Connexion.
 	case 'login':
 		$sTitre = 'Connexion';
 		require('views/login.php');
@@ -70,7 +70,7 @@ switch ($action) {
 		require('controllers/resendConfirmationMail.php');
 		break;
 
-		// Pages user connecté.
+	// Pages user connecté.
 	case 'account':
 		$sTitre = 'Mon compte';
 		require('views/account.php');
@@ -80,7 +80,7 @@ switch ($action) {
 		require('views/accountAddresses.php');
 		break;
 
-		// ADMIN
+	// ADMIN
 	case 'admin':
 		$sTitre = 'Administration';
 		require('views/admin.php');

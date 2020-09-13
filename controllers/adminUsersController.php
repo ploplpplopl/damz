@@ -134,12 +134,7 @@ if ($limitTo > $numUsers) {
 	$limitTo = $numUsers;
 }
 
-<<<<<<< HEAD
 $users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
-=======
-// TODO $users non utilisé :
-$users = AdminGestionMgr::getUsersOrders($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
->>>>>>> 5301a56... jsp trop
 
 // Edit user.
 $id = '';

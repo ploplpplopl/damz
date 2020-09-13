@@ -17,17 +17,14 @@ require_once 'views/head.php';
 			<div class="form-group">
 				<label for="contact-email">Adresse e-mail (pour vous répondre)</label>
 				<input type="email" id="contact-email" name="contact-email" class="form-control" value="<?php echo htmlentities($contact_email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
-				<!-- <input type="email" id="contact-email" name="contact-email" class="form-control" > -->
 			</div>
 			<div class="form-group">
 				<label for="contact-name">Nom prénom</label>
 				<input type="text" id="contact-name" name="contact-name" class="form-control" value="<?php echo htmlentities($contact_name, ENT_QUOTES); ?>" required="required">
-				<!-- <input type="text" id="contact-name" name="contact-name" class="form-control"> -->
 			</div>
 			<div class="form-group">
 				<label for="contact-message">Message</label>
-				<textarea id="contact-message" name="contact-message" class="form-control" rows="6" cols="25" required="required" placeholder="Votre message"><?php echo htmlentities($contact_message, ENT_QUOTES); ?></textarea><br />
-				<!-- <textarea id="contact-message" name="contact-message" class="form-control" placeholder="Votre message"></textarea><br /> -->
+				<textarea id="contact-message" name="contact-message" class="form-control" rows="6" cols="25" required="required"><?php echo htmlentities($contact_message, ENT_QUOTES); ?></textarea><br />
 			</div>
 			<button type="submit" id="contact-btn" name="contact-btn" class="btn btn-primary">Envoyer</button>
 		</form>
