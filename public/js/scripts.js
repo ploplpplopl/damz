@@ -153,7 +153,7 @@ $(function () {
 				passwordConf.setCustomValidity('');
 			}
 		}
-
+// TODO ne fonctionne plus
 		// password.onchange = validatePassword;
 		passwordConf.onkeyup = validatePassword();
 	}

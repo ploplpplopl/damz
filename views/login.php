@@ -2,6 +2,13 @@
 
 require_once 'controllers/authController.php';
 
+// If comming from "reset password"
+if (!empty($_SESSION['user']['email_value'])) {
+	$tUser = AuthMgr::getUserByEmail($_SESSION['user']['email_value']);
+	$pseudo = $tUser['pseudo'];
+	unset($_SESSION['user']['email_value']);
+}
+
 require_once 'views/head.php';
 ?>
 
@@ -12,7 +19,7 @@ require_once 'views/head.php';
 		<form action="" method="post">
 			<div class="form-group">
 				<label>Pseudo ou adresse e-mail</label>
-				<input type="text" name="pseudo" class="form-control form-control-lg" value="<?php if (isset($_SESSION['user']['email_value'])) {echo htmlentities($_SESSION['user']['email_value'], ENT_QUOTES);} else {echo htmlentities($pseudo, ENT_QUOTES);} ?>" required>
+				<input type="text" name="pseudo" class="form-control form-control-lg" value="<?php echo htmlentities($pseudo, ENT_QUOTES); ?>" required>
 			</div>
 			<div class="form-group">
 				<label>Mot de passe</label>

@@ -149,7 +149,7 @@ if (isset($_POST['forgot-password-btn'])) {
 	}
 
     if (empty($errors)) {
-		$checkAuth = AuthMgr::forgotPassword($email);
+		$checkAuth = AuthMgr::getUserByEmail($email);
 		
         if (!$checkAuth) {
 			$_SESSION['message_error'][] = 'Adresse e-mail introuvable';
@@ -197,7 +197,7 @@ if (isset($_POST['reset-password-btn'])) {
 
     if (empty($errors)) {
 		$checkAuth = AuthMgr::resetPassword($password, $_GET['token'], $_GET['email']);
-		// if coming from "admin : create user"
+		// if coming from "admin : ajouter un utilisateur", auto validate subscription (no need to verify email)
 		// TODO varirabliser $_GET['sc']
 		if (isset($_GET['sc']) && $_GET['sc'] == 'Tl-BfTxzHhr1n4.Q') {
 			AuthMgr::verifyEmail($_GET['token']);
@@ -215,6 +215,7 @@ if (isset($_POST['reset-password-btn'])) {
 			case 'password_updated':
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
 				$_SESSION['user']['email_value'] = $_GET['email'];
+
 				header('location: /connexion');
 				exit;
 				break;
