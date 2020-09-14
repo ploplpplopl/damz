@@ -197,10 +197,13 @@ if (isset($_POST['reset-password-btn'])) {
 
     if (empty($errors)) {
 		$checkAuth = AuthMgr::resetPassword($password, $_GET['token'], $_GET['email']);
-		// if coming from "admin : ajouter un utilisateur", auto validate subscription (no need to verify email)
-		// TODO varirabliser $_GET['sc']
-		if (isset($_GET['sc']) && $_GET['sc'] == 'Tl-BfTxzHhr1n4.Q') {
-			AuthMgr::verifyEmail($_GET['token']);
+		// If coming from "admin : ajouter un utilisateur", auto validate subscription (no need to verify email).
+		if (!empty($_GET['sc']) && file_exists(_ROOT_DIR_ . 'tmp_' . $_GET['token'] . '.dat')) {
+			$sc = file_get_contents(_ROOT_DIR_ . 'tmp_' . $_GET['token'] . '.dat');
+			if ($_GET['sc'] == $sc) {
+				AuthMgr::verifyEmail($_GET['token']);
+				unlink(_ROOT_DIR_ . 'tmp_' . $_GET['token'] . '.dat');
+			}
 		}
 
 		switch ($checkAuth) {
