@@ -22,7 +22,7 @@ require_once 'views/head.php';
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
 				<span id="span-signup-passwordC"></span>
 			</div>
-			<input type="hidden" name="sc" value="<?php echo $_GET['sc']; ?>">
+			<input type="hidden" name="sc" value="<?php echo (!empty($_GET['sc']) ? htmlentities($_GET['sc'], ENT_QUOTES) : ''); ?>">
 			<div id="message">
 				<p><b>Le mot de passe doit contenir :</b></p>
 				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>

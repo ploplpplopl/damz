@@ -174,7 +174,7 @@ class AuthMgr
      * @param string $email
      * @return array|FALSE
      */
-    public static function forgotPassword(string $email)
+    public static function getUserByEmail(string $email)
     {
         $dbh = DbConnection::getConnection('administrateur');
         $query = "SELECT * FROM user WHERE email=? LIMIT 1";
@@ -244,7 +244,7 @@ class AuthMgr
      * @param string $user_last_name
      * @param string $user_phone
      * @param integer $id
-     * @return array
+     * @return boolean
      */
     public static function updateUserByID(
         string $user_user_type,
@@ -252,7 +252,7 @@ class AuthMgr
         string $user_last_name,
         string $user_phone,
         int $id
-    ): array {
+    ): bool {
         $dbh = DbConnection::getConnection('administrateur');
         $query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
         $stmt = $dbh->prepare($query);
@@ -303,10 +303,10 @@ class AuthMgr
             $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
 
-            $success = 'error';
+            $success = 'error'; // TODO quand tombe-t-on dans error ? dans le catch? du coup ligne inutile ?
             if ('1' === $tUser['subscr_confirmed']) {
                 $success = 'already_confirmed';
-            } else {
+            } else {   // TODO mettre plutot un      elseif ('0' === $tUser['subscr_confirmed']) {    ???
                 $query = 'UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token';
                 $stmt = $dbh->prepare($query);
                 $stmt->bindParam(':token', $token);

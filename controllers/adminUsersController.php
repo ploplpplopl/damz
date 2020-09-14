@@ -8,6 +8,7 @@ require_once _ROOT_DIR_ . '/models/Pagination.class.php';
 require_once _ROOT_DIR_ . '/models/AuthMgr.class.php';
 require_once _ROOT_DIR_ . '/controllers/sendEmails.php';
 
+// -------------- AFFICHAGE DES UTILISATEURS --------------
 // Récupération des commandes.
 $tab_order = [
 	1 => 'u.`date_add`',
@@ -110,6 +111,7 @@ if (isset($_GET['filter'])) {
 	}
 }
 
+// Comptage du nombre d'utilisateurs (pour la pagination et l'affichage sur page d'accueil admin)
 $users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way);
 $numUsers = count($users);
 
@@ -132,10 +134,12 @@ $limitTo = $limitFrom + NUM_PER_PAGE;
 if ($limitTo > $numUsers) {
 	$limitTo = $numUsers;
 }
-
+// Requete pour l'affichage de la liste paginée des utilisateurs 
 $users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
 
-// Edit user.
+
+
+// -------------- EDIT USER --------------
 $id = '';
 $user_user_type = '';
 $user_email = '';
@@ -144,84 +148,7 @@ $user_password = '';
 $user_passwordConf = '';
 $errors = [];
 
-$addUpd = 'add';
-if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
-	$addUpd = 'upd';
-	$result = AuthMgr::getUserByID($_GET['edit']);
-
-	if (!$result) {
-		header('location: /index.php?action=adminUsers');
-		exit;
-	}
-	$id = $result['id_user'];
-	$user_email = $result['email'];
-	$user_user_type = $result['user_type'];
-	$user_first_name = $result['first_name'];
-	$user_last_name = $result['last_name'];
-	$user_phone = $result['phone'];
-}
-
-if (!empty($_GET['resend-confirmation-link'])) {
-	$id = intval($_GET['resend-confirmation-link']);
-	$tUser = AuthMgr::getUserByID($id);
-
-	if (!$tUser) {
-		header('location: /index.php?action=adminUsers');
-		exit;
-	}
-
-	sendMail('signup.html', [
-		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'],
-	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
-
-	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';
-
-	header('location: /index.php?action=adminUsers');
-	exit;
-}
-
-if (isset($_POST['upd-user-btn'])) {
-	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
-	$user_first_name = trim($_POST['first_name']);
-	$user_last_name = trim($_POST['last_name']);
-	$user_phone = trim($_POST['phone']);
-	$id = intval($_POST['id_user']);
-
-	if (empty($user_user_type)) {
-		$errors[] = 'Type de compte requis';
-	}
-	if (!empty($user_first_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_first_name)) {
-		$errors[] = 'Le prénom contient des caractères invalides';
-	}
-	if (!empty($user_last_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_last_name)) {
-		$errors[] = 'Le nom contient des caractères invalides';
-	}
-	if (!empty($user_phone) && !preg_match('/^[+0-9. ()-]*$/i', $user_phone)) {
-		$errors[] = 'Le numéro de téléphone n\'est pas valide';
-	}
-
-	if (empty($errors)) {
-		$result = AuthMgr::updateUserByID($user_user_type, $user_first_name, $user_last_name, $user_phone, $id);
-
-		if (!$result) {
-			$_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';
-		} else {
-			// Send confirmation email to user.
-			$emailSent = sendMail('user-upd.html', [
-				'{user_type}' => $settings['accounts'][$user_user_type],
-				'{first_name}' => $user_first_name,
-				'{last_name}' => $user_last_name,
-				'{phone}' => $user_phone,
-			], 'Modification de vos informations personnelles sur ' . $settings['site_name'], $user_email);
-
-			$_SESSION['message_status'][] = 'Le compte <em>' . $user_email . '</em> a été mis à jour';
-
-			header('location: index.php?action=adminUsers');
-			exit;
-		}
-	}
-}
-
+// Add user
 if (isset($_POST['add-user-btn'])) {
 	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
 	$user_email = trim($_POST['email']);
@@ -280,7 +207,7 @@ if (isset($_POST['add-user-btn'])) {
 
 			if (!$emailSent) {
 				$_SESSION['message_status'][] = 'L\'inscription de l\'utilisateur est prise en compte';
-				$_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, <a href="/email-verification?token=' . $token . '&amp;back=' . urlencode('/index.php?action=adminUsers') . '">renvoyer l\'e-mail</a>';
+				$_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de confirmation a échoué, veuillez recommencer.';
 
 				header('location: /connexion');
 				exit;
@@ -294,6 +221,85 @@ if (isset($_POST['add-user-btn'])) {
 	}
 }
 
+// Update user
+if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
+	$result = AuthMgr::getUserByID($_GET['edit']);
+
+	if (!$result) {
+		header('location: /index.php?action=adminUsers');
+		exit;
+	}
+	$id = $result['id_user'];
+	$user_email = $result['email'];
+	$user_user_type = $result['user_type'];
+	$user_first_name = $result['first_name'];
+	$user_last_name = $result['last_name'];
+	$user_phone = $result['phone'];
+}
+
+if (isset($_POST['upd-user-btn'])) {
+	$user_user_type = !empty($_POST['user_type']) ? $_POST['user_type'] : '';
+	$user_first_name = trim($_POST['first_name']);
+	$user_last_name = trim($_POST['last_name']);
+	$user_phone = trim($_POST['phone']);
+	$id = intval($_POST['id_user']);
+
+	if (empty($user_user_type)) {
+		$errors[] = 'Type de compte requis';
+	}
+	if (!empty($user_first_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_first_name)) {
+		$errors[] = 'Le prénom contient des caractères invalides';
+	}
+	if (!empty($user_last_name) && !preg_match('/^(\w+[\' -]?)+\w+$/i', $user_last_name)) {
+		$errors[] = 'Le nom contient des caractères invalides';
+	}
+	if (!empty($user_phone) && !preg_match('/^[+0-9. ()-]*$/i', $user_phone)) {
+		$errors[] = 'Le numéro de téléphone n\'est pas valide';
+	}
+
+	if (empty($errors)) {
+		$result = AuthMgr::updateUserByID($user_user_type, $user_first_name, $user_last_name, $user_phone, $id);
+
+		if (!$result) {
+			$_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';
+		} else {
+			// Send confirmation email to user.
+			$emailSent = sendMail('user-upd.html', [
+				'{user_type}' => $settings['accounts'][$user_user_type],
+				'{first_name}' => $user_first_name,
+				'{last_name}' => $user_last_name,
+				'{phone}' => $user_phone,
+			], 'Modification de vos informations personnelles sur ' . $settings['site_name'], $user_email);
+
+			$_SESSION['message_status'][] = 'Le compte <em>' . $user_email . '</em> a été mis à jour';
+
+			header('location: index.php?action=adminUsers');
+			exit;
+		}
+	}
+}
+
+// Resend confirmation link to unconfirmed users
+if (!empty($_GET['resend-confirmation-link'])) {
+	$id = intval($_GET['resend-confirmation-link']);
+	$tUser = AuthMgr::getUserByID($id);
+
+	if (!$tUser) {
+		header('location: /index.php?action=adminUsers');
+		exit;
+	}
+
+	sendMail('signup.html', [
+		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'],
+	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
+
+	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';
+
+	header('location: /index.php?action=adminUsers');
+	exit;
+}
+
+// Delete user
 if (!empty($_GET['del'])) {
 	AuthMgr::deleteUser(intval($_GET['del']));
 	$_SESSION['message_status'][] = 'Utilisateur supprimé';
