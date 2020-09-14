@@ -81,7 +81,7 @@ require_once 'views/head.php';
 				<input type="password" id="passwordC" name="passwordConf" class="form-control" value="" required="required">
 			</div>
 			<div id="message">
-				<p><b>Le mot de passe doit contenir :</b></p>
+				<p><b>Le mot de passe doit contenir&nbsp;</b></p>
 				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
 				<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
 				<p id="number" class="invalid">Un <b>nombre</b></p>
