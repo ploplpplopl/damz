@@ -111,6 +111,7 @@ if (isset($_GET['filter'])) {
 }
 
 $users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way);
+
 $numUsers = count($users);
 
 // Pagination.

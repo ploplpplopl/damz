@@ -6,6 +6,22 @@ class AuthMgr
 {
 
     /**
+     * Get all user's data.
+     *
+     * @return array|null
+     */
+    public static function getAllUsers(): ?array
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->query('SELECT * FROM user WHERE deleted = \'0\'');
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result ?: NULL;
+    }
+
+    /**
      * Get any user's data.
      *
      * @param int $id The user id.
@@ -130,6 +146,40 @@ class AuthMgr
             echo $e->getMessage();
         }
     }
+	
+	// not tested
+    public static function addUser_test(array $params): bool {
+		// Check mandatory fields.
+		$requiredFields = [
+			'email',
+			'pseudo',
+			'password',
+		];
+		foreach ($requiredFields as $field) {
+			if (empty($params[$field])) {
+				throw new Exception('Undefined field ' . $field);
+			}
+		}
+		
+		// Add/rewrite some fields.
+		$params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
+		if (!array_key_exists('date_add', $params)) {
+			$params['date_add'] = date('Y-m-d H:i:s');
+		}
+		
+		// Execute query.
+		$query = 'INSERT INTO user (%s) VALUES (%s)';
+		$keys = implode(', ', array_keys($params));
+		$values = trim(str_repeat('?,', count($params)), ',');
+		
+		$dbh = DbConnection::getConnection('administrateur');
+		$stmt = $dbh->prepare(sprintf($query, $keys, $values));
+		$result = $stmt->execute($params);
+		$stmt->closeCursor();
+		DbConnection::disconnect();
+		return $result;
+    }
+	// Call sample: addUser_test(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd']);
 
     /**
      * Checks login credentials and password in DB

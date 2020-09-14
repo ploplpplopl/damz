@@ -15,6 +15,7 @@ function getAllColors() {
 }
 
 $nomFichier = '';
+$nomFichier_client = '';
 $nbPagesNB = '';
 $nbPagesC = '';
 $nbPages = '';
