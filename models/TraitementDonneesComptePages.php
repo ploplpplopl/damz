@@ -75,7 +75,7 @@ foreach ($ProfilsColosPages as $Page) {
 //Nombre de pages noir et blanc
 $nbPagesNB = $nbPages - count($tabPagesCouleurs);
 
-//Création d'un tableau avec clés, puis transformation en JSON renvoyé au compte_pages.js de dossier.php pour affichage
+//Création d'un tableau avec clés, puis transformation en JSON renvoyé au dossier_formulaire.js de dossier.php pour affichage
 $tabFinal = [
 	'filename' => $filename,
 	'filename_client' => $filename_client,

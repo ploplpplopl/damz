@@ -11,7 +11,7 @@ $(function () {
             form_data.append('file', fichier);
             $.ajax({
                 type: 'POST',
-                url: 'models/Traitement_Donnees_Compte_Pages.php',
+                url: 'models/TraitementDonneesComptePages.php',
                 contentType: false,
                 processData: false,
                 data: form_data,
