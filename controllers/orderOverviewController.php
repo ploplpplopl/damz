@@ -32,26 +32,8 @@ function getMappingColors() {
 	return $mappingColors;
 }
 
-/**
- * Récupération des adresses de l'utilisateur.
- *
- * @return array
- */
-function getUserAddresses() {
-	$sth = DbConnection::getConnection('administrateur')->prepare('
-		SELECT a.*, c.name AS country_name
-		FROM address AS a
-		INNER JOIN country AS c
-		ON a.id_country = c.id_country
-		WHERE a.id_user = :id_user
-	');
-	$sth->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
-	$sth->execute();
-	$addresses = $sth->fetchAll(PDO::FETCH_ASSOC);
-	$sth->closeCursor();
-	DbConnection::disconnect();
-	return $addresses;
-}
+$userAddresses = AuthMgr::getUserAddresses($_SESSION['user']['id_user']);
+
 
 /**
  * Récupération du numéro de téléphone de l'utilisateur.

@@ -9,9 +9,6 @@ $css = '<link rel="stylesheet" href="/public/css/password.css">';
 
 require_once 'controllers/accountController.php';
 
-$addresses = getUserAddresses();
-$countries = getCountries();
-
 require_once 'views/head.php';
 ?>
 
