@@ -71,7 +71,7 @@ $(function () {
     // Single call to the database to store values in a json variable.
     var jsonData = {};
     $.ajax({
-        url: 'models/getDossierData.php',
+        url: 'models/DossierDataMgr.php',
         async: false,
         dataType: 'json',
         success: function (json) {
