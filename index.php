@@ -5,11 +5,6 @@ require_once 'config/config.php';
 require_once 'models/functions.php';
 require 'controllers/authController.php';
 
-// Initialisation des variables
-
-$tParam = parse_ini_file("config/param.ini");
-$file = $tParam['chemin'] . $tParam['fichierClient'];
-$DEBUG = $tParam['debug'];
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
