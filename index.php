@@ -130,6 +130,13 @@ switch ($action) {
 		require('views/adminPaliers.php');
 		break;
 
+	// Accès refusé
+	case 'forbidden';
+		$sTitre = 'Accès refusé';
+		require('views/403.php');
+		break;
+
+
 	default:
 		$sTitre = 'Erreur 404';
 		header('HTTP/1.0 404 Not Found');

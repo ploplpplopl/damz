@@ -35,6 +35,8 @@ RewriteRule ^email-confirmation$  /index.php?action=resendConfirmationMail [QSA,
 RewriteRule ^mon-compte$  /index.php?action=account [L]
 RewriteRule ^mon-compte/mes-adresses$  /index.php?action=accountAddresses [L]
 
+RewriteRule ^forbidden$  /index.php?action=forbidden [L]
+
 ErrorDocument 500 /erreur.php?e=500
 ErrorDocument 404 /erreur.php?e=404
 ErrorDocument 403 /erreur.php?e=403

@@ -5,7 +5,7 @@ require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 
-// TODO if (empty($_GET['id']) || empty($_GET['archive'])) {
+// TODO if (empty($_GET['id']) || isset($_GET['archive'])) {
 if (empty($_GET['id'])) {
 	exit;
 }

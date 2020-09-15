@@ -137,7 +137,6 @@ $(function () {
 					length.classList.remove("valid");
 					length.classList.add("invalid");
 				}
-				console.log(password.value);
 				// validatePassword;
 			}, false);
 		});

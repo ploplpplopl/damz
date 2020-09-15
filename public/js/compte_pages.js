@@ -168,7 +168,7 @@ $(function () {
         $('#btnFCCouv, #btnFTDos').prop('disabled', true);
         $('#dos_printable, #couv_printable, #couv_unprintable').prop('disabled', true);
         $('#dos_unprintable').prop('checked', true).prop('disabled', true);
-        $('div.couv-color :radio').prop('disabled', true);
+        $('div.couv-color :radio, label[id^=label_couv_color_]').prop('disabled', true);
         // Hide  non unprintable colors
         $('div.dos-unprintable-0').hide();
     });
@@ -271,7 +271,7 @@ $(function () {
     // On click on FC options
     $('#couv_printable, #couv_unprintable, div.couv-color').click(function () {
         // select FC if it is not
-        if ($('#btnFCCouv').is(":not(:checked)")) {
+        if ($('#btnFCCouv').is(":not(:checked)") && $('#dossier').is(":not(:checked)")) {
             $('#btnFCCouv').prop('checked', true);
         }
     });
