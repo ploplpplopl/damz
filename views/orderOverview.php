@@ -7,7 +7,6 @@ if (empty($_SESSION['user']) || empty($_SESSION['tunnel'])) {
 
 require_once _ROOT_DIR_ . '/controllers/orderOverviewController.php';
 $mappingColors = getMappingColors();
-$userAddresses = getUserAddresses();
 $userPhone = getUserPhone();
 
 $fileToPrint = $_SESSION['file_to_print'];
@@ -24,7 +23,7 @@ require_once 'views/head.php';
 		<table class="table table-sm table-bordered mt-3">
 			<tr>
 				<th scope="row">Nom du fichier</th>
-				<td><a href="/uploads/<?php echo $fileToPrint['nom_fichier']; ?>" target="_blank"><?php echo $fileToPrint['nom_fichier_client']; ?></a></td>
+				<td><a href="/files/uploads/<?php echo $fileToPrint['nom_fichier']; ?>" target="_blank"><?php echo $fileToPrint['nom_fichier_client']; ?></a></td>
 			</tr>
 			<tr>
 				<th scope="row">Nombre de pages total</th>

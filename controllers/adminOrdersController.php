@@ -57,8 +57,6 @@ if (isset($_GET['filter'])) {
 	$city = !empty($_GET['city']) ? $_GET['city'] : '';
 	$docType = !empty($_GET['doc_type']) ? $_GET['doc_type'] : [];
 
-	// TODO Add controls.
-
 	if (!empty($id_orders)) {
 		$where .= ' AND o.`id_orders` = :id_orders';
 		$params[':id_orders'] = $id_orders;
@@ -155,7 +153,7 @@ if (!empty($_GET['dl']) && is_numeric($_GET['dl'])) {
 	header('Cache-Control: private');
 	header('Expires: 0');
 	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: ' . filesize(_ROOT_DIR_ . '/uploads/' . $order['nom_fichier']));
-	echo file_get_contents(_ROOT_DIR_ . '/uploads/' . $order['nom_fichier']);
+	header('Content-Length: ' . filesize(_ROOT_DIR_ . '/files/uploads/' . $order['nom_fichier']));
+	echo file_get_contents(_ROOT_DIR_ . '/files/uploads/' . $order['nom_fichier']);
 	exit;
 }

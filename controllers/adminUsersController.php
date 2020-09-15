@@ -58,8 +58,6 @@ if (isset($_GET['filter'])) {
 	$userType = !empty($_GET['user_type']) ? $_GET['user_type'] : [];
 	$numOrders = !empty($_GET['num_orders']) || (isset($_GET['num_orders']) && $_GET['num_orders'] === '0') ? $_GET['num_orders'] : '';
 
-	// TODO Add controls.
-
 	if (!empty($date_from)) {
 		$where .= ' AND u.`date_add` > :date_from';
 		$params[':date_from'] = $date_from;
@@ -113,7 +111,6 @@ if (isset($_GET['filter'])) {
 
 // Comptage du nombre d'utilisateurs (pour la pagination et l'affichage sur page d'accueil admin)
 $users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way);
-
 $numUsers = count($users);
 
 // Pagination.
@@ -159,7 +156,7 @@ if (isset($_POST['add-user-btn'])) {
 	$token = bin2hex(random_bytes(50));
 
 	$sc = uniqid(mt_rand(), true);
-	file_put_contents(_ROOT_DIR_ . '/files/tmp/tmp_' . $token . '.dat', $sc);
+	file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/files/tmp/tmp_' . $token . '.dat', $sc);
 
 	$validator = new EmailValidator();
 

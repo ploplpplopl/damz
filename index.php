@@ -3,14 +3,9 @@
 // Imports
 require_once 'config/config.php';
 require_once 'models/functions.php';
-require 'controllers/authController.php';
+require_once 'controllers/authController.php';
 
-// Initialisation des variables
-
-$tParam = parse_ini_file("config/param.ini");
-$file = $tParam['chemin'] . $tParam['fichierClient'];
-$DEBUG = $tParam['debug'];
-
+vd(AuthMgr::updateUser(['email' => 'test@example.com', 'pseudo' => 'coucou', 'password' => 'P@ss-w0rd'], 39, 'AND first_name = "kgg"'));
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
 // Etapes et traitements
@@ -129,6 +124,13 @@ switch ($action) {
 		$_page = 'thermo';
 		require('views/adminPaliers.php');
 		break;
+
+	// Accès refusé
+	case 'forbidden';
+		$sTitre = 'Accès refusé';
+		require('views/403.php');
+		break;
+
 
 	default:
 		$sTitre = 'Erreur 404';

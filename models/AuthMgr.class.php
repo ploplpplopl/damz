@@ -5,6 +5,42 @@ require_once("dao/DbConnection.class.php");
 class AuthMgr
 {
 
+    // not tested
+    public static function addUser_test(array $params): bool
+    {
+        // Check mandatory fields.
+        $requiredFields = [
+            'email',
+            'pseudo',
+            'password',
+        ];
+        foreach ($requiredFields as $field) {
+            if (empty($params[$field])) {
+                throw new Exception('Undefined field ' . $field);
+            }
+        }
+
+        // Add/rewrite some fields.
+        $params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
+        if (!array_key_exists('date_add', $params)) {
+            $params['date_add'] = date('Y-m-d H:i:s');
+        }
+
+        // Execute query.
+        $query = 'INSERT INTO user (%s) VALUES (%s)';
+        $keys = implode(', ', array_keys($params));
+        $values = trim(str_repeat('?,', count($params)), ',');
+
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare(sprintf($query, $keys, $values));
+        $result = $stmt->execute($params);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+    // Call sample: addUser_test(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd']);
+
+
     /**
      * Get all user's data.
      *
@@ -37,6 +73,43 @@ class AuthMgr
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result ?: NULL;
+    }
+
+    /**
+     * Get user addresses.
+     *
+     * @param integer $id
+     * @return array
+     */
+    public static function getUserAddresses(int $id): array
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare('SELECT a.*, c.name AS country_name
+		FROM address AS a
+		INNER JOIN country AS c
+		ON a.id_country = c.id_country
+		WHERE a.id_user = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+
+    /**
+     * Get countries
+     *
+     * @return array
+     */
+    public static function getCountries(): array
+    {
+        $stmt = DbConnection::getConnection('administrateur')->query('SELECT * FROM country ORDER BY name ASC');
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
     }
 
     /**
@@ -146,40 +219,6 @@ class AuthMgr
             echo $e->getMessage();
         }
     }
-	
-	// not tested
-    public static function addUser_test(array $params): bool {
-		// Check mandatory fields.
-		$requiredFields = [
-			'email',
-			'pseudo',
-			'password',
-		];
-		foreach ($requiredFields as $field) {
-			if (empty($params[$field])) {
-				throw new Exception('Undefined field ' . $field);
-			}
-		}
-		
-		// Add/rewrite some fields.
-		$params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
-		if (!array_key_exists('date_add', $params)) {
-			$params['date_add'] = date('Y-m-d H:i:s');
-		}
-		
-		// Execute query.
-		$query = 'INSERT INTO user (%s) VALUES (%s)';
-		$keys = implode(', ', array_keys($params));
-		$values = trim(str_repeat('?,', count($params)), ',');
-		
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare(sprintf($query, $keys, $values));
-		$result = $stmt->execute($params);
-		$stmt->closeCursor();
-		DbConnection::disconnect();
-		return $result;
-    }
-	// Call sample: addUser_test(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd']);
 
     /**
      * Checks login credentials and password in DB
@@ -305,6 +344,7 @@ class AuthMgr
     ): bool {
         $dbh = DbConnection::getConnection('administrateur');
         $query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
+        // $stmt = $dbh->prepare('UPDATE user SET email = :email, pseudo = :pseudo, first_name = :firstname, last_name = :lastname, phone = :phone WHERE id_user = :id');
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
         $stmt->bindParam(':first_name', $user_first_name, PDO::PARAM_STR);
@@ -317,6 +357,31 @@ class AuthMgr
         return $result;
     }
 
+    public static function updateUser(array $params, int $id, string $condition = ''): bool
+    {
+        // Add/rewrite some fields.
+        if (array_key_exists('password', $params)) {
+            $params['password'] = password_hash($params['password'], PASSWORD_DEFAULT);
+        }
+
+        // Execute query.
+        $query = 'UPDATE user SET %s WHERE id_user = %d %s';
+        $values = '';
+        foreach(array_keys($params) as $key) {
+            $values .= $key . ' = ?, ';
+        }
+        $values = trim($values, ', ');
+
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare(sprintf($query, $values, $id, $condition));
+        $result = $stmt->execute(array_values($params));
+
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+    // updateUser(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd'], $id);
+    
     /**
      * Destroy the session
      *

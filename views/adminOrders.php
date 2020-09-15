@@ -10,7 +10,7 @@ if (
 	!empty($_SESSION['user']['user_type']) &&
 	!in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])
 ) {
-    header('location: /deconnexion');
+    header('location: /forbidden');
 	exit;
 }
 
@@ -120,8 +120,8 @@ require_once 'views/head.php';
 						</td>
 						<td>
 							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=0" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
-							<a href="/index.php?action=adminOrders&amp;dl=<?php echo $order['id_orders']; ?>" title="PDF"><i class="fas fa-file-pdf"></i></a>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=0" title="Étiquette"><i class="fas fa-receipt"></i></a>
+							<a href="/index.php?action=adminOrders&amp;dl=<?php echo $order['id_orders']; ?>" title="Fichier client"><i class="fas fa-file-pdf"></i></a>
+							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=0" title="Étiquette livraison"><i class="fas fa-receipt"></i></a>
 							<a href="/index.php?action=adminOrders&amp;archive=<?php echo $order['id_orders']; ?>" onclick="return confirm('Voulez-vous vraiment archiver cette commande ?')" title="Archiver"><i class="fas fa-archive"></i></a>
 						</td>
 					</tr>

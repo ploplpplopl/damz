@@ -13,7 +13,7 @@ require_once 'views/head.php';
 
 		<form id="formDossier" method="post" action="">
 			<fieldset>
-				<!-- upload du document et détection du nombre de pages couleurs/N&B via le script compte_pages.js-->
+				<!-- upload du document et détection du nombre de pages couleurs/N&B via le script dossier_formulaire.js-->
 				<legend>Téléchargez le fichier PDF à imprimer</legend>
 				<div class="custom-file">
 					<input type="file" class="custom-file-input" id="uploadPDF" accept=".pdf,application/pdf">
@@ -277,7 +277,7 @@ require_once 'views/head.php';
 <?php
 
 $javascript .= '
-<script src="/public/js/compte_pages.js"></script>
+<script src="/public/js/dossier_formulaire.js"></script>
 ';
 
 require_once 'views/footer.php';

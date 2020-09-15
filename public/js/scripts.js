@@ -39,7 +39,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let pseudo = $(this).val().trim();
 			if (pseudo != '') {
-				$.get('models/ajaxCheck.php', {
+				$.get('controllers/ajaxCheck.php', {
 						pseudo: pseudo
 					})
 					.done(function (data) {
@@ -53,7 +53,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let email = $(this).val().trim();
 			if (email != '') {
-				$.get('models/ajaxCheck.php', {
+				$.get('controllers/ajaxCheck.php', {
 						email: email
 					})
 					.done(function (data) {
@@ -137,7 +137,6 @@ $(function () {
 					length.classList.remove("valid");
 					length.classList.add("invalid");
 				}
-				console.log(password.value);
 				// validatePassword;
 			}, false);
 		});

@@ -7,7 +7,7 @@ if (empty($_SESSION['user']['id_user'])) {
 
 // protège accès direct à http://localhost/views/admin.php (views devra etre interdit avec htaccess)
 if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
-	header('location: /deconnexion');
+	header('location: /forbidden');
 	exit;
 }
 
@@ -29,7 +29,7 @@ require_once 'views/head.php';
 	</div>
 </div>
 
-<!-- Tabs with 'deleted users'? -->
+<!-- TODO Tabs with 'deleted users' -->
 
 <div class="row">
 	<div class="col-12">
@@ -65,7 +65,7 @@ require_once 'views/head.php';
 					<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
 				</div>
 				<div id="message">
-					<p><b>Le mot de passe doit contenir :</b></p>
+					<p><b>Le mot de passe doit contenir&nbsp;</b></p>
 					<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
 					<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
 					<p id="number" class="invalid">Un <b>nombre</b></p>

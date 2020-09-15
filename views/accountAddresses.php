@@ -7,9 +7,6 @@ if (empty($_SESSION['user']['id_user'])) {
 
 require_once 'controllers/accountController.php';
 
-$addresses = getUserAddresses();
-$countries = getCountries();
-
 require_once 'views/head.php';
 ?>
 

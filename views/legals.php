@@ -48,7 +48,7 @@ require_once 'views/head.php';
 <?php
 
 $javascript = <<<PHP_JS
-<script src="/public/js/compte_pages.js"></script>
+<script src="/public/js/dossier_formulaire.js"></script>
 
 PHP_JS;
 
