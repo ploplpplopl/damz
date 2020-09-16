@@ -176,7 +176,7 @@ require_once 'views/head.php';
 						</p>
 						<p><strong>Couleur de la reliure</strong></p>
 						<span id='error-color-reliure'>Sélectionnez une couleur de reliure</span>
-						<div id="reliure_colors" class="color-selector">
+						<div id="reliure_colors" class="color-selector-reliure">
 							<div>
 								<input type="radio" id="reliureBlanche" name="btnCoulReliure" value="Blanche" <?php echo ('Blanche' == $btnCoulReliure ? ' checked' : ''); ?>>
 								<label for="reliureBlanche"><span class="color-square" style="background:#fff;"></span> Blanc</label>

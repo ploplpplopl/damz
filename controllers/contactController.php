@@ -33,7 +33,7 @@ if (isset($_POST['contact-btn'])) {
     if (empty($contact_message)) {
         $errors[] = 'Message requis';
     }
-	elseif (!preg_match('/^([^<>#{}]|<br \/>)*$/i', $contact_message)) {
+	elseif (!preg_match('/^([^<>#{}])*$/i', $contact_message)) {
         $errors[] = 'Votre message contient des caractères invalides';
     }
 
