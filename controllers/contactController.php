@@ -9,12 +9,6 @@ require_once 'controllers/sendEmails.php';
 $contact_email = '';
 $contact_name = '';
 $contact_message = '';
-$email_to = $settings['mail-contact-form'];
-// $from = 'contact@dossier-rapide.fr';
-// $from = 'from@copifac.fr';
-// $replyTo = 'replyTo@copifac.fr';
-// date_default_timezone_set('Europe/Paris');
-// $date = date("d-m-Y à H:i");
 $errors = [];
 
 if (isset($_POST['contact-btn'])) {
@@ -26,46 +20,38 @@ if (isset($_POST['contact-btn'])) {
 
     if (empty($contact_email)) {
         $errors[] = 'E-mail requis';
-    } elseif (!$validator->isValid($contact_email, new RFCValidation())) {
+    }
+	elseif (!$validator->isValid($contact_email, new RFCValidation())) {
         $errors[] = 'E-mail invalide';
     }
     if (empty($contact_name)) {
-        $errors[] = 'Nom et prénom requis';
-    } elseif (!valid_donnees($contact_name)) {
+        $errors[] = 'Prénom Nom requis';
+    }
+	elseif (!preg_match('/^(\w+[\' -]?)+\w+$/i', $contact_name)) {
         $errors[] = 'Votre nom contient des caractères invalides';
     }
     if (empty($contact_message)) {
         $errors[] = 'Message requis';
-    } elseif (!valid_donnees($contact_message)) {
-        // TODO essai avec balise <script> : c'est supprimé du message mais ca ne déclanche pas d'erreur
+    }
+	elseif (!preg_match('/^([^<>#{}]|<br \/>)*$/i', $contact_message)) {
         $errors[] = 'Votre message contient des caractères invalides';
     }
 
     if (empty($errors)) {
-        
         // Send email.
         $emailSent = sendMail('contact.html', [
-            '{site_url}' => $settings['site_url'],
             '{contact_email}' => $contact_email,
             '{contact_name}' => $contact_name,
             '{contact_message}' => nl2br($contact_message),
-            '{contact_date}' => date("d-m-Y à H:i"),
-        ], 'Demande d\'information sur ' . $settings['site_name'], $email_to, NULL, $contact_email);
+            '{contact_date}' => date('d-m-Y à H:i'),
+        ], 'Demande d\'information sur ' . $settings['site_name'], $settings['mail-contact-form'], NULL, $contact_email);
 
         if (!$emailSent) {
-            $_SESSION['message_error'][] = 'L\'envoi de votre message a échoué. Vous pouvez essayer d\'envoyer un message à <a href="mailto:' . $email_to . '">' . $email_to . '</a>';
+            $_SESSION['message_error'][] = 'L\'envoi de votre message a échoué, veuillez réessayer ultérieurement.';
         } else {
-            $_SESSION['message_status'][] = 'Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais';
+            $_SESSION['message_status'][] = 'Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.';
             header('location: /contact');
             exit;
         }
     }
-}
-
-// TODO en faire une classe Validate::isEmail($contact_email)
-function valid_donnees($donnees){
-    $donnees = trim($donnees);
-    $donnees = stripslashes($donnees);
-    $donnees = htmlspecialchars($donnees);
-    return $donnees;
 }
