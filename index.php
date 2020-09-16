@@ -35,6 +35,7 @@ switch ($action) {
 
 	// Connexion.
 	case 'login':
+		$email = isset($_GET['email']) ? $_GET['email'] : '';
 		$sTitre = 'Connexion';
 		require('views/login.php');
 		break;

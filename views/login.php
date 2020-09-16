@@ -4,10 +4,16 @@ require_once 'controllers/authController.php';
 
 AuthMgr::disconnectUser();
 
+// Affichage auto du champ pseudo via les liens des mails.
 if (!empty($_GET['email'])) {
 	$tUser = AuthMgr::getUserByEmail($_GET['email']);
 	$pseudo = $tUser['pseudo'];
 }
+if (!empty($email)) {
+	$tUser = AuthMgr::getUserByEmail($email);
+	$pseudo = $tUser['pseudo'];
+}
+
 
 require_once 'views/head.php';
 ?>
