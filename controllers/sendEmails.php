@@ -16,6 +16,7 @@ function sendMail($template, $templateVars, $subject, $to, $from = NULL, $replyT
     $message = (new Swift_Message())
 		->setSubject($subject)
         ->setFrom($from)
+		->setReplyTo($replyTo)
         ->setTo($to)
         ->setBody($content, 'text/html');
 

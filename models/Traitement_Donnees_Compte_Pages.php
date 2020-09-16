@@ -1,14 +1,15 @@
 <?php
 
-// sleep(1);
-// print_r(json_encode([
-// 	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
-// 	'NbPages' => 334,
-// 	'NbPagesC' => 303,
-// 	'NbPagesNB' => 31,
-// 	'TabPages' => [1,15,34],
-// ]));
-// exit;
+sleep(2);
+echo json_encode([
+	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
+	'filename_client' => 'plop.pdf',
+	'NbPages' => 334,
+	'NbPagesC' => 303,
+	'NbPagesNB' => 31,
+	'TabPages' => [1,15,34],
+]);
+exit;
 
 //Adapter l'application pour le site pro; rechercher solution pour plugin WordPress
 
@@ -21,8 +22,10 @@ if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'tooHeavy';
 	exit;
 }
-// TODO pourquoi un try ? pas de connexion bdd
-// TODO exit à la fin de chaque fichier php?
+// TODO pourquoi un try ? pas de connexion bdd | à retirer
+// TODO exit à la fin de chaque fichier php? | Non !
+// Dans le cas d'un controller la page ne serait pas affichée :)
+// Sur ce fichier qui est appelé en ajax ça ne sert à rien
 try {
 	//Si dossier d'upload n'existe pas, le crée; déplace le fichier uploadé vers le dossier d'uploads
 	if (!file_exists('../uploads')) {
@@ -84,6 +87,22 @@ try {
 		'NbPagesNB' => $nbPagesNB,
 		'TabPages' => $tabPagesCouleurs,
 	];
+	/*
+	print_r sert à afficher un tableau, pas d'intérêt ici vu qu'on retourne une chaine de caractères. on peut simplement faire :
+	
+	echo json_encode($tabFinal);
+	
+	encore mieux, mettre directement le tableau, au lieu de définir une variable qui ne servira qu'une seule fois :
+	
+	echo json_encode([
+		'filename' => $filename,
+		'filename_client' => $filename_client,
+		'NbPages' => $nbPages,
+		'NbPagesC' => count($tabPagesCouleurs),
+		'NbPagesNB' => $nbPagesNB,
+		'TabPages' => $tabPagesCouleurs,
+	]);
+	*/
 	$tabFinal = json_encode($tabFinal);
 	print_r($tabFinal);
 } catch (Exception $e) {

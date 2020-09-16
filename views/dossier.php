@@ -23,7 +23,7 @@ require_once 'views/head.php';
 				<p class="mt-5" id="file_description"></p>
 				<ul id="detailPages">
 					<li>Nom du fichier&nbsp;: <strong><span id="nomFichier"></span></strong></li>
-					<li>Pages en noir &amp; blanc&nbsp;: <strong><span id="nbPagesNB"></span></strong></li>
+					<li>Pages en noir et blanc&nbsp;: <strong><span id="nbPagesNB"></span></strong></li>
 					<li>Pages en couleur&nbsp;: <strong><span id="nbPagesC"></span></strong></li>
 					<li>Total des pages&nbsp;: <strong><span id="nbPages"></span></strong></li>
 				</ul>
@@ -122,11 +122,11 @@ require_once 'views/head.php';
 								<label for="couv_unprintable">Non imprimable</label><br>
 								<span id='error-couv-color'>Sélectionnez une couleur</span>
 							</p>
-							<div id="couvCouleurFC_colors" style="height:300px;overflow-y:auto;background:beige;">
+							<div id="couvCouleurFC_colors" class="color-selector">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="couv-color couv-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> couv-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
 										<input type="radio" id="couv_color_<?php echo $data['id_dossier_color']; ?>" name="couv_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo (htmlentities($data['text'], ENT_QUOTES) ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>" <?php echo ($data['id_dossier_color'] == $couvColor ? ' checked' : ''); ?>>
-										<label id="label_couv_color_<?php echo $data['id_dossier_color']; ?>" for="couv_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
+										<label id="label_couv_color_<?php echo $data['id_dossier_color']; ?>" for="couv_color_<?php echo $data['id_dossier_color']; ?>"><span class="color-square" style="background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 									</div>
 								<?php endforeach; ?>
 							</div>
@@ -151,11 +151,11 @@ require_once 'views/head.php';
 								<label for="dos_unprintable">Non imprimable</label><br>
 								<span id='error-dos-color'>Sélectionnez une couleur</span>
 							</p>
-							<div id="dosCouleurFC_colors" style="height:300px;overflow-y:auto;;background:beige;">
+							<div id="dosCouleurFC_colors" class="color-selector">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="dos-color dos-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> dos-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
 										<input type="radio" id="dos_color_<?php echo $data['id_dossier_color']; ?>" name="dos_color" value="<?php echo $data['id_dossier_color']; ?>" data-printable="<?php echo ($data['printable'] ? '1' : '0'); ?>" data-unprintable="<?php echo ($data['unprintable'] ? '1' : '0'); ?>" <?php echo ($data['id_dossier_color'] == $dosColor ? ' checked' : ''); ?>>
-										<label id="label_dos_color_<?php echo $data['id_dossier_color']; ?>" for="dos_color_<?php echo $data['id_dossier_color']; ?>"><span style="display:inline-block;width:16px;height:16px;border:1px solid #000;background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
+										<label id="label_dos_color_<?php echo $data['id_dossier_color']; ?>" for="dos_color_<?php echo $data['id_dossier_color']; ?>"><span class="color-square" style="background:#<?php echo $data['hex']; ?>"></span> <?php echo htmlentities($data['text'], ENT_QUOTES); ?></label><br>
 									</div>
 								<?php endforeach; ?>
 							</div>
@@ -175,15 +175,15 @@ require_once 'views/head.php';
 							<label for="spimetal">Spirales métalliques</label><br>
 						</p>
 						<p><strong>Couleur de la reliure</strong></p>
-						<div class="row">
-							<span id='error-color-reliure'>Sélectionnez une couleur de reliure</span>
-							<div class="col-6">
+						<span id='error-color-reliure'>Sélectionnez une couleur de reliure</span>
+						<div id="reliure_colors" class="color-selector">
+							<div>
 								<input type="radio" id="reliureBlanche" name="btnCoulReliure" value="Blanche" <?php echo ('Blanche' == $btnCoulReliure ? ' checked' : ''); ?>>
-								<label for="reliureBlanche">Blanche</label>
+								<label for="reliureBlanche"><span class="color-square" style="background:#fff;"></span> Blanc</label>
 							</div>
-							<div class="col-6">
+							<div>
 								<input type="radio" id="reliureNoire" name="btnCoulReliure" value="Noire" <?php echo ('Noire' == $btnCoulReliure ? ' checked' : ''); ?>>
-								<label for="reliureNoire">Noire</label>
+								<label for="reliureNoire"><span class="color-square" style="background:#000;"></span> Noir</label>
 							</div>
 						</div>
 					</div>

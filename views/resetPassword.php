@@ -15,16 +15,14 @@ require_once 'views/head.php';
 			<div class="form-group">
 				<label for="signup-password">Mot de passe</label>
 				<input type="password" id="signup-password" name="password" class="form-control" required="required">
-				<span id="span-signup-password"></span>
 			</div>
 			<div class="form-group">
 				<label for="signup-passwordC">Confirmation du mot de passe</label>
 				<input type="password" id="signup-passwordC" name="passwordConf" class="form-control" required="required">
-				<span id="span-signup-passwordC"></span>
 			</div>
 			<input type="hidden" name="sc" value="<?php echo (!empty($_GET['sc']) ? htmlentities($_GET['sc'], ENT_QUOTES) : ''); ?>">
 			<div id="message">
-				<p><b>Le mot de passe doit contenir :</b></p>
+				<p><b>Le mot de passe doit contenir&nbsp;:</b></p>
 				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
 				<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
 				<p id="number" class="invalid">Un <b>nombre</b></p>
