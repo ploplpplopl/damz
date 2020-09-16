@@ -5,12 +5,8 @@ if (empty($_SESSION['user']['id_user'])) {
 	exit;
 }
 
-// protège accès direct à http://localhost/views/admin.php (views devra etre interdit avec htaccess)
-if (
-	!empty($_SESSION['user']['user_type']) &&
-	!in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])
-) {
-    header('location: /forbidden');
+if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
+    header('location: /');
 	exit;
 }
 
@@ -121,7 +117,7 @@ require_once 'views/head.php';
 						<td>
 							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=0" title="Facture"><i class="fas fa-file-invoice-dollar"></i></a>
 							<a href="/index.php?action=adminOrders&amp;dl=<?php echo $order['id_orders']; ?>" title="Fichier client"><i class="fas fa-file-pdf"></i></a>
-							<a href="/index.php?action=adminGetInvoice&amp;id=<?php echo $order['id_orders']; ?>&amp;archive=0" title="Étiquette livraison"><i class="fas fa-receipt"></i></a>
+							<a href="#nogo" title="Étiquette livraison"><i class="fas fa-receipt"></i></a>
 							<a href="/index.php?action=adminOrders&amp;archive=<?php echo $order['id_orders']; ?>" onclick="return confirm('Voulez-vous vraiment archiver cette commande ?')" title="Archiver"><i class="fas fa-archive"></i></a>
 						</td>
 					</tr>

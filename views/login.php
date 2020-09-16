@@ -2,11 +2,12 @@
 
 require_once 'controllers/authController.php';
 
+AuthMgr::disconnectUser();
+
 // If comming from "reset password"
-if (!empty($_SESSION['user']['email_value'])) {
-	$tUser = AuthMgr::getUserByEmail($_SESSION['user']['email_value']);
+if (!empty($_GET['email'])) {
+	$tUser = AuthMgr::getUserByEmail($_GET['email']);
 	$pseudo = $tUser['pseudo'];
-	unset($_SESSION['user']['email_value']);
 }
 
 require_once 'views/head.php';

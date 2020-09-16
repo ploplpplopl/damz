@@ -20,16 +20,16 @@ $(function () {
 	// 	}
 	// });
 
-	// Limit DB calls (i.e: on keyup)
+	// Limit DB calls (ex: on keyup)
 	function throttle(func, duration) {
-		let shouldWait = false
+		let shouldWait = false;
 		return function (...args) {
 			if (!shouldWait) {
-				func.apply(this, args)
-				shouldWait = true
+				func.apply(this, args);
+				shouldWait = true;
 				setTimeout(function () {
-					shouldWait = false
-				}, duration)
+					shouldWait = false;
+				}, duration);
 			}
 		}
 	}

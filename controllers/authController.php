@@ -95,7 +95,6 @@ if (isset($_POST['login-btn'])) {
     if (empty($_POST['password'])) {
         $errors[] = 'Mot de passe requis';
     }
-// TODO ajouter check user deleted
     if (empty($errors)) {
 		$checkLogin = AuthMgr::checkLogin($_POST['pseudo'], $_POST['password']);
 		
@@ -156,6 +155,7 @@ if (isset($_POST['forgot-password-btn'])) {
 		}
 		else {
 			$emailSent = sendMail('forgot-password.html', [
+				'{reset_pwd_expiration}' => $settings['reset_pwd_expiration'],
 				'{link_initialize}' => $settings['site_url'] . '/reinitialiser-mot-de-passe?token=' . $checkAuth['secure_key'] . '&amp;email=' . $email,
 			], 'Récupération de mot de passe sur ' . $settings['site_name'], $email);
 			
@@ -163,6 +163,7 @@ if (isset($_POST['forgot-password-btn'])) {
                 $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';
             }
 			else {
+				AuthMgr::setPwdExpirationDate($email);
 				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé. Cliquez dessus pour réinitialiser votre mot de passe.';
             }
 			header('location: /mot-de-passe-oublie');
@@ -182,6 +183,11 @@ if (isset($_POST['reset-password-btn'])) {
 	$pwNumber = preg_match('/[0-9]/', $password);
 	$pwSpecialchar = preg_match('/[' . preg_quote('-_"%\'*;<>?^`{|}~/\\#=&', '/') . ']/', $password);
 	
+	// Vérification du délai d'expiration.
+	$user = AuthMgr::getUserByEmail($_GET['email']);
+	if (time() > strtotime($user['reset_pwd_expiration']) + $settings['reset_pwd_expiration']) {
+		$errors[] = 'Délai dépassé pour modifier le mot de passe, veuillez <a href="/mot-de-passe-oublie">refaire une demande</a>';
+	}
     if (empty($password)) {
         $errors[] = 'Mot de passe requis';
     }
@@ -217,10 +223,11 @@ if (isset($_POST['reset-password-btn'])) {
 				break;
 				
 			case 'password_updated':
+				// Réinitialisation du délai d'expiration.
+				AuthMgr::setPwdExpirationDate($email, '0000-00-00 00:00:00');
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
-				$_SESSION['user']['email_value'] = $_GET['email'];
 
-				header('location: /connexion');
+				header('location: /connexion?email=' . $_GET['email']);
 				exit;
 				break;
 		}
@@ -234,4 +241,3 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     exit;
 }
 
-// TODO vider les enregistrements (token) non confirmés après 15 minutes (cronjob).

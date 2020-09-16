@@ -33,7 +33,7 @@ class AuthMgr
 
         $dbh = DbConnection::getConnection('administrateur');
         $stmt = $dbh->prepare(sprintf($query, $keys, $values));
-        $result = $stmt->execute($params);
+        $result = $stmt->execute(array_values($params));
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
@@ -66,7 +66,7 @@ class AuthMgr
     public static function getUserByID(int $id): ?array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id');
+        $stmt = $dbh->prepare('SELECT * FROM user WHERE id_user = :id AND deleted=0');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -160,7 +160,7 @@ class AuthMgr
         foreach (array_keys($params) as $key) {
             $values .= $key . ' = ?, ';
         }
-        $values = trim($values, ', ');+
+        $values = trim($values, ', ');
 
         $dbh = DbConnection::getConnection('administrateur');
         $stmt = $dbh->prepare(sprintf($query, $values, $id_address, $condition));
@@ -170,9 +170,8 @@ class AuthMgr
         DbConnection::disconnect();
         return $result;
     }
-    // AuthMgr::updateAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country], $id_address, ' AND id_user = '.$_SESSION['user']['id_user']);
 
-    public static function createAddress(array $params): bool
+    public static function addAddress(array $params): bool
     {
         // Check mandatory fields.
         $requiredFields = [
@@ -192,15 +191,11 @@ class AuthMgr
 
         $dbh = DbConnection::getConnection('administrateur');
         $stmt = $dbh->prepare(sprintf($query, $keys, $values));
-        // vd($params);
-        // vd($stmt);
-        // exit;
-        $result = $stmt->execute($params);
+        $result = $stmt->execute(array_values($params));
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
     }
-    // AuthMgr::createAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country]);
 
     /**
      * Checks if email exists in database
@@ -212,7 +207,7 @@ class AuthMgr
     public static function emailExists(string $email, int $id_user = NULL): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = 'SELECT * FROM user WHERE email = :email';
+        $query = 'SELECT * FROM user WHERE email = :email AND deleted=0';
         if (!empty($id_user)) {
             $query .= ' AND id_user != :id_user';
         }
@@ -244,7 +239,7 @@ class AuthMgr
     public static function pseudoExists(string $pseudo, int $id_user = NULL): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = 'SELECT * FROM user WHERE pseudo = :pseudo';
+        $query = 'SELECT * FROM user WHERE pseudo = :pseudo AND deleted=0';
         if (!empty($id_user)) {
             $query .= ' AND id_user != :id_user';
         }
@@ -320,7 +315,7 @@ class AuthMgr
     public static function checkLogin(string $pseudo, string $password): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = "SELECT * FROM user WHERE pseudo=? OR email=? LIMIT 1";
+        $query = "SELECT * FROM user WHERE pseudo=? OR email=? AND deleted=0 LIMIT 1";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(1, $pseudo, PDO::PARAM_STR);
         $stmt->bindParam(2, $pseudo, PDO::PARAM_STR);
@@ -356,7 +351,7 @@ class AuthMgr
     public static function getUserByEmail(string $email)
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = "SELECT * FROM user WHERE email=? LIMIT 1";
+        $query = "SELECT * FROM user WHERE email=? AND deleted=0 LIMIT 1";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(1, $email, PDO::PARAM_STR);
 
@@ -384,7 +379,7 @@ class AuthMgr
     {
         // Récupération de l'utilisateur.
         $dbh = DbConnection::getConnection('administrateur');
-        $query = "SELECT * FROM user WHERE email=? AND secure_key=? LIMIT 1";
+        $query = "SELECT * FROM user WHERE email=? AND secure_key=? AND deleted=0 LIMIT 1";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(1, $email, PDO::PARAM_STR);
         $stmt->bindParam(2, $token, PDO::PARAM_STR);
@@ -399,7 +394,7 @@ class AuthMgr
             } else {
                 // Modification du mot de passe.
                 $dbh = DbConnection::getConnection('administrateur');
-                $query = "UPDATE user SET password = :password WHERE email = :email AND secure_key = :token";
+                $query = "UPDATE user SET password = :password WHERE email = :email AND secure_key = :token AND deleted=0";
                 $stmt = $dbh->prepare($query);
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 $stmt->bindParam(':password', $password, PDO::PARAM_STR);
@@ -433,7 +428,7 @@ class AuthMgr
         int $id
     ): bool {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
+        $query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user AND deleted=0';
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
         $stmt->bindParam(':first_name', $user_first_name, PDO::PARAM_STR);
@@ -462,7 +457,7 @@ class AuthMgr
         }
 
         // Execute query.
-        $query = 'UPDATE user SET %s WHERE id_user = %d %s';
+        $query = 'UPDATE user SET %s WHERE id_user = %d AND deleted=0 %s';
         $values = '';
         foreach (array_keys($params) as $key) {
             $values .= $key . ' = ?, ';
@@ -508,20 +503,20 @@ class AuthMgr
     {
         try {
             $dbh = DbConnection::getConnection('administrateur');
-            $query = "SELECT * FROM user WHERE secure_key=:token LIMIT 1";
+            $query = "SELECT * FROM user WHERE secure_key=:token AND deleted=0 LIMIT 1";
             $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':token', $token);
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
             $stmt->execute();
             $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
 
-            $success = 'error'; // TODO quand tombe-t-on dans error ? dans le catch? du coup ligne inutile ?
+            $success = 'error';
             if ('1' === $tUser['subscr_confirmed']) {
                 $success = 'already_confirmed';
-            } else {   // TODO mettre plutot un      elseif ('0' === $tUser['subscr_confirmed']) {    ???
-                $query = 'UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token';
+            } else {
+                $query = 'UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token AND deleted=0';
                 $stmt = $dbh->prepare($query);
-                $stmt->bindParam(':token', $token);
+                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
                 if ($stmt->execute()) {
                     $success = 'confirmed';
                 }
@@ -544,6 +539,19 @@ class AuthMgr
         $query = "UPDATE user SET deleted=1 WHERE id_user = :id_user";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':id_user', $id_user);
+        $result = $stmt->execute();
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+
+    public static function setPwdExpirationDate(string $email, string $expDate = 'NOW()'): bool
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $query = 'UPDATE user SET reset_pwd_expiration = :expDate WHERE email = :email AND deleted=0';
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':expDate', $expDate, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $result = $stmt->execute();
         $stmt->closeCursor();
         DbConnection::disconnect();

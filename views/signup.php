@@ -3,6 +3,9 @@
 $css = '<link rel="stylesheet" href="/public/css/password.css">';
 
 require_once 'controllers/authController.php';
+
+AuthMgr::disconnectUser();
+
 require_once 'views/head.php';
 ?>
 

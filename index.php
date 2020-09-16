@@ -5,6 +5,7 @@ require_once 'config/config.php';
 require_once 'models/functions.php';
 require_once 'controllers/authController.php';
 
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
 // Etapes et traitements
@@ -120,16 +121,15 @@ switch ($action) {
 		require('views/adminPaliers.php');
 		break;
 
-	// Accès refusé
-	case 'forbidden';
-		$sTitre = 'Accès refusé';
-		require('views/403.php');
+	// Gesetion des erreurs
+	case 'error':
+		$sTitre = 'Erreur';
+		require('views/error.php');
 		break;
-
 
 	default:
-		$sTitre = 'Erreur 404';
-		header('HTTP/1.0 404 Not Found');
-		require('views/404.php');
-		break;
+		$_GET['e'] = 404;
+		$sTitre = 'Erreur';
+		require('views/error.php');
+
 }
