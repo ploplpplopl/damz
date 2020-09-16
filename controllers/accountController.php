@@ -6,10 +6,11 @@ use Egulias\EmailValidator\Validation\RFCValidation;
 require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/AuthMgr.class.php';
 
-// Récupération des adresses de l'utilisateur.
+// Récupération des adresses de l'utilisateur à afficher.
 $addresses = AuthMgr::getUserAddresses($_SESSION['user']['id_user']);
 // Récupération de la liste des pays.
 $countries = AuthMgr::getCountries();
+
 
 
 // Default user info.
@@ -37,6 +38,7 @@ if (isset($_POST['user-info-btn'])) {
 	} elseif (AuthMgr::emailExists($email, $_SESSION['user']['id_user'])) {
 		$errors[] = 'Un compte avec cette adresse e-mail existe déjà';
 	}
+
 	if (empty($pseudo)) {
 		$errors[] = 'Pseudo requis';
 	} elseif (!preg_match('/^[a-z0-9!#$%&\'*+\/=?_-]{1,50}$/i', $pseudo)) {
@@ -44,32 +46,26 @@ if (isset($_POST['user-info-btn'])) {
 	} elseif (AuthMgr::pseudoExists($pseudo, $_SESSION['user']['id_user'])) {
 		$errors[] = 'Un compte avec ce pseudo existe déjà';
 	}
+
 	if (empty($firstname)) {
 		$errors[] = 'Prénom requis';
 	} elseif (!preg_match('/^(\w+[\' -]?)+\w+$/i', $firstname)) {
 		$errors[] = 'Votre prénom contient des caractères invalides';
 	}
+
 	if (empty($lastname)) {
 		$errors[] = 'Nom requis';
 	} elseif (!preg_match('/^(\w+[\' -]?)+\w+$/i', $lastname)) {
 		$errors[] = 'Votre nom contient des caractères invalides';
 	}
+
 	if (!empty($phone) && !preg_match('/^[+0-9. ()-]*$/i', $phone)) {
 		$errors[] = 'Votre numéro de téléphone n\'est pas valide';
 	}
 
 	if (empty($errors)) {
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare('UPDATE user SET email = :email, pseudo = :pseudo, first_name = :firstname, last_name = :lastname, phone = :phone WHERE id_user = :id');
-		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
-		$stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-		$stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-		$stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
-		$stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
-		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
+		$result = AuthMgr::updateUser(['email' => $email, 'pseudo' => $pseudo, 'first_name' => $firstname, 'last_name' => $lastname, 'phone' => $phone], $id);
+
 		if ($result) {
 			$_SESSION['user']['email'] = $email;
 			$_SESSION['user']['pseudo'] = $pseudo;
@@ -110,14 +106,8 @@ if (isset($_POST['user-password-btn'])) {
 	}
 
 	if (empty($errorsPassword)) {
-		$dbh = DbConnection::getConnection('administrateur');
-		$stmt = $dbh->prepare('UPDATE user SET password = :password WHERE id_user = :id');
-		$password = password_hash($password, PASSWORD_DEFAULT);
-		$stmt->bindParam(':password', $password, PDO::PARAM_STR);
-		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
+		$result = AuthMgr::updateUser(['password' => $password], $id);
+
 		if ($result) {
 			$_SESSION['message_status'][] = 'Votre mot de passe est mis à jour';
 		}
@@ -153,14 +143,14 @@ $country = '';
 $addrLabel = '';
 $errorsAddress = [];
 
+// Variable ajout/modification (defaut : ajout d'une adresse)
 $addUpd = 'add';
+
+// Affichage de l'adresse à modifier
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$addUpd = 'upd';
-	$stmt = DbConnection::getConnection('administrateur')->prepare('SELECT * FROM address WHERE id_address = :id_address AND id_user = :id_user');
-	$stmt->bindParam(':id_address', $_GET['edit']);
-	$stmt->bindParam(':id_user', $_SESSION['user']['id_user']);
-	$stmt->execute();
-	$result = $stmt->fetch(PDO::FETCH_ASSOC);
+	$result = AuthMgr::getAddress($_GET['edit'], $_SESSION['user']['id_user']);
+
 	$id_address = $result['id_address'];
 	$addrName = $result['addr_name'];
 	$address = $result['address'];
@@ -169,10 +159,9 @@ if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$city = $result['city'];
 	$country = $result['id_country'];
 	$addrLabel = $result['addr_label'];
-	$stmt->closeCursor();
-	DbConnection::disconnect();
 }
 
+// Modification ou ajout d'une adresse.
 if (isset($_POST['user-address-btn'])) {
 	$addrName = trim($_POST['addr_name']);
 	$address = trim($_POST['address']);
@@ -217,41 +206,57 @@ if (isset($_POST['user-address-btn'])) {
 	}
 
 	if (empty($errorsAddress)) {
-		$dbh = DbConnection::getConnection('administrateur');
+		// $dbh = DbConnection::getConnection('administrateur');
 		if ('add' == $addUpd) {
-			$stmt = $dbh->prepare('INSERT INTO address (id_user, addr_label, addr_name, address, address2, zip_code, city, id_country) VALUES (:id_user, :addr_label, :addr_name, :address, :address2, :zip_code, :city, :id_country)');
-		} else {
-			$stmt = $dbh->prepare('UPDATE address SET id_user = :id_user, addr_label = :addr_label, addr_name = :addr_name, address = :address, address2 = :address2, zip_code = :zip_code, city = :city, id_country = :id_country WHERE id_address = :id_address AND id_user = :id_user');
-			$stmt->bindParam(':id_address', $id_address, PDO::PARAM_INT);
+			$result = AuthMgr::createAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country]);
+			// $stmt = $dbh->prepare('INSERT INTO address (id_user, addr_label, addr_name, address, address2, zip_code, city, id_country) VALUES (:id_user, :addr_label, :addr_name, :address, :address2, :zip_code, :city, :id_country)');
+		} else {  // 'upd' == $addUpd
+			$result = AuthMgr::updateAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country], $id_address, ' AND id_user = '.$_SESSION['user']['id_user']);
 		}
-		$stmt->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
-		$stmt->bindParam(':addr_label', $addrLabel, PDO::PARAM_STR);
-		$stmt->bindParam(':addr_name', $addrName, PDO::PARAM_STR);
-		$stmt->bindParam(':address', $address, PDO::PARAM_STR);
-		$stmt->bindParam(':address2', $address2, PDO::PARAM_STR);
-		$stmt->bindParam(':zip_code', $zipcode, PDO::PARAM_STR);
-		$stmt->bindParam(':city', $city, PDO::PARAM_STR);
-		$stmt->bindParam(':id_country', $country, PDO::PARAM_INT);
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
+
 		if ($result) {
 			$_SESSION['message_status'][] = 'add' == $addUpd ? 'Adresse ajoutée' : 'Adresse modifiée';
 		}
-		header('location: /commande/adresse');
+		header('location: /mon-compte/mes-adresses');
 		exit;
+		// $dbh = DbConnection::getConnection('administrateur');
+		// if ('add' == $addUpd) {
+		// 	$stmt = $dbh->prepare('INSERT INTO address (id_user, addr_label, addr_name, address, address2, zip_code, city, id_country) VALUES (:id_user, :addr_label, :addr_name, :address, :address2, :zip_code, :city, :id_country)');
+		// } else {  // 'upd' == $addUpd
+		// 	$result = AuthMgr::updateAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country], $id_address, ' AND id_user = '.$_SESSION['user']['id_user']);
+			// $stmt = $dbh->prepare('UPDATE address SET id_user = :id_user, addr_label = :addr_label, addr_name = :addr_name, address = :address, address2 = :address2, zip_code = :zip_code, city = :city, id_country = :id_country WHERE id_address = :id_address AND id_user = :id_user');
+			// $stmt->bindParam(':id_address', $id_address, PDO::PARAM_INT);
+		// }
+		// $stmt->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
+		// $stmt->bindParam(':addr_label', $addrLabel, PDO::PARAM_STR);
+		// $stmt->bindParam(':addr_name', $addrName, PDO::PARAM_STR);
+		// $stmt->bindParam(':address', $address, PDO::PARAM_STR);
+		// $stmt->bindParam(':address2', $address2, PDO::PARAM_STR);
+		// $stmt->bindParam(':zip_code', $zipcode, PDO::PARAM_STR);
+		// $stmt->bindParam(':city', $city, PDO::PARAM_STR);
+		// $stmt->bindParam(':id_country', $country, PDO::PARAM_INT);
+		// $result = $stmt->execute();
+		// $stmt->closeCursor();
+		// DbConnection::disconnect();
+		// if ($result) {
+		// 	$_SESSION['message_status'][] = 'add' == $addUpd ? 'Adresse ajoutée' : 'Adresse modifiée';
+		// }
+		// header('location: /mon-compte/mes-adresses');
+		// exit;
 	}
 }
 
+// Suppression d'une adresse.
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
 	$dbh = DbConnection::getConnection('administrateur');
-	$stmt = $dbh->prepare('DELETE FROM address WHERE id_address = :id_address AND id_user = :id_user');
+	// $stmt = $dbh->prepare('DELETE FROM address WHERE id_address = :id_address AND id_user = :id_user');
+	$stmt = $dbh->prepare('UPDATE address SET deleted = 1 WHERE id_address = :id_address AND id_user = :id_user');
 	$stmt->bindParam(':id_address', $_GET['del'], PDO::PARAM_INT);
 	$stmt->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
 	$stmt->execute();
 	$stmt->closeCursor();
 	DbConnection::disconnect();
 	$_SESSION['message_status'][] = 'Adresse supprimée';
-	header('location: /commande/adresse');
+	header('location: /mon-compte/mes-adresses');
 	exit;
 }

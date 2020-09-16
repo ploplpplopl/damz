@@ -257,6 +257,7 @@ if (isset($_POST['upd-user-btn'])) {
 	}
 
 	if (empty($errors)) {
+		// TODO utiliser updateUser(array)
 		$result = AuthMgr::updateUserByID($user_user_type, $user_first_name, $user_last_name, $user_phone, $id);
 
 		if (!$result) {

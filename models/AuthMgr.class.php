@@ -88,10 +88,31 @@ class AuthMgr
 		FROM address AS a
 		INNER JOIN country AS c
 		ON a.id_country = c.id_country
-		WHERE a.id_user = :id');
+        WHERE a.id_user = :id
+        AND a.deleted = 0');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+
+    /**
+     * Get an address
+     *
+     * @param integer $id_address
+     * @param integer $id_user
+     * @return array
+     */
+    public static function getAddress(int $id_address, int $id_user): array
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare('SELECT * FROM address WHERE id_address = :id_address AND id_user = :id_user');
+        $stmt->bindParam(':id_address', $id_address);
+        $stmt->bindParam(':id_user', $id_user);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
@@ -111,6 +132,75 @@ class AuthMgr
         DbConnection::disconnect();
         return $result;
     }
+
+    /**
+     * Update an address.
+     *
+     * @param array $params
+     * @param integer $id_address
+     * @param string $condition
+     * @return boolean
+     */
+    public static function updateAddress(array $params, int $id_address, string $condition = ''): bool
+    {
+        // Check mandatory fields.
+        $requiredFields = [
+            'id_user',
+            'id_country',
+        ];
+        foreach ($requiredFields as $field) {
+            if (empty($params[$field])) {
+                throw new Exception('Undefined field ' . $field);
+            }
+        }
+
+        // Execute query.
+        $query = 'UPDATE address SET %s WHERE id_address = %d %s';
+        $values = '';
+        foreach (array_keys($params) as $key) {
+            $values .= $key . ' = ?, ';
+        }
+        $values = trim($values, ', ');+
+
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare(sprintf($query, $values, $id_address, $condition));
+        $result = $stmt->execute(array_values($params));
+
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+    // AuthMgr::updateAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country], $id_address, ' AND id_user = '.$_SESSION['user']['id_user']);
+
+    public static function createAddress(array $params): bool
+    {
+        // Check mandatory fields.
+        $requiredFields = [
+            'id_user',
+            'id_country',
+        ];
+        foreach ($requiredFields as $field) {
+            if (empty($params[$field])) {
+                throw new Exception('Undefined field ' . $field);
+            }
+        }
+
+        // Execute query.
+        $query = 'INSERT INTO address (%s) VALUES (%s)';
+        $keys = implode(', ', array_keys($params));
+        $values = trim(str_repeat('?,', count($params)), ',');
+
+        $dbh = DbConnection::getConnection('administrateur');
+        $stmt = $dbh->prepare(sprintf($query, $keys, $values));
+        // vd($params);
+        // vd($stmt);
+        // exit;
+        $result = $stmt->execute($params);
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return $result;
+    }
+    // AuthMgr::createAddress(['id_user' => $_SESSION['user']['id_user'], 'addr_label' => $addrLabel, 'addr_name' => $addrName, 'address' => $address, 'address2' => $address2, 'zip_code' => $zipcode, 'city' => $city, 'id_country' => $country]);
 
     /**
      * Checks if email exists in database
@@ -344,7 +434,6 @@ class AuthMgr
     ): bool {
         $dbh = DbConnection::getConnection('administrateur');
         $query = 'UPDATE user SET user_type = :user_type, first_name = :first_name, last_name = :last_name, phone = :phone WHERE id_user = :id_user';
-        // $stmt = $dbh->prepare('UPDATE user SET email = :email, pseudo = :pseudo, first_name = :firstname, last_name = :lastname, phone = :phone WHERE id_user = :id');
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':user_type', $user_user_type, PDO::PARAM_STR);
         $stmt->bindParam(':first_name', $user_first_name, PDO::PARAM_STR);
@@ -357,6 +446,14 @@ class AuthMgr
         return $result;
     }
 
+    /**
+     * Update a user
+     *
+     * @param array $params
+     * @param integer $id
+     * @param string $condition
+     * @return boolean
+     */
     public static function updateUser(array $params, int $id, string $condition = ''): bool
     {
         // Add/rewrite some fields.
@@ -367,7 +464,7 @@ class AuthMgr
         // Execute query.
         $query = 'UPDATE user SET %s WHERE id_user = %d %s';
         $values = '';
-        foreach(array_keys($params) as $key) {
+        foreach (array_keys($params) as $key) {
             $values .= $key . ' = ?, ';
         }
         $values = trim($values, ', ');
@@ -380,8 +477,8 @@ class AuthMgr
         DbConnection::disconnect();
         return $result;
     }
-    // updateUser(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd'], $id);
-    
+    // AuthMgr::updateUser(['email' => 'test@example.com', 'pseudo' => 'azerty', 'password' => 'P@ss-w0rd'], $id, ' AND token="ojzneojzen"');
+
     /**
      * Destroy the session
      *

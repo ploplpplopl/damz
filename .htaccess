@@ -33,7 +33,7 @@ RewriteRule ^email-verification$  /index.php?action=verifyUser [QSA,L]
 RewriteRule ^email-confirmation$  /index.php?action=resendConfirmationMail [QSA,L]
 
 RewriteRule ^mon-compte$  /index.php?action=account [L]
-RewriteRule ^mon-compte/mes-adresses$  /index.php?action=accountAddresses [L]
+RewriteRule ^mon-compte/mes-adresses$  /index.php?action=accountAddresses [QSA,L]
 
 RewriteRule ^forbidden$  /index.php?action=forbidden [L]
 

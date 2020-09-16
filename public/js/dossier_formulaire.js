@@ -2,7 +2,7 @@ $(function () {
     // Single call to the database to store values in a json variable.
     var jsonData = {};
     $.ajax({
-        url: 'models/getDossierData.php',
+        url: 'models/DossierDataMgr.php',
         async: false,
         dataType: 'json',
         success: function (json) {
@@ -23,7 +23,7 @@ $(function () {
     $("#formDossier")[0].reset(); // reset the form for firefox
     $("#file_description").hide();
     $("#detailPages").hide();
-	
+
     // First step : upload PDF
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
@@ -152,7 +152,7 @@ $(function () {
             $('#error-color-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
         }
     });
-	
+
 
     // ---------------------------- FORCE SELECTED OPTIONS according to the document type ----------------------------
     $("#dossier").click(function () {

@@ -92,6 +92,12 @@ label{cursor: pointer;}
 	background:#f2f5f8;
 	padding:10px 0 0 10px;
 }
+.color-selector-reliure{
+	overflow-y:auto;
+	background:#f2f5f8;
+	padding:10px 0 0 10px;
+}
+
 .color-square{
 	display:inline-block;
 	width:16px;
