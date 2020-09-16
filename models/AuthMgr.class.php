@@ -545,7 +545,7 @@ class AuthMgr
         return $result;
     }
 
-    public static function setPwdExpirationDate(string $email, string $expDate = 'NOW()'): bool
+    public static function setPwdExpirationDate(string $email, string $expDate): bool
     {
         $dbh = DbConnection::getConnection('administrateur');
         $query = 'UPDATE user SET reset_pwd_expiration = :expDate WHERE email = :email AND deleted=0';
