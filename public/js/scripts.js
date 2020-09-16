@@ -39,7 +39,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let pseudo = $(this).val().trim();
 			if (pseudo != '') {
-				$.get('controllers/ajaxCheck.php', {
+				$.get('controllers/ajaxUserCheck.php', {
 						pseudo: pseudo
 					})
 					.done(function (data) {
@@ -53,7 +53,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let email = $(this).val().trim();
 			if (email != '') {
-				$.get('controllers/ajaxCheck.php', {
+				$.get('controllers/ajaxUserCheck.php', {
 						email: email
 					})
 					.done(function (data) {
