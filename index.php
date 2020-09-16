@@ -5,7 +5,6 @@ require_once 'config/config.php';
 require_once 'models/functions.php';
 require_once 'controllers/authController.php';
 
-vd(AuthMgr::updateUser(['email' => 'test@example.com', 'pseudo' => 'coucou', 'password' => 'P@ss-w0rd'], 39, 'AND first_name = "kgg"'));
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
 // Etapes et traitements

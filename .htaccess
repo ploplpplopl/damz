@@ -37,10 +37,10 @@ RewriteRule ^mon-compte/mes-adresses$  /index.php?action=accountAddresses [L]
 
 RewriteRule ^forbidden$  /index.php?action=forbidden [L]
 
-ErrorDocument 500 /erreur.php?e=500
-ErrorDocument 404 /erreur.php?e=404
-ErrorDocument 403 /erreur.php?e=403
-ErrorDocument 401 /erreur.php?e=401
+ErrorDocument 500 /error.php?e=500
+ErrorDocument 404 /error.php?e=404
+ErrorDocument 403 /error.php?e=403
+ErrorDocument 401 /error.php?e=401
 
 
 # gzip compression.
