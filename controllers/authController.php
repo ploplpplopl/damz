@@ -67,7 +67,7 @@ if (isset($_POST['signup-btn'])) {
 		else {
             // Send confirmation email to user.
 			$emailSent = sendMail('signup.html', [
-				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token,
+				'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $token . '&email=' . $email,
 			], 'Inscription sur ' . $settings['site_name'], $email);
 			
             if (!$emailSent) {

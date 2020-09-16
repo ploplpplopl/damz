@@ -315,7 +315,7 @@ class AuthMgr
     public static function checkLogin(string $pseudo, string $password): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $query = "SELECT * FROM user WHERE pseudo=? OR email=? AND deleted=0 LIMIT 1";
+        $query = "SELECT * FROM user WHERE (pseudo=? OR email=?) AND deleted=0 LIMIT 1";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(1, $pseudo, PDO::PARAM_STR);
         $stmt->bindParam(2, $pseudo, PDO::PARAM_STR);

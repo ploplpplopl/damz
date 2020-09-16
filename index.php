@@ -55,6 +55,7 @@ switch ($action) {
 		require('views/login.php');
 		break;
 	case 'verifyUser':
+		$email = $_GET['email'];
 		require('controllers/verifyEmail.php');
 		break;
 	case 'resendConfirmationMail':

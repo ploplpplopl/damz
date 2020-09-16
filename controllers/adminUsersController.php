@@ -279,7 +279,7 @@ if (isset($_POST['upd-user-btn'])) {
 	}
 }
 
-// Resend confirmation link to unconfirmed users
+// Resend confirmation link to unconfirmed users (action icone)
 if (!empty($_GET['resend-confirmation-link'])) {
 	$id = intval($_GET['resend-confirmation-link']);
 	$tUser = AuthMgr::getUserByID($id);
@@ -290,7 +290,7 @@ if (!empty($_GET['resend-confirmation-link'])) {
 	}
 
 	sendMail('signup.html', [
-		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'],
+		'{link_confirm}' => $settings['site_url'] . '/email-verification?token=' . $tUser['secure_key'] . '&email=' . $tUser['email'],
 	], 'Confirmation de votre compte sur ' . $settings['site_name'], $tUser['email']);
 
 	$_SESSION['message_status'][] = 'E-mail de confirmation envoyé à l\'adresse <em>' . $tUser['email'] . '</em>';

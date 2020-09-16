@@ -4,7 +4,6 @@ require_once 'controllers/authController.php';
 
 AuthMgr::disconnectUser();
 
-// If comming from "reset password"
 if (!empty($_GET['email'])) {
 	$tUser = AuthMgr::getUserByEmail($_GET['email']);
 	$pseudo = $tUser['pseudo'];
