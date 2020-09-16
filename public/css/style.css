@@ -86,8 +86,18 @@ label{cursor: pointer;}
     cursor: pointer;
 }
 
-
-
+.color-selector{
+	height:300px;
+	overflow-y:auto;
+	background:#f2f5f8;
+	padding:10px 0 0 10px;
+}
+.color-square{
+	display:inline-block;
+	width:16px;
+	height:16px;
+	border:1px solid #000;
+}
 
 
 

@@ -1,8 +1,29 @@
 $(function () {
+    // Single call to the database to store values in a json variable.
+    var jsonData = {};
+    $.ajax({
+        url: 'models/getDossierData.php',
+        async: false,
+        dataType: 'json',
+        success: function (json) {
+            jsonData = json;
+        }
+    });
+
+    function resetOptions() {
+        $('#btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
+        $('#quantity').val('1');
+        $('div.dos-color, div.couv-color').show();
+        $('[id^=error-]').css('display', 'none');
+        $('[class^=error-]').css('display', 'none');
+    }
+    resetOptions();
+
     // AJAX call to calculate the number of black and white or colored pages
     $("#formDossier")[0].reset(); // reset the form for firefox
     $("#file_description").hide();
     $("#detailPages").hide();
+	
     // First step : upload PDF
     $("#uploadPDF").change(function () {
         let fichier = $('#uploadPDF').prop('files')[0];
@@ -20,25 +41,24 @@ $(function () {
                         $("#detailPages").hide();
                         $("#file_description").hide();
                         if (reponse == 'failure') {
-                            alert('Le traitement du fichier à échoué');
+                            alert('Le traitement du fichier à échoué.');
                         } else if (reponse == 'notPDF') {
                             alert('Le fichier n\'est pas un PDF.');
                         } else if (reponse == 'tooHeavy') {
                             alert('Le fichier envoyé est trop lourd.');
                         }
-                        var zero = "0";
                         $("#uploadPDF").replaceWith($("#uploadPDF").val('').clone(true)); //Reset valeur de l'upload
-                        $("#nbPages").html(zero); //Reset toute les valeurs à 0
-                        $("#nbPagesC").attr("value", "0").attr("placeholder", "0");
-                        $("#nbPagesNB").attr("value", "0").attr("placeholder", "0");
+                        $("#nbPages").html("0"); //Reset toute les valeurs à 0
+                        $("#nbPagesC").attr("value", "0");
+                        $("#nbPagesNB").attr("value", "0");
                     } else {
                         var obj = JSON.parse(reponse);
                         if (obj.NbPagesNB == obj.NbPages) {
-                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc. <br>";
+                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en noir et blanc.";
                         } else if (obj.NbPagesC == obj.NbPages) {
-                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en couleur.<br>";
+                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, toutes en couleur.";
                         } else {
-                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesC + " en couleurs et " + obj.NbPagesNB + " en noir et blanc.<br>";
+                            var paragInfo = "Ce document comporte " + obj.NbPages + " pages, dont " + obj.NbPagesNB + " en noir et blanc et " + obj.NbPagesC + " en couleurs.";
                         }
                         $("#detailPages").show();
                         $("#file_description").show().html(paragInfo);
@@ -67,26 +87,6 @@ $(function () {
             });
         }
     });
-
-    // Single call to the database to store values in a json variable.
-    var jsonData = {};
-    $.ajax({
-        url: 'models/DossierDataMgr.php',
-        async: false,
-        dataType: 'json',
-        success: function (json) {
-            jsonData = json;
-        }
-    });
-
-    function resetOptions() {
-        $('#btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
-        $('#quantity').val('1');
-        $('div.dos-color, div.couv-color').show();
-        $('[id^=error-]').css('display', 'none');
-        $('[class^=error-]').css('display', 'none');
-    }
-    resetOptions();
 
 
 
@@ -152,8 +152,7 @@ $(function () {
             $('#error-color-reliure').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
         }
     });
-
-
+	
 
     // ---------------------------- FORCE SELECTED OPTIONS according to the document type ----------------------------
     $("#dossier").click(function () {

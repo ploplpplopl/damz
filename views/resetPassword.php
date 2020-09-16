@@ -22,7 +22,7 @@ require_once 'views/head.php';
 			</div>
 			<input type="hidden" name="sc" value="<?php echo (!empty($_GET['sc']) ? htmlentities($_GET['sc'], ENT_QUOTES) : ''); ?>">
 			<div id="message">
-				<p><b>Le mot de passe doit contenir&nbsp;</b></p>
+				<p><b>Le mot de passe doit contenir&nbsp;:</b></p>
 				<p id="letter" class="invalid">Une lettre <b>minuscule</b></p>
 				<p id="capital" class="invalid">Une lettre <b>majuscule</b></p>
 				<p id="number" class="invalid">Un <b>nombre</b></p>

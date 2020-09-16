@@ -20,10 +20,6 @@ switch ($action) {
 		$sTitre = 'Imprimez votre document';
 		require('views/dossier.php');
 		break;
-	case 'orderAddress':
-		$sTitre = 'Adresse de livraison';
-		require('views/orderAddress.php');
-		break;
 	case 'orderOverview':
 		$sTitre = 'Résumé de ma commande';
 		require('views/orderOverview.php');
