@@ -1,136 +1,109 @@
 <?php
 
-$css = '
-<style>
-.cycle-slideshow img{ 
-    position:absolute;
-	top:0;
-	left:0;
-    width:100%;
-	padding:0;
-	display:block;
-}
+$css = '<link rel="stylesheet" href="/public/css/home.css">';
 
-.cycle-slideshow img:first-child{
-    position:static;
-	z-index:100;
-}
-
-.cycle-pager{ 
-    text-align:center;
-	width:100%;
-	z-index:500;
-	overflow:hidden;
-}
-.cycle-pager span{ 
-    font-size:50px;
-	line-height:1;
-	width:16px;
-	height:16px; 
-    display:inline-block;
-	color:#ddd;
-	cursor:pointer; 
-}
-.cycle-pager span.cycle-pager-active{color:#D69746;}
-.cycle-pager > * {cursor:pointer;}
-
-.cycle-caption{
-	position:absolute;
-	color:rgba(255,255,255,.75);
-	bottom:15px;
-	right:15px;
-	z-index:700;
-}
-.cycle-overlay{ 
-    position:absolute;
-	bottom:0;
-	width:100%;
-	z-index:600;
-    background:rgba(0,0,0,.5);
-	color:rgba(255,255,255,.75);
-	padding:15px;
-}
-.cycle-overlay div:first-child{ 
-    font-size:1.25em;
-}
-
-.cycle-prev, .cycle-next{
-	position:absolute;
-	top:0;
-	width:30%;
-	opacity:0;
-	filter:alpha(opacity=0);
-	z-index:800;
-	height:100%;
-	cursor:pointer;
-}
-.cycle-prev{left:0;background:url(http://malsup.github.com/images/left.png) 5% 50% no-repeat;}
-.cycle-next{right:0;background:url(http://malsup.github.com/images/right.png) 95% 50% no-repeat;}
-.cycle-prev:hover, .cycle-next:hover{opacity:.7;filter:alpha(opacity=70);}
-
-.disabled{opacity:.5;filter:alpha(opacity=50);}
-
-.cycle-paused:after{
-    content:"Pause";
-	color:#fff;
-	background:#000;
-	padding:10px;
-    z-index:500;
-	position:absolute;
-	top:10px;
-	right:10px;
-    border-radius:10px;
-    opacity:.5;
-	filter:alpha(opacity=50);
-}
-
-</style>
-';
 require_once 'views/head.php';
 ?>
 
 <div class="row">
-	<div class="col-12">
-		<h1>Impression de documents à Caen</h1>
-		<div class="cycle-slideshow" 
-			data-cycle-fx="scrollHorz"
-			data-cycle-timeout="3000"
-			data-cycle-speed="700"
-			data-cycle-pause-on-hover="true"
-			data-cycle-caption-plugin="caption2"
-			data-cycle-overlay-fx-sel=">div"
-			data-cycle-pager=".cycle-pager"
-		>
-			<div class="cycle-caption"></div>
-			<div class="cycle-overlay"></div>
-			<div class="cycle-prev"></div>
-			<div class="cycle-next"></div>
-			
-			<img src="http://malsup.github.io/images/p1.jpg" data-cycle-title="Spring" data-cycle-desc="Sonnenberg Gardens">
-			<img src="http://malsup.github.io/images/p2.jpg" data-cycle-title="Redwoods" data-cycle-desc="Muir Woods National Monument">
-			<img src="http://malsup.github.io/images/p3.jpg" data-cycle-title="Angle Island" data-cycle-desc="San Franscisco Bay">
-			<img src="http://malsup.github.io/images/p4.jpg" data-cycle-title="Raquette Lake" data-cycle-desc="Adirondack State Park">
-		</div>
-		<div class="cycle-pager"></div>
-	</div>
+    <div class="col-12">
+        <h1><a href="/impression" class="nolink">Simplifiez-vous la vie,<br>imprimez vos documents <b>sans vous déplacer !</b></a></h1>
+
+        <div class="slideshow-container">
+
+            <div class="mySlides fade">
+                <div class="numbertext">1 / 3</div>
+                <img src="/public/img/imprimante.jpg" style="width:100%;height:350px;">
+                <div class="text">Caption Text</div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="numbertext">2 / 3</div>
+                <img src="/public/img/reliures.jpg" style="width:100%;height:350px;">
+                <div class="text">Caption Two</div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="numbertext">3 / 3</div>
+                <img src="/public/img/Meteor-8700-XL.png" style="width:100%;height:350px;">
+                <div class="text">Caption Three</div>
+            </div>
+
+        </div>
+        <br>
+
+        <div style="text-align:center">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
 </div>
+
 <div class="row">
-	<div class="col-md-4">
-		<p>Lien 1</p>
-	</div>
-	<div class="col-md-4">
-		<p>Lien 2</p>
-	</div>
-	<div class="col-md-4">
-		<p>Lien 3</p>
-	</div>
+    <div class="col-12">
+        <h2>Des impressions de qualité professionnelle</h2>
+        <div class="cadre">
+            <h3>Qui sommes-nous ?</h3>
+            <p>Dossier-rapide est une entreprise qui propose un service d'<b>imprimerie en ligne</b>
+                de qualité professionnelle.<br>
+                Pour réaliser vos travaux, elle s'appuie sur la compétence et les <?php echo date("Y") - 2005 ?>
+                ans d'expérience de COPIFAC, une imprimerie localisée dans la belle ville de Caen.</p>
+        </div>
+        <div class="cadre">
+            <h3>Nos services</h3>
+            <p>Les éditions de nos dossiers, mémoires, rapports et thèses sont réalisées sur des <b>imprimantes 
+                laser professionnelles</b>, ce qui garantit un résultat parfait de la première à la dernière page. </p>
+            <p>Nous effectuons des impressions en <b>couleur</b> et/ou en <b>noir & blanc</b>, sur un papier 100g 
+                extra blanc légèrement satiné. <br>
+                Ce support est particullièrement adapté aux impressions <b>recto verso</b> car il a une forte oppacité. </p>
+            <p>Nous apportons une attention particulière à la <b>reliure</b> de vos documents pour une présentation 
+                irréprochable de votre travail. <br>
+                Nous proposons des reliures classiques à anneaux plastiques, métalliques ou thermocollées 
+                pour une plus longue durée de vie. </p>
+            <p>Pour la première et quatrième de couverture (première et dernière page), nous proposons des 
+                feuillets de <b>protection plastique</b> et des <b>feuilles cartonnées</b> avec un large choix de <b>couleurs</b>. 
+                Ces feuilles cartonnées peuvent avoir un grain cuir pour plus d'élégance (250g), ou être lisses (180g) et 
+                imprimables comme pour les thèses où le beige reste la référence.<br>
+            </p>
+        </div>
+        <div class="cadre">
+            <h3>Livraison</h3>
+            <p>Nous avons choisi Chronopost et TNT pour livrer vos documents dans les meilleures conditions. Les délais habituels 
+                sont compris entre 2 et 5 jours entre la commande et la réception. 
+                Nos équipes ont à coeur de vous satisfaire et font leur maximum pour minimiser le délai d'impression. </p>
+        </div>
+    </div>
 </div>
 
-<?php
+    <!-- bouton -->
 
-$javascript = '
-<script src="/public/js/jquery.cycle2.js"></script> 
-<script src="/public/js/jquery.cycle2.caption2.min.js"></script>
+    <?php
+
+    $javascript = '
+<script>
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {
+        slideIndex = 1
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+    setTimeout(showSlides, 4000); // Change image every 4 seconds
+}
+</script>
 ';
 
-require_once 'views/footer.php';
+    require_once 'views/footer.php';

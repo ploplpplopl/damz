@@ -152,7 +152,8 @@ class AdminGestionMgr
 			INNER JOIN user AS u ON o.id_user = u.id_user
 			INNER JOIN address AS a ON u.id_user = a.id_user
 			INNER JOIN country AS c ON a.id_country = c.id_country
-			WHERE o.id_address = a.id_address
+            WHERE o.id_address = a.id_address
+            AND u.deleted=0
 			AND o.archive = \'' . $archive . '\'
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '
@@ -227,7 +228,7 @@ class AdminGestionMgr
 				WHERE o.id_user = u.id_user
 			) AS num_orders
 			FROM user AS u
-			WHERE 1
+			WHERE u.deleted = \'0\'
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '
 		';

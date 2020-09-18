@@ -52,3 +52,5 @@ $settings['mapping'] = [
 	'spimetal' => 'spirales métalliques',
 ];
 
+// Durée de validité du changement de mot de passe (en heures)
+$settings['reset_pwd_expiration'] = 4;

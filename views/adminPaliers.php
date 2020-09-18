@@ -2,12 +2,12 @@
 
 if (empty($_SESSION['user']['id_user'])) {
     header('location: /connexion');
-    exit;
+	exit;
 }
-// protège accès direct à http://localhost/views/xxx.php (views devra etre interdit avec htaccess)
+
 if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
-    header('location: /forbidden');
-    exit;
+    header('location: /');
+	exit;
 }
 
 

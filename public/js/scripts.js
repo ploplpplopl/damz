@@ -20,16 +20,16 @@ $(function () {
 	// 	}
 	// });
 
-	// Limit DB calls (i.e: on keyup)
+	// Limit DB calls (ex: on keyup)
 	function throttle(func, duration) {
-		let shouldWait = false
+		let shouldWait = false;
 		return function (...args) {
 			if (!shouldWait) {
-				func.apply(this, args)
-				shouldWait = true
+				func.apply(this, args);
+				shouldWait = true;
 				setTimeout(function () {
-					shouldWait = false
-				}, duration)
+					shouldWait = false;
+				}, duration);
 			}
 		}
 	}
@@ -39,7 +39,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let pseudo = $(this).val().trim();
 			if (pseudo != '') {
-				$.get('controllers/ajaxCheck.php', {
+				$.get('controllers/ajaxUserCheck.php', {
 						pseudo: pseudo
 					})
 					.done(function (data) {
@@ -53,7 +53,7 @@ $(function () {
 		.bind("keyup change blur input mouseenter", throttle(function () {
 			let email = $(this).val().trim();
 			if (email != '') {
-				$.get('controllers/ajaxCheck.php', {
+				$.get('controllers/ajaxUserCheck.php', {
 						email: email
 					})
 					.done(function (data) {

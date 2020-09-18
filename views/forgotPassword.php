@@ -2,6 +2,8 @@
 
 require_once 'controllers/authController.php';
 
+AuthMgr::disconnectUser();
+
 require_once 'views/head.php';
 ?>
 

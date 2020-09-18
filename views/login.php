@@ -2,12 +2,18 @@
 
 require_once 'controllers/authController.php';
 
-// If comming from "reset password"
-if (!empty($_SESSION['user']['email_value'])) {
-	$tUser = AuthMgr::getUserByEmail($_SESSION['user']['email_value']);
+AuthMgr::disconnectUser();
+
+// Affichage auto du champ pseudo via les liens des mails.
+if (!empty($_GET['email'])) {
+	$tUser = AuthMgr::getUserByEmail($_GET['email']);
 	$pseudo = $tUser['pseudo'];
-	unset($_SESSION['user']['email_value']);
 }
+if (!empty($email)) {
+	$tUser = AuthMgr::getUserByEmail($email);
+	$pseudo = $tUser['pseudo'];
+}
+
 
 require_once 'views/head.php';
 ?>

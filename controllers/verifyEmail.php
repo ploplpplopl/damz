@@ -24,6 +24,6 @@ else {
 		exit;
 	}
 	
-	header('location: /connexion');
+	header('location: /connexion?email=' . $email);
 	exit;
 }

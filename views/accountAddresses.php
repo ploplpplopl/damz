@@ -32,7 +32,7 @@ require_once 'views/head.php';
 					<?php echo $addr['zip_code']; ?> <?php echo $addr['city']; ?><br>
 					<?php echo $addr['country_name']; ?><br>
 				</p>
-				<p class="mt-0"><small><a href="?action=accountAddresses&amp;edit=<?php echo $addr['id_address']; ?>">Modifier</a>&nbsp;- <a href="?action=accountAddresses&amp;del=<?php echo $addr['id_address']; ?>" class="del-address">Supprimer</a></small></p>
+				<p class="mt-0"><small><a href="?edit=<?php echo $addr['id_address']; ?>">Modifier</a>&nbsp;- <a href="?del=<?php echo $addr['id_address']; ?>" class="del-address">Supprimer</a></small></p>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		<?php if (!empty($_SESSION['tunnel'])) : ?>
