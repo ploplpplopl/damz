@@ -2,7 +2,7 @@
 
 require_once 'controllers/authController.php';
 
-AuthMgr::disconnectUser();
+unset($_SESSION['user']);
 
 require_once 'views/head.php';
 ?>

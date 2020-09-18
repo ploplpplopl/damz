@@ -2,7 +2,7 @@
 
 require_once 'controllers/authController.php';
 
-AuthMgr::disconnectUser();
+unset($_SESSION['user']);
 
 // Affichage auto du champ pseudo via les liens des mails.
 if (!empty($_GET['email'])) {

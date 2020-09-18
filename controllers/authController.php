@@ -117,11 +117,11 @@ if (isset($_POST['login-btn'])) {
 					case 'user':
 					default:
 						$redirect = '/mon-compte';
-						// Redirection si la connexion se fait durant le tunnel de paiement.
-						if (!empty($_SESSION['tunnel'])) {
-							$redirect = $_SESSION['tunnel'];
-						}
 						break;
+				}
+				// Redirection si la connexion se fait durant le tunnel de paiement.
+				if (!empty($_SESSION['tunnel'])) {
+					$redirect = $_SESSION['tunnel'];
 				}
 				
                 // storing the user's data in the session generates his connection
