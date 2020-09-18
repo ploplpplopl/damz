@@ -6,7 +6,7 @@ use Egulias\EmailValidator\Validation\RFCValidation;
 require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/AuthMgr.class.php';
 
-// Récupération des adresses de l'utilisateur à afficher.
+// Affichage des adresses de l'utilisateur.
 $addresses = AuthMgr::getUserAddresses($_SESSION['user']['id_user']);
 // Récupération de la liste des pays.
 $countries = AuthMgr::getCountries();
@@ -232,14 +232,20 @@ if (isset($_POST['user-address-btn'])) {
 
 // Suppression d'une adresse.
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-	$dbh = DbConnection::getConnection('administrateur');
-	// $stmt = $dbh->prepare('DELETE FROM address WHERE id_address = :id_address AND id_user = :id_user');
-	$stmt = $dbh->prepare('UPDATE address SET deleted = 1 WHERE id_address = :id_address AND id_user = :id_user');
-	$stmt->bindParam(':id_address', $_GET['del'], PDO::PARAM_INT);
-	$stmt->bindParam(':id_user', $_SESSION['user']['id_user'], PDO::PARAM_INT);
-	$stmt->execute();
-	$stmt->closeCursor();
-	DbConnection::disconnect();
+	$country = "";
+	foreach ($addresses as $addr) {
+		if ($addr["id_address"] == $_GET['del']) {
+			$country = $addr["id_country"];
+		}
+	}
+	
+	$params = [
+		'id_user' => $_SESSION['user']['id_user'],
+		'id_country' => $country,
+		'deleted' => 1,
+	];
+	AuthMgr::updateAddress($params, $_GET['del']);
+
 	$_SESSION['message_status'][] = 'Adresse supprimée';
 	header('location: /mon-compte/mes-adresses');
 	exit;
