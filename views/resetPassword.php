@@ -1,10 +1,10 @@
 <?php
 
-$css = '<link rel="stylesheet" href="/public/css/password.css">';
-
 require_once 'controllers/authController.php';
 
-AuthMgr::disconnectUser();
+unset($_SESSION['user']);
+
+$css = '<link rel="stylesheet" href="/public/css/password.css">';
 
 require_once 'views/head.php';
 ?>

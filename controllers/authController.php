@@ -117,11 +117,11 @@ if (isset($_POST['login-btn'])) {
 					case 'user':
 					default:
 						$redirect = '/mon-compte';
-						// Redirection si la connexion se fait durant le tunnel de paiement.
-						if (!empty($_SESSION['tunnel'])) {
-							$redirect = $_SESSION['tunnel'];
-						}
 						break;
+				}
+				// Redirection si la connexion se fait durant le tunnel de paiement.
+				if (!empty($_SESSION['tunnel'])) {
+					$redirect = $_SESSION['tunnel'];
 				}
 				
                 // storing the user's data in the session generates his connection
@@ -155,7 +155,7 @@ if (isset($_POST['forgot-password-btn'])) {
 		}
 		else {
 			$emailSent = sendMail('forgot-password.html', [
-				'{reset_pwd_expiration}' => $settings['reset_pwd_expiration'],
+				'{reset_pwd_expiration}' => ($settings['reset_pwd_expiration'] / 3600),
 				'{link_initialize}' => $settings['site_url'] . '/reinitialiser-mot-de-passe?token=' . $checkAuth['secure_key'] . '&amp;email=' . $email,
 			], 'Récupération de mot de passe sur ' . $settings['site_name'], $email);
 			
@@ -163,7 +163,7 @@ if (isset($_POST['forgot-password-btn'])) {
                 $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';
             }
 			else {
-				AuthMgr::setPwdExpirationDate($email, date("Y-m-d h:i:s"));
+				AuthMgr::setPwdExpirationDate($email, date('Y-m-d h:i:s'));
 				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé. Cliquez dessus pour réinitialiser votre mot de passe.';
             }
 			header('location: /mot-de-passe-oublie');
@@ -185,7 +185,7 @@ if (isset($_POST['reset-password-btn'])) {
 	
 	// Vérification du délai d'expiration.
 	$user = AuthMgr::getUserByEmail($_GET['email']);
-	if (time() > strtotime($user['reset_pwd_expiration']) + ($settings['reset_pwd_expiration'] * 3600)) {
+	if (time() > (strtotime($user['reset_pwd_expiration']) + $settings['reset_pwd_expiration'])) {
 		$errors[] = 'Délai dépassé pour modifier le mot de passe, veuillez <a href="/mot-de-passe-oublie">refaire une demande</a>';
 	}
     if (empty($password)) {
@@ -224,7 +224,7 @@ if (isset($_POST['reset-password-btn'])) {
 				
 			case 'password_updated':
 				// Réinitialisation du délai d'expiration.
-				AuthMgr::setPwdExpirationDate($email, '2000-01-01 00:00:00');
+				AuthMgr::setPwdExpirationDate($_GET['email'], '0000-00-00 00:00:00');
 				$_SESSION['message_status'][] = 'Votre mot de passe a été modifié, vous pouvez vous connecter';
 
 				header('location: /connexion?email=' . $_GET['email']);
