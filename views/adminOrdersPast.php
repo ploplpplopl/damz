@@ -5,7 +5,7 @@ if (empty($_SESSION['user']['id_user'])) {
 	exit;
 }
 
-if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
+if (!empty($_SESSION['user']['user_type']) && !in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])) {
     header('location: /');
 	exit;
 }

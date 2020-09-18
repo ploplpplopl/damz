@@ -5,7 +5,7 @@ if (empty($_SESSION['user']['id_user'])) {
 	exit;
 }
 
-if (!empty($_SESSION['user']['user_type']) && 'admin' != $_SESSION['user']['user_type']) {
+if (!empty($_SESSION['user']['user_type']) && !in_array($_SESSION['user']['user_type'], ['admin', 'admprinter'])) {
     header('location: /');
 	exit;
 }
@@ -30,17 +30,12 @@ require_once 'views/head.php';
 </div>
 
 <div class="row">
-	<?php
-	// if (!empty($_SESSION['user']['user_type']) && 'admin' == $_SESSION['user']['user_type']) {
-	if ('admin' == $_SESSION['user']['user_type']) {
-	?>
+<?php if ('admin' == $_SESSION['user']['user_type']): ?>
 		<div class="col-md-4 mt-3">
 			<p><strong><span class="display-1"><?php echo count($users); ?></span><br> utilisateurs enregistrés</strong><br>
 				<a href="/index.php?action=adminUsers">Gérer les utilisateurs</a></p>
 		</div>
-	<?php
-	}
-	?>
+<?php endif; ?>
 	<div class="col-md-4 mt-3">
 		<p><strong><span class="display-1"><?php echo count($orders); ?></span><br> commandes en cours</strong><br>
 			<a href="/index.php?action=adminOrders">Gérer les commandes</a></p>
