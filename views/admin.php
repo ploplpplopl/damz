@@ -36,11 +36,11 @@ require_once 'views/head.php';
 				<a href="/index.php?action=adminUsers">Gérer les utilisateurs</a></p>
 		</div>
 <?php endif; ?>
-	<div class="col-md-4 mt-3">
+	<div class="<?php echo ('admin' == $_SESSION['user']['user_type'] ? 'col-md-4' : 'col-md-6'); ?> mt-3">
 		<p><strong><span class="display-1"><?php echo count($orders); ?></span><br> commandes en cours</strong><br>
 			<a href="/index.php?action=adminOrders">Gérer les commandes</a></p>
 	</div>
-	<div class="col-md-4 mt-3">
+	<div class="<?php echo ('admin' == $_SESSION['user']['user_type'] ? 'col-md-4' : 'col-md-6'); ?> mt-3">
 		<p><strong><span class="display-1"><?php echo count($archives); ?></span><br> commandes archivées</strong><br>
 			<a href="/index.php?action=adminOrdersPast">Voir les archives</a></p>
 	</div>
