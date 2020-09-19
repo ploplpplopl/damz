@@ -45,30 +45,14 @@ if (isset($_POST['edit-btn'])) {
 	}
 	
 	if (empty($errors)) {
-		$dbh = DbConnection::getConnection('administrateur');
+		// $dbh = DbConnection::getConnection('administrateur');
 		if ('add' == $addUpd) {
-			$stmt = $dbh->query('SELECT MAX(position) + 1 AS pos FROM dossier_color');
-			$stmt->execute();
-			$max = $stmt->fetch(PDO::FETCH_ASSOC);
-			
-			$stmt = $dbh->prepare('INSERT INTO dossier_color (text, hex, printable, unprintable, position) VALUES (:text, :hex, :printable, :unprintable, :position)');
-			$stmt->bindParam(':text', $text, PDO::PARAM_STR);
-			$stmt->bindParam(':hex', $hex, PDO::PARAM_STR);
-			$stmt->bindParam(':printable', $printable, PDO::PARAM_INT);
-			$stmt->bindParam(':unprintable', $unprintable, PDO::PARAM_INT);
-			$stmt->bindParam(':position', $max['pos'], PDO::PARAM_INT);
+			$max = AdminGestionMgr::getLevelPositionMax('dossier_color');
+			$result = AdminGestionMgr::addColor($text, $hex, $printable, $unprintable, $max['pos']);
 		}
 		else {
-			$stmt = $dbh->prepare('UPDATE dossier_color SET text = :text, hex = :hex, printable = :printable, unprintable = :unprintable WHERE id_dossier_color = :id');
-			$stmt->bindParam(':text', $text, PDO::PARAM_STR);
-			$stmt->bindParam(':hex', $hex, PDO::PARAM_STR);
-			$stmt->bindParam(':printable', $printable, PDO::PARAM_INT);
-			$stmt->bindParam(':unprintable', $unprintable, PDO::PARAM_INT);
-			$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+			$result = AdminGestionMgr::updateColor($text, $hex, $printable, $unprintable, $id);
 		}
-		$result = $stmt->execute();
-		$stmt->closeCursor();
-		DbConnection::disconnect();
 		if ($result) {
 			$_SESSION['message_status'][] = 'add' == $addUpd ? 'Couleur ajoutée' : 'Couleur modifiée';
 		}
@@ -78,12 +62,7 @@ if (isset($_POST['edit-btn'])) {
 }
 
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-	$dbh = DbConnection::getConnection('administrateur');
-	$stmt = $dbh->prepare('DELETE FROM dossier_color WHERE id_dossier_color = :id');
-	$stmt->bindParam(':id', $_GET['del'], PDO::PARAM_INT);
-	$stmt->execute();
-	$stmt->closeCursor();
-	DbConnection::disconnect();
+	AdminGestionMgr::deleteColor($_GET['del']);
 	$_SESSION['message_status'][] = 'Couleur supprimée';
 	header('location: index.php?action=adminCouleurs');
 	exit;

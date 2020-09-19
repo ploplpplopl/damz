@@ -61,7 +61,7 @@ if (isset($_POST['signup-btn'])) {
 
     // Insert user into DB
     if (empty($errors)) {
-        if (!AuthMgr::setUser($email, $pseudo, $password, $token)) {
+        if (!AuthMgr::addUser($email, $pseudo, $password, $token)) {
             $_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
         }
 		else {

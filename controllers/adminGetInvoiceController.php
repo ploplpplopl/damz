@@ -21,50 +21,50 @@ $way = 'ASC';
 
 $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 
-$id_orders = $orders[0]["id_orders"]; // => "5"
-$date_add = $orders[0]["date_add"]; // => "2020-08-31 17:06:31"
-$id_user = $orders[0]["id_user"]; // => "56"
-$id_address = $orders[0]["id_address"]; // => "2"
-$nom_fichier = $orders[0]["nom_fichier"]; // => "c3a0c212fe80bc7ec01819b467b0910f.pdf"
-$nb_page = $orders[0]["nb_page"]; // => "34"
-$nb_page_nb = $orders[0]["nb_page_nb"]; // => "31"
-$nb_page_c = $orders[0]["nb_page_c"]; // => "3"
-$doc_type_ori = $orders[0]["doc_type"]; // => "these"
-$doc_type = $settings['mapping'][$orders[0]["doc_type"]]; // => "Thèse"
-$couv_ft = $orders[0]["couv_ft"]; // => "0"
-$couv_fc = $orders[0]["couv_fc"]; // => "1"
-$couv_fc_type = $orders[0]["couv_fc_type"]; // => "printable"
-$id_couv_color = $orders[0]["couv_fc_color"]; // => "15"
+$id_orders = $orders[0]["id_orders"];
+$date_add = $orders[0]["date_add"];
+$id_user = $orders[0]["id_user"];
+$id_address = $orders[0]["id_address"];
+$nom_fichier = $orders[0]["nom_fichier"];
+$nb_page = $orders[0]["nb_page"];
+$nb_page_nb = $orders[0]["nb_page_nb"];
+$nb_page_c = $orders[0]["nb_page_c"];
+$doc_type_ori = $orders[0]["doc_type"];
+$doc_type = $settings['mapping'][$orders[0]["doc_type"]];
+$couv_ft = $orders[0]["couv_ft"];
+$couv_fc = $orders[0]["couv_fc"];
+$couv_fc_type = $orders[0]["couv_fc_type"];
+$id_couv_color = $orders[0]["couv_fc_color"];
 if ($id_couv_color) {
 	$result = AdminGestionMgr::getColorsByID($id_couv_color);
-	$couv_fc_color = $result['text']; // => "orange clair"
+	$couv_fc_color = $result['text'];
 }
-$dos_ft = $orders[0]["dos_ft"]; // => "0"
-$dos_fc = $orders[0]["dos_fc"]; // => "1"
-$dos_fc_type = $orders[0]["dos_fc_type"]; // => "printable"
-$id_dos_color = $orders[0]["dos_fc_color"]; // => "14"
+$dos_ft = $orders[0]["dos_ft"];
+$dos_fc = $orders[0]["dos_fc"];
+$dos_fc_type = $orders[0]["dos_fc_type"];
+$id_dos_color = $orders[0]["dos_fc_color"];
 if ($id_dos_color) {
 	$result = AdminGestionMgr::getColorsByID($id_dos_color);
-	$dos_fc_color = $result['text']; // => "orange foncé"
+	$dos_fc_color = $result['text'];
 }
-$reliure_type = $settings['mapping'][$orders[0]["reliure_type"]]; // => "thermo"
-$reliure_color = $orders[0]["reliure_color"]; // => "Blanche"
-$quantity = $orders[0]["quantity"]; // => "1"
-$rectoverso = $orders[0]["rectoverso"]; // => "0"
-$tva = number_format($orders[0]["tva"], 2, ',', ' '); // => "0.89"
+$reliure_type = $settings['mapping'][$orders[0]["reliure_type"]];
+$reliure_color = $orders[0]["reliure_color"];
+$quantity = $orders[0]["quantity"];
+$rectoverso = $orders[0]["rectoverso"];
+$tva = number_format($orders[0]["tva"], 2, ',', ' ');
 $total = number_format($orders[0]["total"], 2, ',', ' ');
 $total_num = $orders[0]["total"];
-// $archive = $orders[0]["archive"]; // => "0"
-$first_name = $orders[0]["first_name"]; // => "dam"
-$last_name = $orders[0]["last_name"]; // => "tho"
-$email = $orders[0]["email"]; // => "damien@thoorens.fr"
-$phone = $orders[0]["phone"]; // => ""
-$addr_name = $orders[0]["addr_name"]; // => "damdam toto"
-$address = $orders[0]["address"]; // => "8 rue ducu"
-$address2 = $orders[0]["address2"]; // => "complement"
-$zip_code = $orders[0]["zip_code"]; // => "45000"
-$city = $orders[0]["city"]; // => "huit"
-$country_name = $orders[0]["country_name"]; // => "France"
+// $archive = $orders[0]["archive"];
+$first_name = $orders[0]["first_name"];
+$last_name = $orders[0]["last_name"];
+$email = $orders[0]["email"];
+$phone = $orders[0]["phone"];
+$addr_name = $orders[0]["addr_name"];
+$address = $orders[0]["address"];
+$address2 = $orders[0]["address2"];
+$zip_code = $orders[0]["zip_code"];
+$city = $orders[0]["city"];
+$country_name = $orders[0]["country_name"];
 
 // Download PDF.
 ob_start();

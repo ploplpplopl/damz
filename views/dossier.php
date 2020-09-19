@@ -1,7 +1,6 @@
 <?php
 
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
-$allColors = getAllColors();
 
 require_once 'views/head.php';
 ?>
