@@ -49,15 +49,15 @@ require_once 'views/head.php';
             <p>Dossier-rapide est une entreprise qui propose un service d'<strong>imprimerie en ligne</strong>
                 de qualité professionnelle.<br>
                 Pour réaliser vos travaux, elle s'appuie sur la compétence et les <?php echo date("Y") - 2005 ?>
-                ans d'expérience de COPIFAC, une imprimerie localisée dans la belle ville de Caen.</p>
+                ans d'expérience d'une imprimerie située au pied du château de la ville de Caen.</p>
         </div>
         <div class="cadre">
             <h3>Nos services</h3>
-            <p>Les éditions de nos dossiers, mémoires, rapports et thèses sont réalisées sur des <strong>imprimantes
+            <p>Les éditions de nos dossiers, mémoires, rapports et thèses sont réalisés sur des <strong>imprimantes
                     laser professionnelles</strong>, ce qui garantit un résultat parfait de la première à la dernière page. </p>
             <p>Nous effectuons des impressions en <strong>couleur</strong> et/ou en <strong>noir &amp; blanc</strong>, sur un papier 100g
                 extra blanc légèrement satiné. <br>
-                Ce support est particullièrement adapté aux impressions <strong>recto verso</strong> car il a une forte oppacité. </p>
+                Ce support est particulièrement adapté aux impressions <strong>recto-verso</strong> car il a une forte opacité. </p>
             <p>Nous apportons une attention particulière à la <strong>reliure</strong> de vos documents pour une présentation
                 irréprochable de votre travail. <br>
                 Nous proposons des reliures classiques à anneaux plastiques, métalliques ou thermocollées

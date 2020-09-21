@@ -211,6 +211,7 @@ if (isset($_POST['add-user-btn'])) {
 				header('location: /connexion');
 				exit;
 			} else {
+				AuthMgr::setPwdExpirationDate($user_email, date('Y-m-d h:i:s'));
 				$_SESSION['message_status'][] = 'Un lien de confirmation a été adressé à <em>' . $user_email . '</em> pour finaliser son inscription';
 
 				header('location: index.php?action=adminUsers');
