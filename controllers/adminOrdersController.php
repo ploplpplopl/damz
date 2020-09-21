@@ -107,7 +107,7 @@ if (isset($_GET['filter'])) {
 		$where .= ')';
 	}
 }
-
+// Comptage du nombre d'utilisateurs (pour la pagination et l'affichage sur page d'accueil admin)
 $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 $numOrders = count($orders);
 
@@ -130,7 +130,7 @@ $limitTo = $limitFrom + NUM_PER_PAGE;
 if ($limitTo > $numOrders) {
 	$limitTo = $numOrders;
 }
-
+// Requete pour l'affichage de la liste paginée des commandes 
 $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
 
 // Archive an order.

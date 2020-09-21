@@ -6,8 +6,6 @@ if (empty($_SESSION['user']) || empty($_SESSION['tunnel'])) {
 }
 
 require_once _ROOT_DIR_ . '/controllers/orderOverviewController.php';
-$mappingColors = getMappingColors();
-$userPhone = getUserPhone();
 
 $fileToPrint = $_SESSION['file_to_print'];
 $docType = $_SESSION['file_to_print']['doc_type'];

@@ -194,7 +194,7 @@ if (isset($_POST['add-user-btn'])) {
 	}
 
 	if (empty($errors)) {
-		$result = AuthMgr::setUser($user_email, $user_pseudo, $user_password, $token, $user_user_type);
+		$result = AuthMgr::addUser($user_email, $user_pseudo, $user_password, $token, $user_user_type);
 
 		if (!$result) {
 			$_SESSION['message_error'][] = 'L\'inscription a échoué, veuillez réessayer ultérieurement';
@@ -211,6 +211,7 @@ if (isset($_POST['add-user-btn'])) {
 				header('location: /connexion');
 				exit;
 			} else {
+				AuthMgr::setPwdExpirationDate($user_email, date('Y-m-d h:i:s'));
 				$_SESSION['message_status'][] = 'Un lien de confirmation a été adressé à <em>' . $user_email . '</em> pour finaliser son inscription';
 
 				header('location: index.php?action=adminUsers');
@@ -257,8 +258,7 @@ if (isset($_POST['upd-user-btn'])) {
 	}
 
 	if (empty($errors)) {
-		// TODO utiliser updateUser(array)
-		$result = AuthMgr::updateUserByID($user_user_type, $user_first_name, $user_last_name, $user_phone, $id);
+		$result = AuthMgr::updateUser(['user_type' => $user_user_type, 'first_name' => $user_first_name, 'last_name' => $user_last_name, 'phone' => $user_phone], $id);
 
 		if (!$result) {
 			$_SESSION['message_error'][] = 'La mise à jour a échoué, veuillez réessayer ultérieurement';

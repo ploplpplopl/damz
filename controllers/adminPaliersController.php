@@ -8,7 +8,7 @@ $prix = '';
 $errors = [];
 
 // Récupération des paliers des spirales plastiques.
-$paliers = AdminGestionMgr::getPaliers('paliers_' . strtolower($_page));
+$paliers = AdminGestionMgr::getLevels('paliers_' . strtolower($_page));
 
 
 
@@ -16,7 +16,7 @@ $addUpd = 'add';
 // Update palier
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
     $addUpd = 'upd';
-    $result = AdminGestionMgr::getPalierById('paliers_' . strtolower($_page), $_GET['edit']);
+    $result = AdminGestionMgr::getLevelById('paliers_' . strtolower($_page), $_GET['edit']);
     $id = $result['id'];
     $palier = $result['palier'];
     $prix = $result['prix'];
@@ -39,10 +39,10 @@ if (isset($_POST['edit-btn'])) {
 
     if (empty($errors)) {
         if ('add' == $addUpd) {
-            $max = AdminGestionMgr::getPalierPositionMax('paliers_' . strtolower($_page));
-            $result = AdminGestionMgr::setNewPalier('paliers_' . strtolower($_page), $palier, $prix, $max['pos']);
-        } else {  // update : $addUpd = 'upd'
-            $result = AdminGestionMgr::updatePalier('paliers_' . strtolower($_page), $palier, $prix, $id);
+            $max = AdminGestionMgr::getLevelPositionMax('paliers_' . strtolower($_page));
+            $result = AdminGestionMgr::addLevel('paliers_' . strtolower($_page), $palier, $prix, $max['pos']);
+        } else {  // update
+            $result = AdminGestionMgr::updateLevel('paliers_' . strtolower($_page), $palier, $prix, $id);
         }
         if ($result) {
             $_SESSION['message_status'][] = 'add' == $addUpd ? 'Palier ajouté' : 'Palier modifié';
@@ -53,7 +53,7 @@ if (isset($_POST['edit-btn'])) {
 }
 
 if (!empty($_GET['del']) && is_numeric($_GET['del'])) {
-    AdminGestionMgr::delPalier('paliers_' . strtolower($_page), intval($_GET['del']));
+    AdminGestionMgr::deleteLevel('paliers_' . strtolower($_page), intval($_GET['del']));
     $_SESSION['message_status'][] = 'Palier supprimé';
     header('location: index.php?action=adminPaliers' . ucfirst($_page));
     exit;

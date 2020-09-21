@@ -1,7 +1,6 @@
 <?php
 
 require_once _ROOT_DIR_ . '/controllers/dossierController.php';
-$allColors = getAllColors();
 
 require_once 'views/head.php';
 ?>
@@ -40,65 +39,70 @@ require_once 'views/head.php';
 				<div class="row">
 					<!-- Dossier -->
 					<div class="col-md-6" id="docTypeDossier">
-						<div class="topBarDocType_old">
-							<span class='error-doctype'>Sélectionnez un type de document</span>
-							<input type="radio" name="docType" value="dossier" id="dossier" <?php echo ('dossier' == $docType ? ' checked' : ''); ?>>
-							<label for="dossier"><strong>Dossier</strong></label>
-						</div>
-						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
-							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
-							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
-						</div>
+						<label for="dossier">
+							<div class="topBarDocType_old">
+								<span class='error-doctype'>Sélectionnez un type de document</span>
+								<input type="radio" name="docType" value="dossier" id="dossier" <?php echo ('dossier' == $docType ? ' checked' : ''); ?>><strong> Dossier</strong>
+
+							</div>
+							<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+								<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+										Feuillet transparent de protection avant.<br>
+										Feuille cartonnée colorée à l'arrière (non imprimable).</small></p>
+								<p><small><strong>Reliure</strong>&nbsp;:<br>
+										Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							</div>
+						</label>
 					</div>
 					<!-- Mémoire -->
 					<div class="col-md-6" id="docTypeMemoire">
-						<div class="topBarDocType_old">
-							<span class='error-doctype'>Sélectionnez un type de document</span>
-							<input type="radio" name="docType" value="memoire" id="memoire" <?php echo ('memoire' == $docType ? ' checked' : ''); ?>>
-							<label for="memoire"><strong>Mémoire</strong></label>
-						</div>
-						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
-							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant.<br>
-									Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
-									Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
-							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
-						</div>
+						<label for="memoire">
+							<div class="topBarDocType_old">
+								<span class='error-doctype'>Sélectionnez un type de document</span>
+								<input type="radio" name="docType" value="memoire" id="memoire" <?php echo ('memoire' == $docType ? ' checked' : ''); ?>><strong> Mémoire</strong>
+							</div>
+							<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+								<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+										Feuillet transparent de protection avant.<br>
+										Feuille cartonnée colorée et imprimable en 1ère de couverture (première page du document).<br>
+										Feuille cartonnée colorée non imprimable en 4ème de couverture (dernière page du document).</small></p>
+								<p><small><strong>Reliure</strong>&nbsp;:<br>
+										Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							</div>
+						</label>
 					</div>
 				</div>
 				<div class="row">
 					<!-- Thèse -->
 					<div class="col-md-6" id="docTypeThese">
-						<div class="topBarDocType_old">
-							<span class='error-doctype'>Sélectionnez un type de document</span>
-							<input type="radio" name="docType" value="these" id="these" <?php echo ('these' == $docType ? ' checked' : ''); ?>>
-							<label for="these"><strong>Thèse</strong></label>
-						</div>
-						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
-							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Feuillet transparent de protection avant et arrière au choix. <br>
-									Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
-							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Thermocollée blanche ou noire au choix.</small></p>
-						</div>
+						<label for="these">
+							<div class="topBarDocType_old">
+								<span class='error-doctype'>Sélectionnez un type de document</span>
+								<input type="radio" name="docType" value="these" id="these" <?php echo ('these' == $docType ? ' checked' : ''); ?>><strong> Thèse</strong>
+							</div>
+							<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+								<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+										Feuillet transparent de protection avant et arrière au choix. <br>
+										Feuille cartonnée colorée et imprimable en 1ère et 4ème de couverture (première page du document et résumé de la thèse).</small></p>
+								<p><small><strong>Reliure</strong>&nbsp;:<br>
+										Thermocollée blanche ou noire au choix.</small></p>
+							</div>
+						</label>
 					</div>
 					<!-- Personnalisé -->
 					<div class="col-md-6" id="docTypePerso">
-						<div class="topBarDocType_old">
-							<span class='error-doctype'>Sélectionnez un type de document</span>
-							<input type="radio" name="docType" value="perso" id="perso" <?php echo ('perso' == $docType ? ' checked' : ''); ?>>
-							<label for="perso"><strong>Personnalisé</strong></label>
-						</div>
-						<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
-							<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
-									Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
-							<p><small><strong>Reliure</strong>&nbsp;:<br>
-									Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
-						</div>
+						<label for="perso">
+							<div class="topBarDocType_old">
+								<span class='error-doctype'>Sélectionnez un type de document</span>
+								<input type="radio" name="docType" value="perso" id="perso" <?php echo ('perso' == $docType ? ' checked' : ''); ?>><strong> Personnalisé</strong>
+							</div>
+							<div class="bottomDocType_old" style="height:250px;overflow-y:auto;">
+								<p><small><strong>Couverture et dos</strong>&nbsp;:<br>
+										Personnalisez toutes vos options selon vos besoins&nbsp;!</small></p>
+								<p><small><strong>Reliure</strong>&nbsp;:<br>
+										Spirale plastique, spirale métallique ou thermocollée, de couleur blanche ou noire au choix.</small></p>
+							</div>
+						</label>
 					</div>
 				</div>
 				<hr>
