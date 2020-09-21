@@ -30,6 +30,8 @@ if (isset($_POST['order-btn'])) {
 
 	if (empty($errors)) {
 		// Enregistrement de la commande en BDD.
+		// TODO ajouter des colonnes dans la table "orders" pour enregistrer les infos du user à l'instant T (adresse de livraison, etc) pour que les factures restent identiques en cas de modif des infos du user.
+		// TODO à transférer après le paiement
 		AdminGestionMgr::addOrder(
 			date('Y-m-d H:i:s'),
 			$_SESSION['user']['id_user'],

@@ -59,6 +59,7 @@ $first_name = $orders[0]["first_name"];
 $last_name = $orders[0]["last_name"];
 $email = $orders[0]["email"];
 $phone = $orders[0]["phone"];
+// TODO à modifier : doit matcher les nouvelles colonnes dans la table "orders" qui vont enregistrer les infos du user à l'instant T (adresse de livraison, etc) pour que les factures restent identiques en cas de modif des infos du user.
 $addr_name = $orders[0]["addr_name"];
 $address = $orders[0]["address"];
 $address2 = $orders[0]["address2"];
