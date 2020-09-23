@@ -163,7 +163,7 @@ if (isset($_POST['forgot-password-btn'])) {
                 $_SESSION['message_error'][] = 'L\'envoi de l\'e-mail de récupération de mot de passe a échoué, veuillez réessayer ultérieurement';
             }
 			else {
-				AuthMgr::setPwdExpirationDate($email, date('Y-m-d h:i:s'));
+				AuthMgr::setPwdExpirationDate($email, date('Y-m-d H:i:s'));
 				$_SESSION['message_status'][] = 'Un lien de récupération de mot de passe vous a été envoyé. Cliquez dessus pour réinitialiser votre mot de passe.';
             }
 			header('location: /mot-de-passe-oublie');
