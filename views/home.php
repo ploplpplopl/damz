@@ -8,7 +8,7 @@ require_once 'views/head.php';
 <div class="row">
     <div class="col-12">
         <h1><a href="/impression" class="nolink">Simplifiez-vous la vie,<br>
-        imprimez vos documents <strong>sans vous déplacer !</strong></a></h1>
+        imprimez vos documents <strong>sans vous déplacer&nbsp;!</strong></a></h1>
 
         <div class="slideshow-container">
 

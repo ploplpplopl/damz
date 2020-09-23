@@ -186,6 +186,8 @@ if (isset($_POST['reset-password-btn'])) {
 	// Vérification du délai d'expiration.
 	$user = AuthMgr::getUserByEmail($_GET['email']);
 	if (time() > (strtotime($user['reset_pwd_expiration']) + $settings['reset_pwd_expiration'])) {
+		// Réinitialisation du délai d'expiration.
+		AuthMgr::setPwdExpirationDate($_GET['email'], '0000-00-00 00:00:00');
 		$errors[] = 'Délai dépassé pour modifier le mot de passe, veuillez <a href="/mot-de-passe-oublie">refaire une demande</a>';
 	}
     if (empty($password)) {
