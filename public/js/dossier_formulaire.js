@@ -37,7 +37,7 @@ $(function () {
                 processData: false,
                 data: form_data,
                 success: function (reponse) {
-                    if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy') {
+                    if (reponse == 'failure' || reponse == 'notPDF' || reponse == 'tooHeavy' || reponse == 'dwldErr') {
                         $("#detailPages").hide();
                         $("#file_description").hide();
                         if (reponse == 'failure') {
@@ -46,6 +46,8 @@ $(function () {
                             alert('Le fichier n\'est pas un PDF.');
                         } else if (reponse == 'tooHeavy') {
                             alert('Le fichier envoyé est trop lourd.');
+                        } else if (reponse == 'dwldErr') {
+                            alert('Erreur de téléchargement, veuillez réessayer.');
                         }
                         $("#uploadPDF").replaceWith($("#uploadPDF").val('').clone(true)); //Reset valeur de l'upload
                         $("#nbPages").html("0"); //Reset toute les valeurs à 0

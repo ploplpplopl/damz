@@ -11,7 +11,11 @@ echo json_encode([
 ]);
 exit;*/
 
-
+// Vérification que le fichier a bien été téléchargé dans le repertoire temporaire
+if(empty($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
+	echo 'dwldErr';
+	exit;
+}
 //Vérification du type et de la taille du fichier envoyé
 if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'notPDF';
