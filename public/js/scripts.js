@@ -152,8 +152,8 @@ $(function () {
 				passwordConf.setCustomValidity('');
 			}
 		}
-// TODO ne fonctionne plus
+// TODO ne fonctionne plus...
 		// password.onchange = validatePassword;
-		passwordConf.onkeyup = validatePassword();
+		passwordConf.on(keyup) = validatePassword();
 	}
 });

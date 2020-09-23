@@ -7,7 +7,7 @@ $palier = '';
 $prix = '';
 $errors = [];
 
-// Récupération des paliers des spirales plastiques.
+// Récupération des paliers.
 $paliers = AdminGestionMgr::getLevels('paliers_' . strtolower($_page));
 
 

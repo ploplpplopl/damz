@@ -16,7 +16,7 @@ class AuthMgr
     public static function getAllUsers(): ?array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT * FROM user WHERE deleted = \'0\'');
+        $stmt = $dbh->query('SELECT * FROM user WHERE deleted = 0');
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();

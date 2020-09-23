@@ -20,7 +20,7 @@ if(empty($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_
 if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'notPDF';
 	exit;
-	// } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
+// } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
 } else if ($_FILES['file']['size'] > 70000000) {
 	echo 'tooHeavy';
 	exit;
