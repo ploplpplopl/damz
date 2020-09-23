@@ -133,7 +133,7 @@ $(function(){
 		update: function(){
             var order = $("#draggable").sortable("serialize");
             var db = ';' + $("input#db").val();
-			$("#info").load("../controllers/ajaxSortablePaliersNB.php?" + order + db);
+			$("#info").load("../controllers/ajaxSortablePaliers.php?" + order + db);
 		}
 	}).disableSelection();
 });
