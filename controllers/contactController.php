@@ -36,6 +36,9 @@ if (isset($_POST['contact-btn'])) {
 	elseif (!preg_match('/^([^<>#{}])*$/i', $contact_message)) {
         $errors[] = 'Votre message contient des caractères invalides';
     }
+    if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
+    }
 
     if (empty($errors)) {
         // Send email.

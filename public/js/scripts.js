@@ -154,6 +154,6 @@ $(function () {
 		}
 // TODO ne fonctionne plus...
 		// password.onchange = validatePassword;
-		passwordConf.on(keyup) = validatePassword();
+		// passwordConf.on(keyup) = validatePassword();
 	}
 });

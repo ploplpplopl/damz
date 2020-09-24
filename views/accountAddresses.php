@@ -75,6 +75,7 @@ require_once 'views/head.php';
 				<label for="addr_label">Donnez un nom à cette adresse</label>
 				<input type="text" id="addr_label" name="addr_label" class="form-control" value="<?php echo htmlentities($addrLabel, ENT_QUOTES); ?>" required="required" placeholder="Domicile, travail…">
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" name="user-address-btn" class="btn btn-primary">Enregistrer</button>
 		</form>
 	</div>

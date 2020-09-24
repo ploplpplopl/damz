@@ -123,6 +123,7 @@ require_once 'views/head.php';
 			</div>
 		</div>
 	</div>
+	<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 	<div class="row">
 		<div class="col-12">
 			<p class="text-right mt-5"><button type="submit" name="order-btn" class="btn btn-primary">Passer commande</button></p>

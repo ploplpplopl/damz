@@ -58,6 +58,9 @@ if (isset($_POST['signup-btn'])) {
     elseif (strcmp($password, $passwordConf) !== 0) {
         $errors[] = 'Les mots de passe ne correspondent pas';
     }
+    if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
+    }
 
     // Insert user into DB
     if (empty($errors)) {
@@ -94,7 +97,11 @@ if (isset($_POST['login-btn'])) {
     }
     if (empty($_POST['password'])) {
         $errors[] = 'Mot de passe requis';
+	}
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
     }
+
     if (empty($errors)) {
 		$checkLogin = AuthMgr::checkLogin($_POST['pseudo'], $_POST['password']);
 		
@@ -146,6 +153,9 @@ if (isset($_POST['forgot-password-btn'])) {
 	elseif (!$validator->isValid($email, new RFCValidation())) {
 		$errors[] = 'E-mail invalide';
 	}
+    if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
+    }
 
     if (empty($errors)) {
 		$checkAuth = AuthMgr::getUserByEmail($email);
@@ -201,6 +211,9 @@ if (isset($_POST['reset-password-btn'])) {
     }
     elseif (strcmp($password, $passwordConf) !== 0) {
         $errors[] = 'Les mots de passe ne correspondent pas';
+    }
+    if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
     }
 
     if (empty($errors)) {

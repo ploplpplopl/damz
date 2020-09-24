@@ -274,6 +274,7 @@ require_once 'views/head.php';
 
 			<!-- bouton valider -->
 			<input type="submit" id="submit" name="dossier-btn" class="btn btn-primary mt-2" value="Valider">
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 		</form>
 	</div>
 </div>
