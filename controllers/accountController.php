@@ -62,6 +62,11 @@ if (isset($_POST['user-info-btn'])) {
 		$errors[] = 'Votre numéro de téléphone n\'est pas valide';
 	}
 
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+		$errors[] = 'Jeton de sécurité invalide';
+	}
+	vd($_SESSION['csrf_token'], $_POST['csrf_token']);exit;
+
 	if (empty($errors)) {
 		$result = AuthMgr::updateUser(['email' => $email, 'pseudo' => $pseudo, 'first_name' => $firstname, 'last_name' => $lastname, 'phone' => $phone], $id);
 
@@ -104,6 +109,10 @@ if (isset($_POST['user-password-btn'])) {
 		$errorsPassword[] = 'Les mots de passe ne correspondent pas';
 	}
 
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+		$errorsPassword[] = 'Jeton de sécurité invalide';
+	}
+
 	if (empty($errorsPassword)) {
 		$result = AuthMgr::updateUser(['password' => $password], $id);
 
@@ -119,6 +128,7 @@ if (isset($_POST['user-password-btn'])) {
 // 1- Vérifier validité du mot de passe.
 $deleteAccountPassword = '';
 $errorsDelete = [];
+// vérifier $_SESSION['csrf_token'] avec 'accountDeleted'
 if (isset($_POST['delete-account-btn'])) {
 	$deleteAccountPassword = $_POST[''];
 	/*$dbh = DbConnection::getConnection('administrateur');
@@ -202,6 +212,10 @@ if (isset($_POST['user-address-btn'])) {
 		$errorsAddress[] = 'Nom de l\'adresse requis';
 	} elseif (!preg_match('/^[^<>;=#{}]*$/i', $addrLabel)) {
 		$errorsAddress[] = 'Le nom de l\'adresse contient des caractères invalides';
+	}
+
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+		$errorsAddress[] = 'Jeton de sécurité invalide';
 	}
 
 	if (empty($errorsAddress)) {

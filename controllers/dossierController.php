@@ -138,6 +138,10 @@ if (isset($_POST['dossier-btn'])) {
 			break;
 			
 	}
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+        $errors[] = 'Jeton de sécurité invalide';
+    }
+
 	if (empty($errors)) {
 		// Mise en session des caractéristiques du PDF à imprimer.
 		$_SESSION['file_to_print'] = [

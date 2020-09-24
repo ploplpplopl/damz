@@ -17,6 +17,7 @@ require_once 'views/head.php';
 				<input type="email" name="email" id="email" class="form-control" value="<?php echo htmlentities($email, ENT_QUOTES); ?>" required="required" pattern="[a-zA-Z0-9](\w\.?)*[a-zA-Z0-9]@[a-zA-Z0-9]+\.[a-zA-Z]{2,6}">
 			</div>
 			<button type="submit" name="forgot-password-btn" class="btn btn-primary">Valider</button>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 		</form>
 	</div>
 </div>

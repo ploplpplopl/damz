@@ -29,3 +29,13 @@ define ('_ROOT_DIR_', __DIR__ . '/..');
 $css = NULL;
 $javascript = NULL;
 
+
+// Controle des formulaires (faille CSRF)
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$_SESSION['csrf_token_expired'] = time() + 1;
+if (time() > $_SESSION['csrf_token_expired']) {
+	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+	$_SESSION['csrf_token_expired'] = time() + 1;
+}

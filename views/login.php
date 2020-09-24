@@ -32,6 +32,7 @@ require_once 'views/head.php';
 				<input type="password" name="password" class="form-control form-control-lg" required>
 				<p class="text-right"><a href="/mot-de-passe-oublie">Mot de passe oublié&nbsp;?</a></p>
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" name="login-btn" class="btn btn-primary">Connexion</button>
 		</form>
 		<p class="mt-5">Vous n'avez pas de compte&nbsp;? <a href="/inscription">Enregistrez-vous</a></p>

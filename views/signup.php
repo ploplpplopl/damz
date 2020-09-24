@@ -40,6 +40,7 @@ require_once 'views/head.php';
 				<p id="specialchar" class="invalid">Un <b>caractère spécial</b></p>
 				<p id="length" class="invalid">Au moins <b>8 caractères</b></p>
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" id="signup-btn" name="signup-btn" class="btn btn-primary">Inscription</button>
 		</form>
 		<p class="mt-5">Vous avez déjà un compte&nbsp;? <a href="/connexion">Connectez-vous</a></p>

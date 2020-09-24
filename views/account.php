@@ -43,6 +43,7 @@ require_once 'views/head.php';
 				<input type="text" id="phone" name="phone" class="form-control" value="<?php echo htmlentities($phone, ENT_QUOTES); ?>" aria-describedby="phoneHelp">
 				<small id="phoneHelp" class="form-text text-muted">Pour vous joindre en cas de problème avec votre commande.</small>
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" name="user-info-btn" class="btn btn-primary">Enregistrer</button>
 		</form>
 		<?php if (!empty($_SESSION['tunnel'])) : ?>
@@ -85,6 +86,7 @@ require_once 'views/head.php';
 				<p id="specialchar" class="invalid">Un <b>caractère spécial</b></p>
 				<p id="length" class="invalid">Au moins <b>8 caractères</b></p>
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" name="user-password-btn" class="btn btn-primary">Enregistrer</button>
 		</form>
 	</div>
@@ -114,6 +116,7 @@ Trouver une solution pour conserver l'association 'archives de commandes' et 'us
 				<label for="password-delete" class="sr-only">Mot de passe</label>
 				<input type="password" id="password-delete" name="password-delete" class="form-control" value="" placeholder="Mot de passe" required="required">
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" name="delete-account-btn" class="btn btn-danger mt-2">Supprimer</button>
 		</form>
 	</div>

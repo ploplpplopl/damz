@@ -26,6 +26,7 @@ require_once 'views/head.php';
 				<label for="contact-message">Message</label>
 				<textarea id="contact-message" name="contact-message" class="form-control" rows="6" cols="25" required="required"><?php echo htmlentities($contact_message, ENT_QUOTES); ?></textarea>
 			</div>
+			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 			<button type="submit" id="contact-btn" name="contact-btn" class="btn btn-primary">Envoyer</button>
 		</form>
 	</div>

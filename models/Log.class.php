@@ -12,5 +12,4 @@ class Log
     $contents .= date('Y-m-d H:i:s') . ' ' . $message . "\n";
     file_put_contents($dir, $contents);
   }
-
 }
