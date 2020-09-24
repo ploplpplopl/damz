@@ -34,8 +34,10 @@ $javascript = NULL;
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
-$_SESSION['csrf_token_expired'] = time() + 1;
+if (empty($_SESSION['csrf_token_expired'])) {
+	$_SESSION['csrf_token_expired'] = time() + 3600;
+}
 if (time() > $_SESSION['csrf_token_expired']) {
 	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-	$_SESSION['csrf_token_expired'] = time() + 1;
+	$_SESSION['csrf_token_expired'] = time() + 3600;
 }
