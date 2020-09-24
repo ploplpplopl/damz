@@ -24,18 +24,23 @@ require_once 'views/head.php';
         switch ($_page) {
             case 'NB':
                 echo '<h1>Paliers N&B</h1>';
+                echo '<input type="hidden" id="db" value="paliers_nb">';
                 break;
             case 'Couleur':
                 echo '<h1>Paliers couleur</h1>';
+                echo '<input type="hidden" id="db" value="paliers_couleur">';
                 break;
             case 'spiplast':
                 echo '<h1>Paliers spirales plastique</h1>';
+                echo '<input type="hidden" id="db" value="paliers_spiplast">';
                 break;
             case 'spimetal':
                 echo '<h1>Paliers spirales métalliques</h1>';
+                echo '<input type="hidden" id="db" value="paliers_spimetal">';
                 break;
             case 'thermo':
                 echo '<h1>Paliers reliures thermocollées</h1>';
+                echo '<input type="hidden" id="db" value="paliers_thermo">';
                 break;
         }
         ?>
@@ -126,8 +131,9 @@ $(function(){
 		handle: ".handle",
 		containment: ".drag",
 		update: function(){
-			var order = $("#draggable").sortable("serialize");
-			$("#info").load("../controllers/ajaxSortablePaliersNB.php?" + order);
+            var order = $("#draggable").sortable("serialize");
+            var db = ';' + $("input#db").val();
+			$("#info").load("../controllers/ajaxSortablePaliers.php?" + order + db);
 		}
 	}).disableSelection();
 });

@@ -16,7 +16,7 @@ class AdminGestionMgr
     public static function getLevels(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT * FROM ' . $db);
+        $stmt = $dbh->query('SELECT * FROM ' . $db .' ORDER BY position DESC');
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // Format d'affichage des prix avec virgule et minimum 2 chiffres après la virgule
@@ -444,7 +444,7 @@ class AdminGestionMgr
 				WHERE o.id_user = u.id_user
 			) AS num_orders
 			FROM user AS u
-			WHERE u.deleted = \'0\'
+			WHERE u.deleted = 0
 			' . $where . '
 			ORDER BY ' . $order . ' ' . $way . '
 		';
