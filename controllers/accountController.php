@@ -65,7 +65,6 @@ if (isset($_POST['user-info-btn'])) {
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
 		$errors[] = 'Jeton de sécurité invalide';
 	}
-	vd($_SESSION['csrf_token'], $_POST['csrf_token']);exit;
 
 	if (empty($errors)) {
 		$result = AuthMgr::updateUser(['email' => $email, 'pseudo' => $pseudo, 'first_name' => $firstname, 'last_name' => $lastname, 'phone' => $phone], $id);
@@ -108,7 +107,6 @@ if (isset($_POST['user-password-btn'])) {
 	} elseif (strcmp($password, $passwordConf) !== 0) {
 		$errorsPassword[] = 'Les mots de passe ne correspondent pas';
 	}
-
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
 		$errorsPassword[] = 'Jeton de sécurité invalide';
 	}
@@ -124,22 +122,39 @@ if (isset($_POST['user-password-btn'])) {
 	}
 }
 
-// TODO Delete account.
-// 1- Vérifier validité du mot de passe.
+// TODO Delete account: create 'delete-account' page + controller.
 $deleteAccountPassword = '';
 $errorsDelete = [];
-// vérifier $_SESSION['csrf_token'] avec 'accountDeleted'
 if (isset($_POST['delete-account-btn'])) {
-	$deleteAccountPassword = $_POST[''];
-	/*$dbh = DbConnection::getConnection('administrateur');
-	$stmt = $dbh->prepare('UPDATE user SET deleted=1 WHERE id_user = :id');
-	$stmt->bindParam(':id', $_SESSION['user']['id_user'], PDO::PARAM_INT);
-	$stmt->execute();
-	$stmt->closeCursor();
-	DbConnection::disconnect();
-	$_SESSION['message_status'][] = 'Votre compte est supprimé';
-	header('location: /');
-	exit;*/
+	$deleteAccountPassword = $_POST['password-delete'];
+	$user = AuthMgr::getUserByEmail($_SESSION['user']['email']);
+	
+	if (empty($deleteAccountPassword)) {
+		$errorsDelete[] = 'Mot de passe requis';
+	}
+	elseif (!password_verify($deleteAccountPassword, $user['password'])) {
+		$errorsDelete[] = 'Mot de passe invalide';
+	}
+	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
+		$errorsDelete[] = 'Jeton de sécurité invalide';
+	}
+	
+	if (empty($errorsDelete)) {
+		// Envoi d'un e-mail.
+		$emailSent = sendMail('delete-account.html', [
+			'{link_confirm}' => $settings['site_url'] . '/delete-account?token=' . $user['secure_key'] . '&email=' . $user['email'],
+		], 'Suppression de votre compte ' . $settings['site_name'], $user['email']);
+		
+		if (!$emailSent) {
+			$_SESSION['message_error'][] = 'L\'envoi de l\'e-mail a échoué, veuillez réessayer';
+		}
+		else {
+			$_SESSION['message_status'][] = 'Veuillez vérifier vos e-mail pour supprimer définitivement votre compte';
+			
+			header('location: /mon-compte');
+			exit;
+		}
+	}
 }
 
 // User address.
