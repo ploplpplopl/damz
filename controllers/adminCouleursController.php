@@ -1,6 +1,5 @@
 <?php
 
-require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/AdminGestionMgr.class.php';
 
 
@@ -45,7 +44,6 @@ if (isset($_POST['edit-btn'])) {
 	}
 	
 	if (empty($errors)) {
-		// $dbh = DbConnection::getConnection('administrateur');
 		if ('add' == $addUpd) {
 			$max = AdminGestionMgr::getLevelPositionMax('dossier_color');
 			$result = AdminGestionMgr::addColor($text, $hex, $printable, $unprintable, $max['pos']);
