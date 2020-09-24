@@ -1,6 +1,8 @@
 <?php
 
-require_once("dao/DbConnection.class.php");
+require_once('dao/DbConnection.class.php');
+require_once('Log.class.php');
+
 
 class AdminGestionMgr
 {
@@ -16,7 +18,7 @@ class AdminGestionMgr
     public static function getLevels(string $db): array
     {
         $dbh = DbConnection::getConnection('administrateur');
-        $stmt = $dbh->query('SELECT * FROM ' . $db .' ORDER BY position DESC');
+        $stmt = $dbh->query('SELECT * FROM ' . $db . ' ORDER BY position DESC');
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // Format d'affichage des prix avec virgule et minimum 2 chiffres après la virgule
@@ -104,6 +106,38 @@ class AdminGestionMgr
         $stmt->closeCursor();
         DbConnection::disconnect();
         return $result;
+    }
+
+    /**
+     * Reorder drag and drop levels.
+     *
+     * @param array $listItem
+     * @param string $table
+     * @param string $id
+     * @return boolean
+     */
+    public static function reorderLevels(array $listItem, string $table, string $id='id'): bool
+    {
+        $dbh = DbConnection::getConnection('administrateur');
+        $dbh->beginTransaction();
+
+        try {
+            $cnt = count($listItem);
+            $stmt = $dbh->prepare('UPDATE ' . $table . ' SET `position` = :position WHERE `' . $id . '` = :id');
+            for ($i = 1, $j = $cnt; $i <= $cnt; $i++, $j--) {
+                $stmt->bindParam(':position', $j, PDO::PARAM_INT);
+                $stmt->bindParam(':id', $listItem[$i - 1], PDO::PARAM_INT);
+                $stmt->execute();
+            }
+            $dbh->commit();
+        } catch (Exception $e) {
+            $dbh->rollback();
+            Log::write($e->getMessage());
+            return false;
+        }
+        $stmt->closeCursor();
+        DbConnection::disconnect();
+        return true;
     }
 
     /**
@@ -459,5 +493,4 @@ class AdminGestionMgr
         DbConnection::disconnect();
         return $result;
     }
-
 }

@@ -3,7 +3,6 @@
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
 
-require_once _ROOT_DIR_ . '/models/dao/DbConnection.class.php';
 require_once _ROOT_DIR_ . '/models/AuthMgr.class.php';
 
 // Affichage des adresses de l'utilisateur.

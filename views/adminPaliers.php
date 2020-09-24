@@ -23,24 +23,24 @@ require_once 'views/head.php';
         <?php
         switch ($_page) {
             case 'NB':
-                echo '<h1>Paliers N&B</h1>';
-                echo '<input type="hidden" id="db" value="paliers_nb">';
+                echo '<h1>Paliers N&amp;B</h1>';
+                echo '<span class="d-none" id="db">paliers_nb</span>';
                 break;
             case 'Couleur':
                 echo '<h1>Paliers couleur</h1>';
-                echo '<input type="hidden" id="db" value="paliers_couleur">';
+                echo '<span class="d-none" id="db">paliers_couleur</span>';
                 break;
             case 'spiplast':
                 echo '<h1>Paliers spirales plastique</h1>';
-                echo '<input type="hidden" id="db" value="paliers_spiplast">';
+                echo '<span class="d-none" id="db">paliers_spiplast</span>';
                 break;
             case 'spimetal':
                 echo '<h1>Paliers spirales métalliques</h1>';
-                echo '<input type="hidden" id="db" value="paliers_spimetal">';
+                echo '<span class="d-none" id="db">paliers_spimetal</span>';
                 break;
             case 'thermo':
                 echo '<h1>Paliers reliures thermocollées</h1>';
-                echo '<input type="hidden" id="db" value="paliers_thermo">';
+                echo '<span class="d-none" id="db">paliers_thermo</span>';
                 break;
         }
         ?>
@@ -127,12 +127,12 @@ $javascript = <<<PHP_JS
 <script src="/public/js/jquery-ui.min.js"></script>
 <script>
 $(function(){
-	$("#draggable").sortable({
-		handle: ".handle",
+    $("#draggable").sortable({
+        handle: ".handle",
 		containment: ".drag",
 		update: function(){
             var order = $("#draggable").sortable("serialize");
-            var db = ';' + $("input#db").val();
+            var db = ';' + $("#db").text();
 			$("#info").load("../controllers/ajaxSortablePaliers.php?" + order + db);
 		}
 	}).disableSelection();

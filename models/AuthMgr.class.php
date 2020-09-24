@@ -1,6 +1,8 @@
 <?php
 
-require_once("dao/DbConnection.class.php");
+require_once('dao/DbConnection.class.php');
+require_once('Log.class.php');
+
 
 class AuthMgr
 {
