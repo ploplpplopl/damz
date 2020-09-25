@@ -1,8 +1,4 @@
 $(function () {
-	
-	$('#dossier').click(myfunc);
-	function myfunc(){alert('ok')};
-
     // Single call to the database to store values in a json variable.
     var jsonData = {};
     $.ajax({
