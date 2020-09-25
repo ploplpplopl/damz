@@ -341,9 +341,9 @@ $(function () {
         let quantity = $("#quantity").val();
         let totalNB = Number(calculPages('NB', jsonData['paliersNB'], quantity));
         let totalC = Number(calculPages('C', jsonData['paliersC'], quantity));
-        let totalCouvFC = Number(calculCouvFC(jsonData['prixFC']));
-        let totalCouvFT = Number(calculCouvFT(jsonData['prixFT']));
-        let totalR = Number(calculReliure(jsonData['maxFeuillesPlast'], jsonData['maxFeuillesMetal'], jsonData['maxFeuillesThermo'], jsonData['paliersSpiplast'], jsonData['paliersSpimetal'], jsonData['paliersThermo']));
+        let totalCouvFC = Number(calculCouvFC(jsonData['paliersFC']));
+        let totalCouvFT = Number(calculCouvFT(jsonData['paliersFT']));
+        let totalR = Number(calculReliure(jsonData['maxSpiplast'], jsonData['maxSpimetal'], jsonData['maxThermo'], jsonData['paliersSpiplast'], jsonData['paliersSpimetal'], jsonData['paliersThermo']));
         let total = Number(totalNB + totalC + totalR + totalCouvFC + totalCouvFT).toFixed(2);
         calculTVA(total);
         $("#devisTotal").html(total);
@@ -391,6 +391,9 @@ $(function () {
         let zone = '#devisReliure';
         let quantity = $("#quantity").val();
         let nbFeuilles = Number($("#nbPages").text()); // pages N&B et Couleur SANS recto-verso
+        let maxFeuillesThermo = maxThermo[0]['sValue'];
+        let maxFeuillesPlast = maxSpiplast[0]['sValue'];
+        let maxFeuillesMetal = maxSpimetal[0]['sValue'];
         let total = 0;
         let prixU = 0;
         let i = 0;
@@ -400,8 +403,8 @@ $(function () {
         }
 
         if ($('#spiplast').prop('checked')) {
-            if (nbFeuilles > maxSpiplast) {
-                alert("Les spirales plastiques ne sont disponibles que pour " + maxSpiplast + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxFeuillesPlast) {
+                alert("Les spirales plastiques ne sont disponibles que pour " + maxFeuillesPlast + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#spiplast').prop('checked', false)
             }
             while (paliersSpiplast[i + 1] && (nbFeuilles > paliersSpiplast[i]['palier'])) {
@@ -411,8 +414,8 @@ $(function () {
             total = Number(quantity * prixU).toFixed(2);
         }
         if ($('#spimetal').prop('checked')) {
-            if (nbFeuilles > maxSpimetal) {
-                alert("Les spirales métalliques ne sont disponibles que pour " + maxSpimetal + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxFeuillesMetal) {
+                alert("Les spirales métalliques ne sont disponibles que pour " + maxFeuillesMetal + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#spimetal').prop('checked', false)
             }
             while (paliersSpimetal[i + 1] && (nbFeuilles > paliersSpimetal[i]['palier'])) {
@@ -422,8 +425,8 @@ $(function () {
             total = Number(quantity * prixU).toFixed(2);
         }
         if ($('#thermo').prop('checked')) {
-            if (nbFeuilles > maxThermo) {
-                alert("La reliure thermocollée n'est disponible que pour " + maxThermo + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxFeuillesThermo) {
+                alert("La reliure thermocollée n'est disponible que pour " + maxFeuillesThermo + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#thermo').prop('checked', false)
             }
             while (paliersThermo[i + 1] && (nbFeuilles > paliersThermo[i]['palier'])) {
@@ -446,7 +449,7 @@ $(function () {
         let nbFC = 0;
         let total = 0;
         let zone = "#devisFC";
-        let prixU = Number(dataFC).toFixed(2);
+        let prixU = Number(dataFC[0]["sValue"]).toFixed(2);
 
         if ($('#btnFCCouv').prop('checked')) {
             nbFC++;
@@ -473,7 +476,7 @@ $(function () {
         let nbFT = 0;
         let total = 0;
         let zone = "#devisFT";
-        let prixU = Number(dataFT).toFixed(2);
+        let prixU = Number(dataFT[0]["sValue"]).toFixed(2);
 
         if ($('#btnFTCouv').prop('checked')) {
             nbFT++;
