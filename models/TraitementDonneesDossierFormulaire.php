@@ -1,6 +1,7 @@
 <?php
 
-/*sleep(2);
+// Pour régulièrement décommenter/recommenter il suffit de rajouter une étoile /*/ -> /**/
+/*/sleep(2);
 echo json_encode([
 	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',
 	'filename_client' => 'plop.pdf',
@@ -9,7 +10,7 @@ echo json_encode([
 	'NbPagesNB' => 31,
 	'TabPages' => [1,15,34],
 ]);
-exit;*/
+exit;/**/
 
 // Vérification que le fichier a bien été téléchargé dans le repertoire temporaire
 if(empty($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])){
