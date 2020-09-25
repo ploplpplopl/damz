@@ -63,7 +63,7 @@ if (isset($_POST['user-info-btn'])) {
 	}
 
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errors[] = 'Jeton de sécurité invalide';
+		$errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
 
 	if (empty($errors)) {
@@ -108,7 +108,7 @@ if (isset($_POST['user-password-btn'])) {
 		$errorsPassword[] = 'Les mots de passe ne correspondent pas';
 	}
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errorsPassword[] = 'Jeton de sécurité invalide';
+		$errorsPassword[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
 
 	if (empty($errorsPassword)) {
@@ -230,7 +230,7 @@ if (isset($_POST['user-address-btn'])) {
 	}
 
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errorsAddress[] = 'Jeton de sécurité invalide';
+		$errorsAddress[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
 
 	if (empty($errorsAddress)) {

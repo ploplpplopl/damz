@@ -59,7 +59,7 @@ if (isset($_POST['signup-btn'])) {
         $errors[] = 'Les mots de passe ne correspondent pas';
     }
     if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
     // Insert user into DB
@@ -99,7 +99,7 @@ if (isset($_POST['login-btn'])) {
         $errors[] = 'Mot de passe requis';
 	}
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
     if (empty($errors)) {
@@ -154,7 +154,7 @@ if (isset($_POST['forgot-password-btn'])) {
 		$errors[] = 'E-mail invalide';
 	}
     if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
     if (empty($errors)) {
@@ -213,7 +213,7 @@ if (isset($_POST['reset-password-btn'])) {
         $errors[] = 'Les mots de passe ne correspondent pas';
     }
     if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
     if (empty($errors)) {

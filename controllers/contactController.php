@@ -37,7 +37,7 @@ if (isset($_POST['contact-btn'])) {
         $errors[] = 'Votre message contient des caractères invalides';
     }
     if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
     if (empty($errors)) {
