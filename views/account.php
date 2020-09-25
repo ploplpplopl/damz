@@ -106,37 +106,40 @@ Trouver une solution pour conserver l'association 'archives de commandes' et 'us
 
 */
 		?>
-		<p class="text-center mt-5"><a id="delete-account-link" href="#">Supprimer mon compte</a></p>
-		<form class="form-inline" id="delete-account-form">
+		<p class="text-center mt-5"><a id="delete-account-link" href="#nogo">Supprimer mon compte</a></p>
+		<div id="delete-account-content">
 			<p class="h5 mt-5">Vous voulez déjà nous quitter&nbsp;?</p>
 			<p><small>Pour confirmer la suppression de votre compte, veuillez entrer votre mot de passe ci-dessous. Vous allez recevoir un e-mail de validation finale de votre demande.<br>
-					Vérifiez que l'adresse e-mail de votre compte ci-dessus est valide, sinon votre compte ne pourra pas être effacé.</small></p>
+			Vérifiez que l'adresse e-mail de votre compte ci-dessus est valide, sinon votre compte ne pourra pas être effacé.</small></p>
 			<p><small class="font-weight-bold">La suppression de votre compte entraînera la perte définitive de toutes vos commandes.</small></p>
-			<div class="form-group mt-2 mr-2">
-				<label for="password-delete" class="sr-only">Mot de passe</label>
-				<input type="password" id="password-delete" name="password-delete" class="form-control" value="" placeholder="Mot de passe" required="required">
-			</div>
-			<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-			<button type="submit" name="delete-account-btn" class="btn btn-danger mt-2">Supprimer</button>
-		</form>
+			<?php echo displayMessage($errorsDelete); ?>
+			<form class="form-inline" action="/mon-compte" method="post">
+				<div class="form-group mt-2 mr-2">
+					<label for="password-delete" class="sr-only">Mot de passe</label>
+					<input type="password" id="password-delete" name="password-delete" class="form-control" value="" placeholder="Mot de passe" required="required">
+				</div>
+				<input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+				<button type="submit" name="delete-account-btn" class="btn btn-danger mt-2">Supprimer</button>
+			</form>
+		</div>
 	</div>
 </div>
 
 <?php
 
-if (empty($errorsDelete)) {
+if (!empty($errorsDelete)) {
 	$javascript .= '
-<script>
-$("#delete-account-form").hide();
-</script>
-';
+<script>$("#delete-account-link").closest("p").hide();</script>';
+} else {
+	$javascript .= '
+<script>$("#delete-account-content").hide();</script>';
 }
 $javascript .= '
 <script>
 $("#delete-account-link").click(function(e){
 	e.preventDefault();
-	$(this).closest("p").hide();
-	$("#delete-account-form").slideDown();
+	$(this).closest("p").slideUp();
+	$("#delete-account-content").slideDown();
 });
 </script>
 ';

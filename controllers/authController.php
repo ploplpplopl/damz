@@ -165,7 +165,7 @@ if (isset($_POST['forgot-password-btn'])) {
 		}
 		else {
 			$emailSent = sendMail('forgot-password.html', [
-				'{reset_pwd_expiration}' => ($settings['reset_pwd_expiration'] / 3600),
+				'{reset_pwd_expiration}' => round($settings['reset_pwd_expiration'] / 3600),
 				'{link_initialize}' => $settings['site_url'] . '/reinitialiser-mot-de-passe?token=' . $checkAuth['secure_key'] . '&amp;email=' . $email,
 			], 'Récupération de mot de passe sur ' . $settings['site_name'], $email);
 			
