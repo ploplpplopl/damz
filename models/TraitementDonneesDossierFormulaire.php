@@ -16,11 +16,11 @@ if(empty($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_
 	echo 'dwldErr';
 	exit;
 }
-//Vérification du type et de la taille du fichier envoyé
+// Vérification du type et de la taille du fichier envoyé
 if ($_FILES['file']['type'] != 'application/pdf') {
 	echo 'notPDF';
 	exit;
-// } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
+// TODO MEP : } else if ($_FILES['file']['size'] > ini_get('upload_max_filesize')) {
 } else if ($_FILES['file']['size'] > 70000000) {
 	echo 'tooHeavy';
 	exit;

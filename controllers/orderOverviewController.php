@@ -28,7 +28,7 @@ if (isset($_POST['order-btn'])) {
 		$errors[] = 'Veuillez indiquer un moyen de paiement';
 	}
     if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-        $errors[] = 'Jeton de sécurité invalide';
+        $errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
     }
 
 	if (empty($errors)) {

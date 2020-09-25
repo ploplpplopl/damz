@@ -63,9 +63,8 @@ if (isset($_POST['user-info-btn'])) {
 	}
 
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errors[] = 'Jeton de sécurité invalide';
+		$errors[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
-	vd($_SESSION['csrf_token'], $_POST['csrf_token']);exit;
 
 	if (empty($errors)) {
 		$result = AuthMgr::updateUser(['email' => $email, 'pseudo' => $pseudo, 'first_name' => $firstname, 'last_name' => $lastname, 'phone' => $phone], $id);
@@ -110,7 +109,7 @@ if (isset($_POST['user-password-btn'])) {
 	}
 
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errorsPassword[] = 'Jeton de sécurité invalide';
+		$errorsPassword[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
 
 	if (empty($errorsPassword)) {
@@ -215,7 +214,7 @@ if (isset($_POST['user-address-btn'])) {
 	}
 
 	if (strcmp($_SESSION['csrf_token'], $_POST['csrf_token']) !== 0) {
-		$errorsAddress[] = 'Jeton de sécurité invalide';
+		$errorsAddress[] = 'Jeton de sécurité invalide, veuillez réessayer';
 	}
 
 	if (empty($errorsAddress)) {
