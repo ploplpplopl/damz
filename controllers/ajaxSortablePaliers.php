@@ -9,7 +9,7 @@ $listItem = $_GET['listItem'];
 if (!is_array($listItem)) exit;
 
 
-// Extraction de la valeur de la bdd passée en paramètre.
+// Extraction de la valeur de la table passée en paramètre.
 $lastItem = array_pop($listItem);
 list($id, $table) = explode(';', $lastItem);
 // depuis PHP 7.1 : [$id, $db] = explode(';', $lastItem);
