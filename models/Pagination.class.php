@@ -1,6 +1,60 @@
 <?php
 
+/*
+-- USAGE --
+
+$pagination = new Pagination(); // using default GET parameter: myPage.php?p=x
+or
+$pagination = new Pagination('page'); // using custom GET parameter: myPage.php?page=x
+
+// Get the result set (without the LIMIT clause).
+$results = Db::query('SELECT * FROM table [WHERE …]');
+// Count the total number of result.
+$numTotal = count($results);
+
+$pagination->setItemsTotal($numTotal);
+
+// Optional setters.
+$pagination
+	->setGoFirst('«')
+	->setGoPrevious('‹')
+	->setGoNext('›')
+	->setGoLast('»')
+	->setPaginationWrapper('<ul class="pagination">%s</ul>')
+	->setItemDisabled('<li class="disabled">%s</li>')
+	->setItemAvailable('<li><a href="%s">%s</a></li>')
+	->setItemActive('<li class="active">%s</li>')
+	->setAvoidDuplicateContent(FALSE)
+	->setOffsetPage(6) // default: 4
+	->setItemsPerPage(3) // default: 10
+	;
+
+// Get the paginated results.
+$results = Db::query('SELECT * FROM table [WHERE …] LIMIT ' . $pagination->limitFrom() . ' ' . $pagination->getItemsPerPage());
+
+HTML:
+<table>
+<?php foreach ($results as $result): ?>
+	<tr>
+		<td><?php echo $result['some_field']; ?><td>
+		<td><?php echo $result['some_other_field']; ?><td>
+	</tr>
+<?php endforeach; ?>
+</table>
+<?php
+// Displaying the pagination.
+echo $pagination->render();
+?>
+*/
+
 class Pagination {
+	
+	/**
+	 * Current page number.
+	 *
+	 * @var int
+	 */
+	protected $currentPage;
 	
 	/**
 	 * GET parameter for current page.
@@ -14,14 +68,21 @@ class Pagination {
 	 *
 	 * @var int
 	 */
-	protected $byPage;
+	protected $itemsPerPage = 10;
+	
+	/**
+	 * Number of pages displayed before and after the active page.
+	 *
+	 * @var int
+	 */
+	protected $offsetPage = 4;
 	
 	/**
 	 * Total number of rows.
 	 *
 	 * @var int
 	 */
-	protected $rows;
+	protected $itemsTotal;
 	
 	/**
 	 * First button text.
@@ -92,29 +153,49 @@ class Pagination {
 	 * @param string GET parameter for current page.
 	 */
 	public function __construct($paramValue = 'p') {
-		$this->currentPage = !empty($_GET[$paramValue]) ? intval($_GET[$paramValue]) : 1;
 		$this->paramValue = $paramValue;
+		$this->currentPage = !empty($_GET[$paramValue]) ? intval($_GET[$paramValue]) : 1;
 	}
 	
 	/**
 	 * Set the number of results per page.
 	 *
-	 * @param int $byPage
+	 * @param int $itemsPerPage
 	 * @return this
 	 */
-	public function setItemsPerPage(int $byPage): Pagination {
-		$this->byPage = $byPage;
+	public function setItemsPerPage(int $itemsPerPage): Pagination {
+		$this->itemsPerPage = $itemsPerPage;
+		return $this;
+	}
+	
+	/**
+	 * Get the number of results per page.
+	 *
+	 * @return int
+	 */
+	public function getItemsPerPage(): int {
+		return $this->itemsPerPage;
+	}
+	
+	/**
+	 * Set the number of offset pages.
+	 *
+	 * @param int $offsetPage
+	 * @return this
+	 */
+	public function setOffsetPage(int $offsetPage): Pagination {
+		$this->offsetPage = $offsetPage;
 		return $this;
 	}
 	
 	/**
 	 * Set the total page number.
 	 *
-	 * @param int $rows
+	 * @param int $itemsTotal
 	 * @return this
 	 */
-	public function setTotalRows(int $rows): Pagination {
-		$this->rows = $rows;
+	public function setItemsTotal(int $itemsTotal): Pagination {
+		$this->itemsTotal = $itemsTotal;
 		return $this;
 	}
 	
@@ -223,7 +304,7 @@ class Pagination {
 	 * return int
 	 */
 	protected function pagesCount(): int {
-		return (int) ceil($this->rows / $this->byPage);
+		return (int) ceil($this->itemsTotal / $this->itemsPerPage);
 	}
 	
 	/**
@@ -235,14 +316,13 @@ class Pagination {
 		if (!isset($this->pagesCount)) {
 			$this->pagesCount = $this->pagesCount();
 		}
-		$from = 0;
-		if ($this->currentPage > 0 && $this->rows > 0) {
-			$from = $this->currentPage * $this->byPage;
-			if ($this->currentPage > 0 && $this->currentPage <= $this->pagesCount) {
-				$from = ($this->currentPage - 1) * $this->byPage;
-			}
+		if ($this->itemsTotal <= $this->itemsPerPage) {
+			return 0;
 		}
-		return $from;
+		if ($this->currentPage > $this->pagesCount) {
+			return ($this->pagesCount - 1) * $this->itemsPerPage;
+		}
+		return ($this->currentPage - 1) * $this->itemsPerPage;
 	}
 	
 	/**
@@ -256,7 +336,7 @@ class Pagination {
 	 *   $array['num']: Page number for the links.
 	 *   $array['linked']: Wether button is a link.
 	 */
-	public function process($pageOffset = 4): array {
+	protected function process($pageOffset = 4): array {
 		if (!isset($this->pagesCount)) {
 			$this->pagesCount = $this->pagesCount();
 		}
@@ -328,11 +408,10 @@ class Pagination {
 	/**
 	 * Rendering the pagination.
 	 *
-	 * @param array $pages The result of $this->process().
-	 *
 	 * @return string The pagination markup.
 	 */
-	public function render(array $pages): string {
+	public function render(): string {
+		$pages = $this->process($this->offsetPage);
 		if (empty($pages)) {
 			return '';
 		}
@@ -350,7 +429,7 @@ class Pagination {
 					$href = '?' . $this->paramValue . '=' . $v['num'];
 				}
 				else {
-					// Remplacement of paramValue if exists.
+					// Replacement of paramValue if exists.
 					parse_str($qs, $params);
 					$params[$this->paramValue] = $v['num'];
 					if ($this->avoidDuplicateContent && (1 == $v['num'])) {

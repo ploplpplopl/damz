@@ -112,7 +112,7 @@ $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 $numOrders = count($orders);
 
 // Pagination.
-define('NUM_PER_PAGE', 10);
+define('NUM_PER_PAGE', 1);
 $pagination = new Pagination('page');
 // Redéfinition des attributs.
 $pagination
@@ -123,15 +123,15 @@ $pagination
 	//->setPaginationWrapper('<nav><ul class="pagination">%s</ul></nav>')
 	//->setAvoidDuplicateContent(FALSE)
 	->setItemsPerPage(NUM_PER_PAGE)
-	->setTotalRows($numOrders);
-$paginationPages = $pagination->process();
+	//->setOffsetPage(1)
+	->setItemsTotal($numOrders);
 $limitFrom = $pagination->limitFrom();
 $limitTo = $limitFrom + NUM_PER_PAGE;
 if ($limitTo > $numOrders) {
 	$limitTo = $numOrders;
 }
 // Requete pour l'affichage de la liste paginée des commandes 
-$orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
+$orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way, $limitFrom, $pagination->getItemsPerPage());
 
 // Archive an order.
 if (!empty($_GET['archive'])) {

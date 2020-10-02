@@ -126,7 +126,7 @@ require_once 'views/head.php';
 				</tbody>
 			</table>
 		</form>
-		<?php echo $pagination->render($paginationPages); ?>
+		<?php echo $pagination->render(); ?>
 	</div>
 </div>
 

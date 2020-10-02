@@ -282,7 +282,8 @@ require_once 'views/head.php';
 <?php
 
 $javascript .= '
-<script src="/public/js/dossier_formulaire.js"></script>
+<!--script src="/public/js/dossier_formulaire.js"></script-->
+<script src="/public/js/imprint.js"></script>
 ';
 
 require_once 'views/footer.php';

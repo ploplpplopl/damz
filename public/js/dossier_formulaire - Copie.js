@@ -9,7 +9,6 @@ $(function () {
             jsonData = json;
         }
     });
-	console.log(jsonData);
 
     function resetOptions() {
         $('#btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
@@ -19,6 +18,10 @@ $(function () {
         $('[class^=error-]').css('display', 'none');
     }
     resetOptions();
+	
+	function scrollToElement(elmnt) {
+		$("html, body").animate({scrollTop:$(elmnt).offset().top}, 200, "linear");
+	}
 
     // AJAX call to calculate the number of black and white or colored pages
     $("#formDossier")[0].reset(); // reset the form for firefox
@@ -260,7 +263,7 @@ $(function () {
             $('span#error-upload').addClass('d-block p-2 bg-danger text-white').click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'uploadPDF';
+			scrollToElement("#uploadPDF");
         }
     });
     // On any button click - other than uploadPDF and doctype -
@@ -341,9 +344,9 @@ $(function () {
         let quantity = $("#quantity").val();
         let totalNB = Number(calculPages('NB', jsonData['paliersNB'], quantity));
         let totalC = Number(calculPages('C', jsonData['paliersC'], quantity));
-        let totalCouvFC = Number(calculCouvFC(jsonData['paliersFC']));
-        let totalCouvFT = Number(calculCouvFT(jsonData['paliersFT']));
-        let totalR = Number(calculReliure(jsonData['maxSpiplast'], jsonData['maxSpimetal'], jsonData['maxThermo'], jsonData['paliersSpiplast'], jsonData['paliersSpimetal'], jsonData['paliersThermo']));
+        let totalCouvFC = Number(calculCouvFC(jsonData['prixFC']));
+        let totalCouvFT = Number(calculCouvFT(jsonData['prixFT']));
+        let totalR = Number(calculReliure(jsonData['maxFeuillesPlast'], jsonData['maxFeuillesMetal'], jsonData['maxFeuillesThermo'], jsonData['paliersSpiplast'], jsonData['paliersSpimetal'], jsonData['paliersThermo']));
         let total = Number(totalNB + totalC + totalR + totalCouvFC + totalCouvFT).toFixed(2);
         calculTVA(total);
         $("#devisTotal").html(total);
@@ -389,11 +392,8 @@ $(function () {
     // Calcul du prix des reliures
     function calculReliure(maxSpiplast, maxSpimetal, maxThermo, paliersSpiplast, paliersSpimetal, paliersThermo) {
         let zone = '#devisReliure';
-        let quantity = $("#quantity").val();
+        let quantity = $("input[name='btnReliure']").is(":checked") ? $("#quantity").val() : 0;
         let nbFeuilles = Number($("#nbPages").text()); // pages N&B et Couleur SANS recto-verso
-        let maxFeuillesThermo = maxThermo[0]['sValue'];
-        let maxFeuillesPlast = maxSpiplast[0]['sValue'];
-        let maxFeuillesMetal = maxSpimetal[0]['sValue'];
         let total = 0;
         let prixU = 0;
         let i = 0;
@@ -403,8 +403,8 @@ $(function () {
         }
 
         if ($('#spiplast').prop('checked')) {
-            if (nbFeuilles > maxFeuillesPlast) {
-                alert("Les spirales plastiques ne sont disponibles que pour " + maxFeuillesPlast + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxSpiplast) {
+                alert("Les spirales plastiques ne sont disponibles que pour " + maxSpiplast + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#spiplast').prop('checked', false)
             }
             while (paliersSpiplast[i + 1] && (nbFeuilles > paliersSpiplast[i]['palier'])) {
@@ -414,8 +414,8 @@ $(function () {
             total = Number(quantity * prixU).toFixed(2);
         }
         if ($('#spimetal').prop('checked')) {
-            if (nbFeuilles > maxFeuillesMetal) {
-                alert("Les spirales métalliques ne sont disponibles que pour " + maxFeuillesMetal + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxSpimetal) {
+                alert("Les spirales métalliques ne sont disponibles que pour " + maxSpimetal + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#spimetal').prop('checked', false)
             }
             while (paliersSpimetal[i + 1] && (nbFeuilles > paliersSpimetal[i]['palier'])) {
@@ -425,8 +425,8 @@ $(function () {
             total = Number(quantity * prixU).toFixed(2);
         }
         if ($('#thermo').prop('checked')) {
-            if (nbFeuilles > maxFeuillesThermo) {
-                alert("La reliure thermocollée n'est disponible que pour " + maxFeuillesThermo + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
+            if (nbFeuilles > maxThermo) {
+                alert("La reliure thermocollée n'est disponible que pour " + maxThermo + " pages maximum.\nAlternatives : recto-verso ou diviser le document en plusieurs parties.");
                 $('#thermo').prop('checked', false)
             }
             while (paliersThermo[i + 1] && (nbFeuilles > paliersThermo[i]['palier'])) {
@@ -449,7 +449,7 @@ $(function () {
         let nbFC = 0;
         let total = 0;
         let zone = "#devisFC";
-        let prixU = Number(dataFC[0]["sValue"]).toFixed(2);
+        let prixU = Number(dataFC).toFixed(2);
 
         if ($('#btnFCCouv').prop('checked')) {
             nbFC++;
@@ -476,7 +476,7 @@ $(function () {
         let nbFT = 0;
         let total = 0;
         let zone = "#devisFT";
-        let prixU = Number(dataFT[0]["sValue"]).toFixed(2);
+        let prixU = Number(dataFT).toFixed(2);
 
         if ($('#btnFTCouv').prop('checked')) {
             nbFT++;
@@ -532,11 +532,10 @@ $(function () {
         // check if PDF is uploaded
         items = $('#uploadPDF')[0].files;
         if (typeof items == 'undefined' || items == null || items.length == 0) {
-            // console.log('items is empty array.');
             $('span#error-upload').addClass("d-block p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'uploadPDF';
+			scrollToElement("#uploadPDF");
             return false;
         }
         // check if doc type is selected
@@ -544,7 +543,7 @@ $(function () {
             $('.error-doctype').addClass("d-block p-2 bg-danger text-white").click(function () {
                 $('.error-doctype').removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'legend_doctype';
+			scrollToElement("#legend_doctype");
             return false;
         }
         // FIRST PAGE
@@ -553,7 +552,7 @@ $(function () {
             $('#error-couv-print').addClass("d-inline p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'couvCouleurFC';
+			scrollToElement("#couvCouleurFC");
             return false;
         }
         // when (un)printable option is set for the FIRST page of the document, check if color is selected
@@ -561,7 +560,7 @@ $(function () {
             $('#error-couv-color').addClass("d-inline p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'couvCouleurFC';
+			scrollToElement("#couvCouleurFC");
             return false;
         }
 
@@ -571,7 +570,7 @@ $(function () {
             $('#error-dos-print').addClass("d-block p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'dosCouleurFC';
+			scrollToElement("#dosCouleurFC");
             return false;
         }
         // when (un)printable option is set for the LAST page of the document, check if color is selected
@@ -579,7 +578,7 @@ $(function () {
             $('#error-dos-color').addClass("d-inline p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'dosCouleurFC';
+			scrollToElement("#dosCouleurFC");
             return false;
         }
 
@@ -589,7 +588,7 @@ $(function () {
             $('#error-reliure').addClass("d-block p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'type_reliure';
+			scrollToElement("#type_reliure");
             return false;
         }
         // when type of reliure is selected, check if color is selected
@@ -597,7 +596,7 @@ $(function () {
             $('#error-color-reliure').addClass("d-block p-2 bg-danger text-white").click(function () {
                 $(this).removeClass('d-block d-inline p-2 bg-danger text-white').css('display', 'none');
             });
-            window.location.hash = 'type_reliure';
+			scrollToElement("#type_reliure");
             return false;
         }
 
