@@ -16,7 +16,7 @@ switch ($action) {
 		$sTitre = 'Impression de documents à Caen';
 		require('views/home.php');
 		break;
-	case 'accueil': // modifier pour 'order' ?
+	case 'accueil': // modifier pour 'imprint' ?
 		$sTitre = 'Imprimez votre document';
 		require('views/dossier.php');
 		break;

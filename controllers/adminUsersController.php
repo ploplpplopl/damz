@@ -125,15 +125,16 @@ $pagination
 	//->setPaginationWrapper('<nav aria-label="Page navigation"><ul class="pagination">%s</ul></nav>')
 	//->setAvoidDuplicateContent(FALSE)
 	->setItemsPerPage(NUM_PER_PAGE)
-	->setTotalRows($numUsers);
-$paginationPages = $pagination->process();
+	//->setOffsetPage(1)
+	->setItemsTotal($numUsers);
+//$paginationPages = $pagination->process();
 $limitFrom = $pagination->limitFrom();
 $limitTo = $limitFrom + NUM_PER_PAGE;
 if ($limitTo > $numUsers) {
 	$limitTo = $numUsers;
 }
 // Requete pour l'affichage de la liste paginée des utilisateurs 
-$users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way, $limitFrom, NUM_PER_PAGE);
+$users = AdminGestionMgr::getUsersWithOrders($params, $where, $order, $way, $limitFrom, $pagination->getItemsPerPage());
 
 
 
