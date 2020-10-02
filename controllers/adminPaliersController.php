@@ -10,8 +10,6 @@ $errors = [];
 // Récupération des paliers.
 $paliers = AdminGestionMgr::getLevels('paliers_' . strtolower($_page));
 
-
-
 $addUpd = 'add';
 // Update palier
 if (!empty($_GET['edit']) && is_numeric($_GET['edit'])) {
@@ -38,7 +36,7 @@ if (isset($_POST['edit-btn'])) {
     }
 
     if (empty($errors)) {
-        if ('add' == $addUpd) {
+        if ('add' == $addUpd) {  // add
             $max = AdminGestionMgr::getLevelPositionMax('paliers_' . strtolower($_page));
             $result = AdminGestionMgr::addLevel('paliers_' . strtolower($_page), $palier, $prix, $max['pos']);
         } else {  // update

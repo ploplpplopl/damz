@@ -40,7 +40,7 @@ $filename_client = $_FILES['file']['name'];
 move_uploaded_file($_FILES['file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/files/uploads/' . $filename);
 chmod($_SERVER['DOCUMENT_ROOT'] . '/files/uploads/' . $filename, 0777);
 
-//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où 0 est bien, et tout autre chiffre indique problème
+//Ligne de commande interrogeant GhostScript, récupérant un tableau de sortie de commande ($outputs), et un code d'execution de commande ($retour), où tout chiffre différent de 0 indique problème
 exec("../vendor/Ghostscript/gs-950 -o - -sDEVICE=inkcov ../files/uploads/$filename 2>&1", $outputs, $retour);
 
 //Nettoyage du tableau
