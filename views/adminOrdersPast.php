@@ -37,19 +37,19 @@ require_once 'views/head.php';
 		<form action="" method="get">
 			<input type="hidden" name="action" value="adminOrdersPast">
 			<p class="mt-3 float-left"><?php echo $numOrders . ' ' . ($numOrders > 1 ? 'résultats' : 'résultat'); ?></p>
-			<p class="mt-3 float-right"><?php echo ($limitFrom + 1 == $limitTo ? $limitTo : ($limitFrom + 1) . ' → ' . $limitTo); ?>&nbsp;/ <?php echo $numOrders; ?></p>
+			<p class="mt-3 float-right"><?php echo $pagination->getPageResultDisplay(); ?></p>
 			<div class="clear"></div>
 			<table class="table table-striped table-bordered table-hover table-sm table-responsive mt-3">
 				<thead class="thead-light">
 					<tr>
-					<th class="align-top">Numéro <span class="order"><a<?php echo ($sort_order == 8 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 8 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'8', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						<th class="align-top">Date <span class="order"><a<?php echo ($sort_order == 1 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 1 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'1', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Prénom <span class="order"><a<?php echo ($sort_order == 2 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 2 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'2', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						Nom <span class="order"><a<?php echo ($sort_order == 3 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 3 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'3', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Adresse e-mail <span class="order"><a<?php echo ($sort_order == 4 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 4 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'4', 'sort_way'=>'2')); ?>">▼</a></span><br>
-						Téléphone <span class="order"><a<?php echo ($sort_order == 5 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 5 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'5', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Adresse <span class="order"><a<?php echo ($sort_order == 6 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 6 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'6', 'sort_way'=>'2')); ?>">▼</a></span></th>
-						<th class="align-top">Commande <span class="order"><a<?php echo ($sort_order == 7 && $sort_way == 1 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'1')); ?>">▲</a><a<?php echo ($sort_order == 7 && $sort_way == 2 ? ' class="active"' : ''); ?> href="<?php echo getUrl(array('sort_order'=>'7', 'sort_way'=>'2')); ?>">▼</a></span></th>
+					<th class="align-top">Numéro <?php echo getOrderArrows(8, $sort_order, $sort_way); ?><br>
+						<th class="align-top">Date <?php echo getOrderArrows(1, $sort_order, $sort_way); ?></th>
+						<th class="align-top">Prénom <?php echo getOrderArrows(2, $sort_order, $sort_way); ?><br>
+							Nom <?php echo getOrderArrows(3, $sort_order, $sort_way); ?></th>
+						<th class="align-top">Adresse e-mail <?php echo getOrderArrows(4, $sort_order, $sort_way); ?><br>
+							Téléphone <?php echo getOrderArrows(5, $sort_order, $sort_way); ?></th>
+						<th class="align-top">Adresse <?php echo getOrderArrows(6, $sort_order, $sort_way); ?></th>
+						<th class="align-top">Commande <?php echo getOrderArrows(7, $sort_order, $sort_way); ?></th>
 						<th class="align-top">Actions</th>
 					</tr>
 					<tr>
@@ -81,6 +81,8 @@ require_once 'views/head.php';
 							</select>
 						</th>
 						<th class="align-top">
+							<input type="hidden" name="sort_order" value="<?php echo $sort_order; ?>">
+							<input type="hidden" name="sort_way" value="<?php echo $sort_way; ?>">
 							<button class="btn btn-primary btn-sm" name="filter">Filtrer</button><br>
 							<a class="btn btn-secondary btn-sm" href="/index.php?action=adminOrdersPast" title="Supprimer les filtres">×</a>
 						</th>
