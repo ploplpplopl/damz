@@ -21,8 +21,8 @@ $tab_way = [
 	2 => 'DESC',
 ];
 
-$sort_order = !empty($_GET['sort_order']) ? $_GET['sort_order'] : 1;
-$sort_way = !empty($_GET['sort_way']) ? $_GET['sort_way'] : ($archive ? 2 : 1);
+$sort_order = !empty($_GET['sort_order']) ? (int) $_GET['sort_order'] : 1;
+$sort_way = !empty($_GET['sort_way']) ? (int) $_GET['sort_way'] : ($archive ? 2 : 1);
 
 $order = ($sort_order && array_key_exists($sort_order, $tab_order) ? $tab_order[$sort_order] : $tab_order[1]);
 $way = ($sort_way && array_key_exists($sort_way, $tab_way) ? $tab_way[$sort_way] : ($archive ? $tab_way[2] : $tab_way[1]));
@@ -112,7 +112,7 @@ $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 $numOrders = count($orders);
 
 // Pagination.
-define('NUM_PER_PAGE', 1);
+define('NUM_PER_PAGE', 10);
 $pagination = new Pagination('page');
 // Redéfinition des attributs.
 $pagination
@@ -120,10 +120,7 @@ $pagination
 	->setGoPrevious('‹')
 	->setGoNext('›')
 	->setGoLast('»')
-	//->setPaginationWrapper('<nav><ul class="pagination">%s</ul></nav>')
-	//->setAvoidDuplicateContent(FALSE)
 	->setItemsPerPage(NUM_PER_PAGE)
-	//->setOffsetPage(1)
 	->setItemsTotal($numOrders);
 $limitFrom = $pagination->limitFrom();
 $limitTo = $limitFrom + NUM_PER_PAGE;

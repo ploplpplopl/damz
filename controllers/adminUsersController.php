@@ -24,8 +24,8 @@ $tab_way = [
 	2 => 'DESC',
 ];
 
-$sort_order = !empty($_GET['sort_order']) ? $_GET['sort_order'] : 1;
-$sort_way = !empty($_GET['sort_way']) ? $_GET['sort_way'] : 2;
+$sort_order = !empty($_GET['sort_order']) ? (int) $_GET['sort_order'] : 1;
+$sort_way = !empty($_GET['sort_way']) ? (int) $_GET['sort_way'] : 2;
 
 $order = ($sort_order && array_key_exists($sort_order, $tab_order) ? $tab_order[$sort_order] : $tab_order[1]);
 $way = ($sort_way && array_key_exists($sort_way, $tab_way) ? $tab_way[$sort_way] : $tab_way[1]);
@@ -122,12 +122,8 @@ $pagination
 	->setGoPrevious('‹')
 	->setGoNext('›')
 	->setGoLast('»')
-	//->setPaginationWrapper('<nav aria-label="Page navigation"><ul class="pagination">%s</ul></nav>')
-	//->setAvoidDuplicateContent(FALSE)
 	->setItemsPerPage(NUM_PER_PAGE)
-	//->setOffsetPage(1)
 	->setItemsTotal($numUsers);
-//$paginationPages = $pagination->process();
 $limitFrom = $pagination->limitFrom();
 $limitTo = $limitFrom + NUM_PER_PAGE;
 if ($limitTo > $numUsers) {

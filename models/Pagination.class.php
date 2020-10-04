@@ -448,4 +448,18 @@ class Pagination {
 		return sprintf($this->paginationWrapper, $items);
 	}
 	
+	/**
+	 * HTML rendering for displaying 'X to Y results out of Z'.
+	 *
+	 * @return string
+	 */
+	public function getPageResultDisplay() {
+		$limitFrom = $this->limitFrom();
+		$limitTo = $limitFrom + $this->itemsPerPage;
+		if ($limitTo > $this->itemsTotal) {
+			$limitTo = $this->itemsTotal;
+		}
+		return ($limitFrom + 1 == $limitTo ? $limitTo : ($limitFrom + 1) . ' → ' . $limitTo) . '&nbsp;/ ' . $this->itemsTotal;
+	}
+	
 }

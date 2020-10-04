@@ -63,29 +63,35 @@ function displayMessage($errors = NULL) {
 	return $output;
 }
 
-function getUrl($pairs){
-	$QS = $_SERVER['QUERY_STRING'];
-	$href = '?';
-	if ($QS){
-		parse_str($QS, $params);
-		foreach ($pairs as $k => $v){
-			// Suppression du paramètre si existant.
-			if (isset($params[$k]))
-				unset($params[$k]);
-		}
-		foreach ($params as $key => $val){
-			if (is_array($val)){
-				foreach ($val as $val2)
-					$href .= $key.'[]='.$val2.'&amp;';
-			} else {
-				$href .= $key.'='.$val.'&amp;';
-			}
-		}
+/**
+ * HTML rendering for sorting arrows.
+ *
+ * @param int $order The order to sort.
+ * @param int $sort_order The GET parameter 'sort_order'.
+ * @param int $sort_way The GET parameter 'sort_way'.
+ * @return string
+ */
+function getOrderArrows($order, $sort_order, $sort_way) {
+	$markup = '<span class="order">';
+	$markup .= '<a' . ($sort_order == $order && $sort_way == 1 ? ' class="active"' : '') . ' href="' . getUrl(['sort_order' => $order, 'sort_way' => 1]) . '">▲</a>';
+	$markup .= '<a' . ($sort_order == $order && $sort_way == 2 ? ' class="active"' : '') . ' href="' . getUrl(['sort_order' => $order, 'sort_way' => 2]) . '">▼</a>';
+	$markup .= '</span>';
+	return $markup;
+}
+
+/**
+ * Replacement of GET parameters for an url.
+ *
+ * @param array $pairs An array of parameters.
+ * @param array $url The url to change (default: current url).
+ * @return string The new url.
+ */
+function getUrl($pairs, $url = NULL) {
+	if (!$url) {
+		$url = $_SERVER['QUERY_STRING'];
 	}
-	foreach ($pairs as $k => $v){
-		$href .= $k.'='.$v.'&amp;';
-	}
-	return trim($href, '&amp;');
+	parse_str($url, $params);
+	return '?' . http_build_query(array_merge($params, $pairs), '_', '&amp;');
 }
 
 
