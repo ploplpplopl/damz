@@ -11,7 +11,7 @@ $(function () {
     });
 
     function resetOptions() {
-        $('#btnFTCouv, #btnFCCouv, #couvCouleurFC :radio, #btnFTDos, #btnFCDos, #dosCouleurFC :radio, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
+        $('#btnFTCouv, #btnFCCouv, .FCprintable :radio, #btnFTDos, #btnFCDos, #thermo, #spiplast, #spimetal, #reliureNoire, #reliureBlanche, #rectoverso').prop('checked', false).prop('disabled', false);
         $('#quantity').val('1');
         $('div.dos-color, div.couv-color').show();
         $('[id^=error-]').css('display', 'none');

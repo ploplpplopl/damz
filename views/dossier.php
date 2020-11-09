@@ -110,22 +110,22 @@ require_once 'views/head.php';
 					<div class="col-lg-4">
 						<!-- couverture -->
 						<p class="legend">Couverture</p>
-						<p>
+						<div>
 							<input type="checkbox" name="btnFTCouv" id="btnFTCouv" value="1" <?php echo (1 == $btnFTCouv ? ' checked' : ''); ?>>
 							<label for="btnFTCouv">Feuillet transparent</label><br>
 							<input type="checkbox" name="btnFCCouv" id="btnFCCouv" value="1" <?php echo (1 == $btnFCCouv ? ' checked' : ''); ?>>
 							<label for="btnFCCouv">Feuille cartonnée</label><br>
-						</p>
+						</div>
+						<div class="FCprintable ml-5">
+							<span id='error-couv-print'>Sélectionnez un type de feuille cartonnée</span>
+							<input type="radio" name="couv-impr" id="couv_printable" value="printable" <?php echo ('printable' == $couvImpr ? ' checked' : ''); ?>>
+							<label for="couv_printable">Imprimable</label><br>
+							<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable" <?php echo ('unprintable' == $couvImpr ? ' checked' : ''); ?>>
+							<label for="couv_unprintable">Non imprimable</label><br>
+						</div>
 						<div id="couvCouleurFC">
-							<p><strong>Couleur de la feuille cartonnée</strong></p>
-							<p>
-								<span id='error-couv-print'>Sélectionnez un type de feuille cartonnée</span>
-								<input type="radio" name="couv-impr" id="couv_printable" value="printable" <?php echo ('printable' == $couvImpr ? ' checked' : ''); ?>>
-								<label for="couv_printable">Imprimable</label><br>
-								<input type="radio" name="couv-impr" id="couv_unprintable" value="unprintable" <?php echo ('unprintable' == $couvImpr ? ' checked' : ''); ?>>
-								<label for="couv_unprintable">Non imprimable</label><br>
-								<span id='error-couv-color'>Sélectionnez une couleur</span>
-							</p>
+							<p><strong>Couleur de la feuille cartonnée :</strong></p>
+							<span id='error-couv-color'>Sélectionnez une couleur</span><br/>
 							<div id="couvCouleurFC_colors" class="color-selector">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="couv-color couv-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> couv-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
@@ -139,22 +139,22 @@ require_once 'views/head.php';
 					<div class="col-lg-4">
 						<!-- dos -->
 						<p class="legend">Dos</p>
-						<p>
+						<div>
 							<input type="checkbox" name="btnFTDos" id="btnFTDos" value="1" <?php echo (1 == $btnFTDos ? ' checked' : ''); ?>>
 							<label for="btnFTDos">Feuillet transparent</label><br>
 							<input type="checkbox" name="btnFCDos" id="btnFCDos" value="1" <?php echo (1 == $btnFCDos ? ' checked' : ''); ?>>
 							<label for="btnFCDos">Feuille cartonnée</label><br>
-						</p>
+						</div>
+						<div class="FCprintable ml-5">
+							<span id='error-dos-print'>Sélectionnez un type de feuille cartonnée</span>
+							<input type="radio" name="dos-impr" id="dos_printable" value="printable" <?php echo ('printable' == $dosImpr ? ' checked' : ''); ?>>
+							<label for="dos_printable">Imprimable</label><br>
+							<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable" <?php echo ('unprintable' == $dosImpr ? ' checked' : ''); ?>>
+							<label for="dos_unprintable">Non imprimable</label><br>
+						</div>
 						<div id="dosCouleurFC">
-							<p><strong>Couleur de la feuille cartonnée</strong></p>
-							<p>
-								<span id='error-dos-print'>Sélectionnez un type de feuille cartonnée</span>
-								<input type="radio" name="dos-impr" id="dos_printable" value="printable" <?php echo ('printable' == $dosImpr ? ' checked' : ''); ?>>
-								<label for="dos_printable">Imprimable</label><br>
-								<input type="radio" name="dos-impr" id="dos_unprintable" value="unprintable" <?php echo ('unprintable' == $dosImpr ? ' checked' : ''); ?>>
-								<label for="dos_unprintable">Non imprimable</label><br>
-								<span id='error-dos-color'>Sélectionnez une couleur</span>
-							</p>
+							<p><strong>Couleur de la feuille cartonnée :</strong></p>
+							<span id='error-dos-color'>Sélectionnez une couleur</span><br/>
 							<div id="dosCouleurFC_colors" class="color-selector">
 								<?php foreach ($allColors as $data) : ?>
 									<div class="dos-color dos-printable-<?php echo ($data['printable'] ? '1' : '0'); ?> dos-unprintable-<?php echo ($data['unprintable'] ? '1' : '0'); ?>">
@@ -282,8 +282,8 @@ require_once 'views/head.php';
 <?php
 
 $javascript .= '
-<!--script src="/public/js/dossier_formulaire.js"></script-->
-<script src="/public/js/imprint.js"></script>
+<script src="/public/js/dossier_formulaire.js"></script
+<--<script src="/public/js/imprint.js"></script>-->
 ';
 
 require_once 'views/footer.php';
