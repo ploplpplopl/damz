@@ -151,7 +151,7 @@ if (isset($_POST['add-user-btn'])) {
 	$user_password = trim($_POST['password']);
 	$user_passwordConf = trim($_POST['passwordConf']);
 	$token = bin2hex(random_bytes(50));
-
+	// $sc = subscription confirmed. Used for automatic validation of the subscription when coming from "admin : ajouter un utilisateur",
 	$sc = uniqid(mt_rand(), true);
 	file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/files/tmp/tmp_' . $token . '.dat', $sc);
 

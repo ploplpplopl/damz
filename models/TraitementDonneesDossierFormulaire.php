@@ -1,6 +1,6 @@
 <?php
 
-// Pour régulièrement décommenter/recommenter il suffit de rajouter une étoile /*/ -> /**/
+// Pour régulièrement décommenter/recommenter, rajouter une étoile /*/ -> /**/
 /*/sleep(2);
 echo json_encode([
 	'filename' => md5('{D@mZ-T0K€N}' . uniqid(mt_rand(), true)) . '.pdf',

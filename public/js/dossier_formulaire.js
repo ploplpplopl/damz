@@ -335,7 +335,7 @@ $(function () {
 
     // ---------------------------- QUOTE CALCULATION ----------------------------
     // Reload the quote calculation on click
-    $("#thermo, #spiplast, #spimetal, #btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #quantity, #rectoverso, #perso, #these, #memoire, #dossier").click(function () {
+    $("#btnFTCouv, #btnFTDos, #btnFCCouv, #btnFCDos, #thermo, #spiplast, #spimetal, #quantity, #rectoverso, #couvCouleurFC :radio, #dosCouleurFC :radio, #couv_printable, #couv_unprintable, div.couv-color, #dos_printable, #dos_unprintable, div.dos-color, #perso, #these, #memoire, #dossier").click(function () {
         calculDevis(jsonData);
     });
 

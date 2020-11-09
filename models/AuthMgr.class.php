@@ -161,7 +161,7 @@ class AuthMgr
             DbConnection::disconnect();
             return $result;
         } catch (Exception $e) {
-            // TODO log error in DB rather than display an ugly message.
+            // TODO log error in file.
             echo $e->getMessage();
         }
     }
@@ -548,19 +548,19 @@ class AuthMgr
             $tUser = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
 
-            $success = 'error';
+            $result = 'error';
             if ('1' === $tUser['subscr_confirmed']) {
-                $success = 'already_confirmed';
+                $result = 'already_confirmed';
             } else {
                 $query = 'UPDATE user SET subscr_confirmed=1 WHERE secure_key=:token AND deleted=0';
                 $stmt = $dbh->prepare($query);
                 $stmt->bindParam(':token', $token, PDO::PARAM_STR);
                 if ($stmt->execute()) {
-                    $success = 'confirmed';
+                    $result = 'confirmed';
                 }
             }
             DbConnection::disconnect();
-            return $success;
+            return $result;
         } catch (Exception $e) {
             echo $e->getMessage();
         }

@@ -107,7 +107,7 @@ if (isset($_GET['filter'])) {
 		$where .= ')';
 	}
 }
-// Comptage du nombre d'utilisateurs (pour la pagination et l'affichage sur page d'accueil admin)
+// Comptage du nombre de commandes (pour la pagination et l'affichage sur page d'accueil admin)
 $orders = AdminGestionMgr::getOrders($params, $archive, $where, $order, $way);
 $numOrders = count($orders);
 
